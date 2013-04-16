@@ -23,10 +23,6 @@ class Data < Thor
       end
 
       # Fix keys with periods; they are not valid as BSON keys.
-      #doc_xml = doc_xml.gsub("j:LocationStateCode.USPostalService","j:LocationStateCode_USPostalService")
-      #doc_xml = doc_xml.gsub("j:EmploymentEmployer.Organization","j:EmploymentEmployer_Organization")
-      #doc_xml = doc_xml.gsub("j:Victim.Person","j:Victim_Person")
-
       parser = Nori.new(parser: :nokogiri, advanced_typecasting: false, :convert_tags_to => lambda { |tag| tag.gsub("\.","_") })
       doc = parser.parse(doc_xml)
 
