@@ -25,7 +25,7 @@ class Data < Thor
       doc = parser.parse(doc_xml)
 
       doc_to_store = { xml: doc_xml, doc: doc}
-      collection.insert(doc)
+      collection.insert(doc_to_store)
     end
   end
 end
