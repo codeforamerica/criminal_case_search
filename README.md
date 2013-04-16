@@ -8,6 +8,7 @@ flexible criteria.
 ### Setup
 
 ```bash
+brew install mongodb
 bundle #install required gems
 ```
 
