@@ -1,2 +1,2 @@
 require './datashare-filter'
-run Sinatra::Application
+run DatashareFilter
