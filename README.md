@@ -14,7 +14,14 @@ bundle #install required gems
 
 ### Starting the web server
 ```bash
+RACK_ENV=development
+export RACK_ENV
 bundle exec rackup
+```
+
+Alternatively, use Guard:
+```bash
+bundle exec guard
 ```
 
 ### Loading NYPD arrest reports
