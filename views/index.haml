@@ -1,15 +1,14 @@
 %table.table
-  %caption Caption
   %thead
     %tr
-      %th Arrest Number
+      %th Arrest ID
       %th Name
       %th NYPD Charge
   %tbody
     - @reports.each do |report|
       %tr
         %td
-          = arrest_report_number(report)
+          = arrest_report_id(report)
         %td 
           = arrest_report_name(report)
         %td
