@@ -39,26 +39,37 @@
       .row-fluid
         %span.span3
           .well.filter
-            %form
+            %form{action: "/"}
               %fieldset
-                %select.input-xlarge
-                  %option Bronx
-                  %option Brooklyn
-                  %option Manhattan
-                  %option Queens
-                  %option Staten Island
+                %label Borough of Arrest
+                %select.input-xlarge{name: "filter[borough]", }
+                  %option{value: "A", selected: params[:filter][:borough] == "A"} All Boroughs
+                  %option{value: "B", selected: params[:filter][:borough] == "B"} Bronx
+                  %option{value: "K", selected: params[:filter][:borough] == "K"} Brooklyn
+                  %option{value: "M", selected: params[:filter][:borough] == "M"} Manhattan
+                  %option{value: "Q", selected: params[:filter][:borough] == "Q"} Queens
+                  %option{value: "S", selected: params[:filter][:borough] == "S"} Staten Island
                 -#%input.input-xlarge{ type: "text", placeholder: "Arrest ID"}
                 -#%span.help-block help text
+              %fieldset
+                %label Class of Charge
                 %label.checkbox.inline
-                  %input{type: "checkbox", value:"I"}
-                    I
+                  %input{name: "filter[infraction]", type: "checkbox", value:"I", checked: params[:filter][:infraction] == "I" }
+                    Infraction
                 %label.checkbox.inline
-                  %input{type: "checkbox", value:"M"}
-                    M
+                  %input{name: "filter[violation]", type: "checkbox", value:"V", checked: params[:filter][:violation] == "V"}
+                    Violation
                 %label.checkbox.inline
-                  %input{type: "checkbox", value:"F"}
-                    F
-                %button.btn{ type: "submit"} Filter
+                  %input{name: "filter[misdemeanor]", type: "checkbox", value:"M", checked: params[:filter][:misdemeanor] == "M"}
+                    Misdemeanor
+                %label.checkbox.inline
+                  %input{name: "filter[felony]",type: "checkbox", value:"F", checked: params[:filter][:felony] == "F"}
+                    Felony
+
+              .form-actions
+                %button.btn.btn-primary{ type: "submit"} Filter
+                %a{href: "/"}
+                  %button.btn{ type: "reset"} Reset
 
         .span9
           = yield

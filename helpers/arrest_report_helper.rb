@@ -1,5 +1,5 @@
 module ArrestReportHelper
-  def arrest_report_number(report)
+  def arrest_report_id(report)
     arrest(report)["j:ActivityID"]["j:ID"]
   end
 
@@ -14,11 +14,7 @@ module ArrestReportHelper
     # Sometimes charges don't come through in arrays.
     charges = [charges].flatten
     formatted_charges = charges.map do |charge|
-      begin
-        [charge['p:ChargeClassCode'], charge['j:ChargeStatute']['j:StatuteCodeID']['j:ID']].join(": ")
-      rescue Exception => e
-        binding.pry
-      end
+      [charge['p:ChargeClassCode'], charge['j:ChargeStatute']['j:StatuteCodeID']['j:ID']].join(": ")
     end
     formatted_charges.join(", ")
   end
