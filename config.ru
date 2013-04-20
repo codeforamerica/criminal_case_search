@@ -1,3 +1,3 @@
 #\ -s puma
-require './datashare_filter'
+require './config/environment'
 run DatashareFilter
