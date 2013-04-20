@@ -1,18 +1,12 @@
 require_relative "config/environment"
 
 class DatashareFilter < Sinatra::Base
-  QUERY_PREAMBLE = "doc.e:EnterpriseDatashareDocument.e:DocumentBody.p:NYPDArrestTransaction.p:NYPDArrestReport.p:Arrest"
-
-  include Mongo
+  QUERY_PREAMBLE = "arrest_report.e:EnterpriseDatashareDocument.e:DocumentBody.p:NYPDArrestTransaction.p:NYPDArrestReport.p:Arrest"
   register Sinatra::Twitter::Bootstrap::Assets
 
   configure do
     set :views, settings.root + '/app/views'
     set :haml, :format => :html5
-
-    client = MongoClient.new("localhost", 27017)
-    set :mongo_client, client
-    set :db, client.db('datashare')
   end
 
   get '/' do
@@ -34,9 +28,7 @@ class DatashareFilter < Sinatra::Base
       conditions.merge!({"#{QUERY_PREAMBLE}.p:ArrestCharge.p:ChargeClassCode" => "F" })
     end
 
-    arrest_reports = settings.db.collection("arrestReports")
-
-    @reports = arrest_reports.find(conditions).limit(15)
+    @reports = Incident.where(conditions).limit(15)
     haml :index
   end
 
