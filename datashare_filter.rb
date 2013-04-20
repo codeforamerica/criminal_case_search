@@ -1,10 +1,12 @@
 require 'rubygems'
 require 'bundler'
 Bundler.require(:default, ENV['RACK_ENV'].to_sym)
+
 Dir["./app/helpers/*.rb"].each { |file| require file }
 
 class DatashareFilter < Sinatra::Base
   QUERY_PREAMBLE = "doc.e:EnterpriseDatashareDocument.e:DocumentBody.p:NYPDArrestTransaction.p:NYPDArrestReport.p:Arrest"
+
   include Mongo
   register Sinatra::Twitter::Bootstrap::Assets
 
