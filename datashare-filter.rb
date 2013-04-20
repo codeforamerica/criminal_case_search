@@ -1,8 +1,7 @@
-#TODO: rename with underscores
 require 'rubygems'
 require 'bundler'
 Bundler.require(:default, ENV['RACK_ENV'].to_sym)
-require './helpers/arrest_report_helper.rb'
+Dir["./app/helpers/*.rb"].each { |file| require file }
 
 class DatashareFilter < Sinatra::Base
   QUERY_PREAMBLE = "doc.e:EnterpriseDatashareDocument.e:DocumentBody.p:NYPDArrestTransaction.p:NYPDArrestReport.p:Arrest"
@@ -10,6 +9,7 @@ class DatashareFilter < Sinatra::Base
   register Sinatra::Twitter::Bootstrap::Assets
 
   configure do
+    set :views, settings.root + '/app/views'
     set :haml, :format => :html5
 
     client = MongoClient.new("localhost", 27017)
@@ -43,4 +43,5 @@ class DatashareFilter < Sinatra::Base
   end
 
   helpers ArrestReportHelper
+  helpers ApplicationHelper
 end
