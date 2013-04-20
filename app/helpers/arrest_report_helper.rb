@@ -21,6 +21,6 @@ module ArrestReportHelper
 
   private
   def arrest(report)
-    report["doc"]["e:EnterpriseDatashareDocument"]["e:DocumentBody"]["p:NYPDArrestTransaction"]["p:NYPDArrestReport"]["p:Arrest"]
+    report.arrest_report["e:EnterpriseDatashareDocument"]["e:DocumentBody"]["p:NYPDArrestTransaction"]["p:NYPDArrestReport"]["p:Arrest"]
   end
 end
