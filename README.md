@@ -14,17 +14,20 @@ bundle #install required gems
 
 ### Starting the web server
 ```bash
-RACK_ENV=development
-export RACK_ENV
 bundle exec rackup
 ```
 
-Alternatively, use Guard:
+Alternatively, use Guard for auto-restart during development:
 ```bash
 bundle exec guard
 ```
+
+### Development
 
 ### Loading NYPD arrest reports
 ```bash
 thor data:load_from_xml /path-to-encrypted-data
 ```
+
+You can use `pry` from the application root directory for an interactive
+console.
