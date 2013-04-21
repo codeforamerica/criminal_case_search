@@ -5,11 +5,11 @@
       %th Name
       %th NYPD Charge
   %tbody
-    - @reports.each do |report|
+    - @incidents.each do |incident|
       %tr
         %td
-          = arrest_report_id(report)
+          = incident.arrest_id
         %td
-          = arrest_report_name(report)
+          = incident.arrest_report.person_name
         %td
-          = arrest_report_charge(report)
+          = incident.arrest_report.charges

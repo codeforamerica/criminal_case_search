@@ -28,10 +28,9 @@ class DatashareFilter < Sinatra::Base
       conditions.merge!({"#{QUERY_PREAMBLE}.p:ArrestCharge.p:ChargeClassCode" => "F" })
     end
 
-    @reports = Incident.where(conditions).limit(15)
+    @incidents = Incident.where(conditions).limit(15)
     haml :index
   end
 
-  helpers ArrestReportHelper
   helpers ApplicationHelper
 end
