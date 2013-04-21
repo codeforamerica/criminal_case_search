@@ -24,10 +24,12 @@ bundle exec guard
 
 ### Development
 
-### Loading NYPD arrest reports
+### Loading sample Datashare data from XML files (must end with .xml
+ extensions)
 ```bash
-thor data:load_from_xml /path-to-encrypted-data
+thor data:load_arrest_reports /path-to-encrypted-data/NYPD
+thor data:load_rap_sheets /path-to-encrypted-data/DCJS
 ```
 
-You can use `pry` from the application root directory for an interactive
+You can also use `pry` from the application root directory for an interactive
 console.
