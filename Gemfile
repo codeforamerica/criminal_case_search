@@ -1,13 +1,14 @@
 source "https://rubygems.org"
 
+# Core
 gem "sinatra"
-gem "puma"
-gem "mongo"
-gem "bson_ext"
 gem "mongoid", "~> 3.1.0"
-gem "sinatra-twitter-bootstrap", require: "sinatra/twitter-bootstrap"
-gem "haml"
 gem "activesupport", require: "active_support/core_ext/string"
+gem "puma"
+
+# Views
+gem "haml"
+gem "sinatra-twitter-bootstrap", require: "sinatra/twitter-bootstrap"
 
 group :development do
   gem "pry"
