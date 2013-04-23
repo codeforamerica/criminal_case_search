@@ -10,6 +10,6 @@
         %td
           = incident.arrest_id
         %td
-          = incident.arrest_report.person_name
+          = "#{Faker::Name.last_name}, #{Faker::Name.first_name}"#incident.arrest_report.person_name
         %td
           = incident.arrest_report.charges

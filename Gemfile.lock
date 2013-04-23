@@ -10,6 +10,8 @@ GEM
     awesome_print (1.1.0)
     builder (3.0.4)
     coderay (1.0.9)
+    faker (1.1.2)
+      i18n (~> 0.5)
     ffi (1.2.1)
     guard (1.5.4)
       listen (>= 0.4.2)
@@ -64,6 +66,7 @@ PLATFORMS
 DEPENDENCIES
   activesupport
   awesome_print
+  faker
   guard
   guard-shotgun
   haml

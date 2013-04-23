@@ -5,6 +5,7 @@ gem "sinatra"
 gem "mongoid", "~> 3.1.0"
 gem "activesupport", require: "active_support/core_ext/string"
 gem "puma"
+gem "faker"
 
 # Views
 gem "haml"
