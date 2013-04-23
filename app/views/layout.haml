@@ -8,9 +8,20 @@
         padding-top: 60px;
         padding-bottom: 40px;
       }
-      .filter {
+      .datashare-filter {
         padding: 9px;
       }
+    :javascript
+      $(function(){
+        $(".previous-convictions li a").click(function() {
+          $(".previous-convictions button").html($(this).text() + ' <span class="caret"></span>');
+          $(".previous-convictions input.previous-convictions-type").val($(this).text());
+        });
+        $(".btn-group.sex button").click(function() {
+          $("input.sex").val($(this).text());
+        });
+      })
+
   %body
     .navbar.navbar-inverse.navbar-fixed-top
       .navbar-inner
@@ -32,10 +43,10 @@
     - container :fluid do
       .row-fluid
         %span.span3
-          .well.filter
+          .well.datashare-filter
             %form{action: "/"}
               %fieldset
-                %label Borough of Arrest
+                %legend Filter Options
                 %select.input-xlarge{name: "filter[borough]", }
                   %option{value: "A", selected: params[:filter][:borough] == "A"} All Boroughs
                   %option{value: "B", selected: params[:filter][:borough] == "B"} Bronx
@@ -45,20 +56,56 @@
                   %option{value: "S", selected: params[:filter][:borough] == "S"} Staten Island
                 -#%input.input-xlarge{ type: "text", placeholder: "Arrest ID"}
                 -#%span.help-block help text
-              %fieldset
-                %label Class of Charge
-                %label.checkbox.inline
+              %fieldset.inline
+                %label Charge Class
+                %label.checkbox
                   %input{name: "filter[infraction]", type: "checkbox", value:"I", checked: params[:filter][:infraction] == "I" }
                     Infraction
-                %label.checkbox.inline
+                %label.checkbox
                   %input{name: "filter[violation]", type: "checkbox", value:"V", checked: params[:filter][:violation] == "V"}
                     Violation
-                %label.checkbox.inline
+                %label.checkbox
                   %input{name: "filter[misdemeanor]", type: "checkbox", value:"M", checked: params[:filter][:misdemeanor] == "M"}
                     Misdemeanor
-                %label.checkbox.inline
+                %label.checkbox
                   %input{name: "filter[felony]",type: "checkbox", value:"F", checked: params[:filter][:felony] == "F"}
                     Felony
+
+              %fieldset
+                %label Sex
+                -#%label.checkbox
+                  -#%input{name: "filter[male]", type: "checkbox", value:"M", checked: params[:filter][:male] == "M" }
+                    -#Male
+                -#%label.checkbox
+                  -#%input{name: "filter[female]", type: "checkbox", value:"F", checked: params[:filter][:female] == "F"}
+                    -#Female
+                .btn-group.sex{data: {toggle: "buttons-radio"}}
+                  %button.btn{type: "button", class: params[:filter][:sex] == nil || params[:filter][:sex] == "All" ? "active" : ""  } All
+                  %button.btn{type: "button", class: params[:filter][:sex] == "Male" ? "active" : "" } Male
+                  %button.btn{type: "button", class: params[:filter][:sex] == "Female" ? "active" : "" } Female
+                  %input.sex{type: "hidden", name: "filter[sex]", value: params[:filter][:sex] || "All" }
+
+              %fieldset
+                %label Age
+                %input.inline.input-mini{name: "filter[age][min]", type: "text", placeholder: "Min Age" }
+                &ndash;
+                %input.inline.input-mini{name: "filter[age][max]", type: "text", placeholder: "Max Age" }
+
+              %fieldset
+                %label Previous Criminal Convictions
+                .input-prepend
+                  .btn-group.previous-convictions
+                    %button.btn.dropdown-toggle{"data-toggle" => "dropdown" }
+                      = params[:filter][:previous_convictions_type] || "More than"
+                      %span.caret
+                    %ul.dropdown-menu
+                      %li
+                        %a More than
+                      %li
+                        %a Less than
+                    %input.previous-convictions-type{name: "filter[previous_convictions_type]", type: "hidden", value: params[:filter][:previous_convictions_type] || "More than"}
+                  %input.input-mini{name: "filter[previous_convictions_number]", type: "text", value: params[:filter][:previous_convictions_number] }
+
 
               .form-actions
                 %button.btn.btn-primary{ type: "submit"} Filter
