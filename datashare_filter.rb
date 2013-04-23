@@ -10,25 +10,25 @@ class DatashareFilter < Sinatra::Base
   end
 
   get '/' do
-    conditions = {}
+    incident_scope = Incident.scoped
     params[:filter] = {} unless params[:filter]
     if params[:filter][:borough] && params[:filter][:borough] != "A"
-      conditions.merge!({"#{QUERY_PREAMBLE}.p:ArrestLocation.p:LocationCountyCode" => params[:filter][:borough]})
+      incident_scope = incident_scope.arrest_borough(params[:filter][:borough])
     end
     if params[:filter][:infraction]
-      conditions.merge!({"#{QUERY_PREAMBLE}.p:ArrestCharge.p:ChargeClassCode" => "I" })
+      incident_scope = incident_scope.arrest_charges_include("I")
     end
     if params[:filter][:violation]
-      conditions.merge!({"#{QUERY_PREAMBLE}.p:ArrestCharge.p:ChargeClassCode" => "V" })
+      incident_scope = incident_scope.arrest_charges_include("V")
     end
     if params[:filter][:misdemeanor]
-      conditions.merge!({"#{QUERY_PREAMBLE}.p:ArrestCharge.p:ChargeClassCode" => "M" })
+      incident_scope = incident_scope.arrest_charges_include("M")
     end
     if params[:filter][:felony]
-      conditions.merge!({"#{QUERY_PREAMBLE}.p:ArrestCharge.p:ChargeClassCode" => "F" })
+      incident_scope = incident_scope.arrest_charges_include("F")
     end
 
-    @incidents = Incident.where(conditions).limit(15)
+    @incidents = incident_scope.limit(15)
     haml :index
   end
 
