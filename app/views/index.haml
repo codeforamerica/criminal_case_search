@@ -13,3 +13,7 @@
           = "#{Faker::Name.last_name}, #{Faker::Name.first_name}"#incident.arrest_report.person_name
         %td
           = incident.arrest_report.charges
+  %tfoot
+    %tr
+      %td{colspan: "3"}
+        %a{href: "#", onclick: "alert('Coming soon.')"} Export CSV

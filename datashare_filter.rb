@@ -27,6 +27,10 @@ class DatashareFilter < Sinatra::Base
     if params[:filter][:felony]
       incident_scope = incident_scope.arrest_charges_include("F")
     end
+    if params[:filter][:sex]
+      incident_scope = incident_scope.defendant_sex("M") if params[:filter][:sex] == "Male"
+      incident_scope = incident_scope.defendant_sex("F") if params[:filter][:sex] == "Female"
+    end
 
     @incidents = incident_scope.limit(15)
     haml :index
