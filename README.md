@@ -5,13 +5,13 @@ flexible criteria.
 
 ## Setup
 
-### Initial setup
+### Building pre-requisites
 ```bash
 brew install mongodb
 bundle #install required gems
 ```
 
-### Starting the web server
+### Deploying the web server
 ```bash
 bundle exec rackup
 ```
@@ -23,7 +23,7 @@ bundle exec guard
 
 ## Development
 
-### Loading sample Datashare data from XML files
+### Loading example Datashare data from XML files
 (must end with .xml extensions)
 ```bash
 thor data:load_arrest_reports /path-to-encrypted-data/NYPD
