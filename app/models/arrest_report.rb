@@ -5,7 +5,7 @@ class ArrestReport < DatashareDocument
   embedded_in :incident
 
   def arrest_id
-    self.arrest["j:ActivityID"]["j:ID"]
+    arrest["j:ActivityID"]["j:ID"]
   end
 
   def charges
@@ -26,6 +26,6 @@ class ArrestReport < DatashareDocument
 
   private
   def arrest
-    self.body["p:NYPDArrestTransaction"]["p:NYPDArrestReport"]["p:Arrest"]
+    body["p:NYPDArrestTransaction"]["p:NYPDArrestReport"]["p:Arrest"]
   end
 end
