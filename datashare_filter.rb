@@ -1,7 +1,6 @@
 require_relative "config/environment"
 
 class DatashareFilter < Sinatra::Base
-  QUERY_PREAMBLE = "arrest_report.e:EnterpriseDatashareDocument.e:DocumentBody.p:NYPDArrestTransaction.p:NYPDArrestReport.p:Arrest"
   register Sinatra::Twitter::Bootstrap::Assets
 
   configure do
@@ -10,6 +9,7 @@ class DatashareFilter < Sinatra::Base
   end
 
   get '/' do
+    puts params.inspect
     incident_scope = Incident.scoped
     params[:filter] = {} unless params[:filter]
     if params[:filter][:borough] && params[:filter][:borough] != "A"
