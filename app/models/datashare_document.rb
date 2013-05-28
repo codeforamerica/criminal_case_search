@@ -1,4 +1,5 @@
 class DatashareDocument
+  private
   def header
     self["e:EnterpriseDatashareDocument"]["e:DocumentHeader"]
   end

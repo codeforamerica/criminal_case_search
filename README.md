@@ -26,8 +26,11 @@ bundle exec guard
 ### Loading example Datashare data from XML files
 (must end with .xml extensions)
 ```bash
-thor data:load_arrest_reports /path-to-encrypted-data/NYPD
-thor data:load_rap_sheets /path-to-encrypted-data/DCJS
+thor data:load_arrest_reports /Volumes/Datashare/NYPD
+thor data:load_rap_sheets /Volumes/Datashare/DCJS
+thor data:load_complaints /Volumes/Datashare/DANY
+thor data:load_complaints /Volumes/Datashare/KCDA
+thor data:load_ror_reports /Volumes/Datashare/CJA
 ```
 
 ### Debugging

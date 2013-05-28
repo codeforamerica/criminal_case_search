@@ -4,6 +4,8 @@ class Incident
 
   embeds_one :arrest_report
   embeds_one :rap_sheet
+  embeds_one :complaint
+  embeds_one :ror_report
 
   field :arrest_id, type: String
 
