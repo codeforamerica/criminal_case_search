@@ -57,7 +57,7 @@
                 -#%input.input-xlarge{ type: "text", placeholder: "Arrest ID"}
                 -#%span.help-block help text
               %fieldset.inline
-                %label Charge Class
+                %label Top Charge
                 %label.checkbox
                   %input{name: "filter[infraction]", type: "checkbox", value:"I", checked: params[:filter][:infraction] == "I" }
                     Infraction
@@ -92,19 +92,19 @@
                 %input.inline.input-mini{name: "filter[age][max]", type: "text", placeholder: "Max Age" }
 
               %fieldset
-                %label Previous Criminal Convictions
-                .input-prepend
+                %label Previous Misdemeanor/Felony Convictions
+                .input-append
+                  %input.input-mini{name: "filter[previous_convictions_number]", type: "text", value: params[:filter][:previous_convictions_number] }
                   .btn-group.previous-convictions
                     %button.btn.dropdown-toggle{"data-toggle" => "dropdown" }
-                      = params[:filter][:previous_convictions_type] || "More than"
+                      = params[:filter][:previous_convictions_type] || "or more"
                       %span.caret
                     %ul.dropdown-menu
                       %li
-                        %a More than
+                        %a or more
                       %li
-                        %a Less than
+                        %a or less
                     %input.previous-convictions-type{name: "filter[previous_convictions_type]", type: "hidden", value: params[:filter][:previous_convictions_type] || "More than"}
-                  %input.input-mini{name: "filter[previous_convictions_number]", type: "text", value: params[:filter][:previous_convictions_number] }
 
 
               .form-actions
