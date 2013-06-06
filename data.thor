@@ -25,7 +25,6 @@ class Data < Thor
     end
   end
 
-
   desc "load_rap_sheets PATH", "Load XML Datashare Rap Sheet data from PATH"
   def load_rap_sheets(path)
     dcjs_filenames = Dir.glob(File.join(path, "*.xml"))
@@ -88,6 +87,26 @@ class Data < Thor
       incident = Incident.find_or_initialize_by(arrest_id: ror_report.arrest_id)
       ror_report.incident = incident
       ror_report.save!
+      puts "new!" unless incident.persisted?
+      puts "saved"
+    end
+  end
+
+  desc "load_oca_xml PATH", "Load OCA XML reports from some location"
+  def load_oca_xml(path)
+    oca_xml = Dir.glob(File.join(path, "*"))
+    oca_xml.each do |filename|
+      doc_xml = ""
+      File.open(filename, "r:UTF-8") do |file|
+        doc_xml = file.read.force_encoding("ISO-8859-1").encode("utf-8", replace: nil)
+      end
+
+      oca_data = @@xml_parser.parse(doc_xml)
+      oca_push = OcaPush.new(oca_data)
+
+      incident = Incident.find_or_initialize_by(arrest_id: oca_push.arrest_id)
+      oca_push.incident = incident
+      oca_push.save!
       puts "new!" unless incident.persisted?
       puts "saved"
     end
