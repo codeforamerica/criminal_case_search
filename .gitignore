@@ -33,3 +33,8 @@ tmp
 .yardoc
 _yardoc
 doc/
+
+# Emacs
+*~
+*#*#
+*.#*
