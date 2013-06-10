@@ -4,6 +4,7 @@
       %th Arrest ID
       %th Name (redacted)
       %th NYPD Charge
+      %th Release Recommendation
   %tbody
     - @incidents.each do |incident|
       %tr
@@ -13,6 +14,8 @@
           = "#{Faker::Name.last_name}, #{Faker::Name.first_name}"#incident.arrest_report.person_name
         %td
           = incident.arrest_report.charges
+        %td
+          = incident.ror_report.try { |r| r.recommendations.map { |x| x.capitalize }.join(", ") }
   %tfoot
     %tr
       %td{colspan: "3"}
