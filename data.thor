@@ -111,4 +111,24 @@ class Data < Thor
       puts "saved"
     end
   end
+
+  desc "load_arrest_tracking PATH", "Load NYPD Arrestee Tracking XML dumps from some location"
+  def load_arrest_tracking(path)
+    arrest_tracking = Dir.glob(File.join(path, "*"))
+    arrest_tracking.each do |filename|
+      doc_xml = ""
+      File.open(filename, "r:UTF-8") do |file|
+        doc_xml = file.read.force_encoding("ISO-8859-1").encode("utf-8", replace: nil)
+      end
+
+      arrest_data = @@xml_parser.parse(doc_xml)
+      arrestee_tracking = ArresteeTracking.new(arrest_data)
+
+      incident = Incident.find_or_initialize_by(arrest_id: arrestee_tracking.arrest_id)
+      arrestee_tracking.incident = incident
+      arrestee_tracking.save!
+      puts "new!" unless incident.persisted?
+      puts "saved"
+    end
+  end
 end
