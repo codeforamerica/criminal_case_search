@@ -131,4 +131,9 @@ class Data < Thor
       puts "saved"
     end
   end
+
+  desc "clear_db", "Removes all of the collections in the current database."
+  def clear_db
+    Mongoid.default_session.collections.map { |c| Object.const_get(c.name.singularize.capitalize) }.each { |x| puts "Deleted #{x.destroy_all} record(s) from the #{x} collection." }
+  end
 end
