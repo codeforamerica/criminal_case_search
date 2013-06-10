@@ -136,4 +136,16 @@ class Data < Thor
   def clear_db
     Mongoid.default_session.collections.map { |c| Object.const_get(c.name.singularize.capitalize) }.each { |x| puts "Deleted #{x.destroy_all} record(s) from the #{x} collection." }
   end
+
+  desc "load [path]", "Loads as much data as we can muster. Takes an optional path override."
+  def load
+    puts "Loading all data..."
+    base_path = "/Volumes/Datashare/"
+    self.load_arrest_reports(base_path + "NYPD")
+    self.load_rap_sheets(base_path + "DCJS")
+    self.load_complaints(base_path + "DANY")
+    self.load_complaints(base_path + "KCDA")
+    self.load_ror_reports(base_path + "CJA")
+    self.load_arrest_tracking(base_path + "ArrestTracking-Messages")
+  end
 end
