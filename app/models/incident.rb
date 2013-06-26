@@ -6,7 +6,7 @@ class Incident
   embeds_one :rap_sheet
   embeds_one :complaint
   embeds_one :ror_report
-  embeds_one :oca_push
+  embeds_one :court_proceeding_report
   embeds_one :arrest_tracking
 
   field :arrest_id, type: String
