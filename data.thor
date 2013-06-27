@@ -92,8 +92,8 @@ class Data < Thor
     end
   end
 
-  desc "load_oca_xml PATH", "Load OCA XML reports from some location"
-  def load_oca_xml(path)
+  desc "load_court_proceeding_reports PATH", "Load OCA XML reports from some location"
+  def load_court_proceeding_reports(path)
     oca_xml = Dir.glob(File.join(path, "*"))
     oca_xml.each do |filename|
       doc_xml = ""
@@ -102,11 +102,11 @@ class Data < Thor
       end
 
       oca_data = @@xml_parser.parse(doc_xml)
-      oca_push = OcaPush.new(oca_data)
+      court_proceeding_report = CourtProceedingReport.new(oca_data)
 
-      incident = Incident.find_or_initialize_by(arrest_id: oca_push.arrest_id)
-      oca_push.incident = incident
-      oca_push.save!
+      incident = Incident.find_or_initialize_by(arrest_id: court_proceeding_report.arrest_id)
+      court_proceeding_report.incident = incident
+      court_proceeding_report.save!
       puts "new!" unless incident.persisted?
       puts "saved"
     end
