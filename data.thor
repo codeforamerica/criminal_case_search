@@ -132,20 +132,40 @@ class Data < Thor
     end
   end
 
+  desc "load_docketing_notices PATH", "Load OCA Docketing Notice XML dumps from some location"
+  def load_docketing_notices(path)
+    docketing_notices = Dir.glob(File.join(path, "*"))
+    docketing_notices.each do |filename|
+      doc_xml = ""
+      File.open(filename, "r:UTF-8") do |file|
+        doc_xml = file.read.force_encoding("ISO-8859-1").encode("utf-8", replace: nil)
+      end
+
+      docketing_notice_data = @@xml_parser.parse(doc_xml)
+      docketing_notice = DocketingNotice.new(docketing_notice_data)
+      incident = Incident.find_or_initialize_by(arrest_id: docketing_notice.arrest_id)
+      docketing_notice.incident = incident
+      docketing_notice.save!
+      puts "new!" unless incident.persisted?
+      puts "saved"
+    end
+  end
+
   desc "clear_db", "Removes all of the collections in the current database."
   def clear_db
     Mongoid.default_session.collections.map { |c| Object.const_get(c.name.singularize.capitalize) }.each { |x| puts "Deleted #{x.destroy_all} record(s) from the #{x} collection." }
   end
 
-  desc "load [path]", "Loads as much data as we can muster. Takes an optional path override."
-  def load
+  desc "load [PATH]", "Loads as much data as we can muster. Takes an optional path override."
+  def load(base_path="/Volumes/Datashare/")
     puts "Loading all data..."
-    base_path = "/Volumes/Datashare/"
     self.load_arrest_reports(base_path + "NYPD")
     self.load_rap_sheets(base_path + "DCJS")
     self.load_complaints(base_path + "DANY")
     self.load_complaints(base_path + "KCDA")
     self.load_ror_reports(base_path + "CJA")
     self.load_arrest_tracking(base_path + "ArrestTracking-Messages")
+    self.load_court_proceeding_reports(base_path + "OCA - XML")
+    self.load_docketing_notices(base_path + "Docketing")
   end
 end

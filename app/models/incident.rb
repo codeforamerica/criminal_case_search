@@ -8,6 +8,7 @@ class Incident
   embeds_one :ror_report
   embeds_one :court_proceeding_report
   embeds_one :arrest_tracking
+  embeds_one :docketing_notice
 
   field :arrest_id, type: String
 
