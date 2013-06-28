@@ -1,53 +1,22 @@
+# -*- coding: utf-8 -*-
+
+require 'benchmark'
 require './config/environment'
 
 class Data < Thor
+  BASE_PATH = "/Volumes/Datashare/"
+
   # Fix keys with periods; they are not valid BSON keys.
   @@xml_parser ||= Nori.new(parser: :nokogiri, advanced_typecasting: false, :convert_tags_to => lambda { |tag| tag.gsub("\.","_") })
 
-  desc "load_arrest_reports PATH", "Load XML Datashare Arrest Report data from PATH"
-  def load_arrest_reports(path)
-    nypd_filenames = Dir.glob(File.join(path, "*.xml"))
-    nypd_filenames.each do |filename|
-      doc_xml = ""
-      File.open(filename, "r:UTF-8") do |file|
-        doc_xml = file.read.force_encoding("ISO-8859-1").encode("utf-8", replace: nil)
-      end
-
-      arrest_report_data = @@xml_parser.parse(doc_xml)
-      arrest_report = ArrestReport.new(arrest_report_data)
-
-      # TODO: It appears that we have messages with duplicate documents in the sample dataset.
-      # Need to establish which data should "win" here. Because data is loaded in filename order,
-      # we're potentially using an inaccurate heuristic.
-      incident = Incident.find_or_initialize_by(arrest_id: arrest_report.arrest_id)
-      arrest_report.incident = incident
-      arrest_report.save!
-    end
+  desc "load_arrest_reports", "Load XML Datashare Arrest Report data."
+  def load_arrest_reports
+    load_data ArrestReport, "NYPD"
   end
 
-  desc "load_rap_sheets PATH", "Load XML Datashare Rap Sheet data from PATH"
-  def load_rap_sheets(path)
-    dcjs_filenames = Dir.glob(File.join(path, "*.xml"))
-    dcjs_filenames.each do |filename|
-      doc_xml = ""
-      File.open(filename, "r:UTF-8") do |file|
-        doc_xml = file.read.force_encoding("ISO-8859-1").encode("utf-8", replace: nil)
-      end
-
-      rap_sheet_data = @@xml_parser.parse(doc_xml)
-      rap_sheet = RapSheet.new(rap_sheet_data)
-
-      begin
-        # TODO: See above; if we have messages with duplicate documents, we need a better heuristic.
-        incident = Incident.find_or_initialize_by(arrest_id: rap_sheet.arrest_id)
-      rescue Exception => e
-        # TODO: The sample dataset includes many truncated files with invalid XML. Ignoring for now.
-        puts "Cannot parse Arrest ID in #{filename}, skipping..."
-        next
-      end
-      rap_sheet.incident = incident
-      rap_sheet.save!
-    end
+  desc "load_rap_sheets", "Load XML Datashare Rap Sheet data."
+  def load_rap_sheets
+    load_data RapSheet, "DCJS-2"
   end
 
   desc "load_complaints PATH", "Load XML Datashare complaint data from PATH"
@@ -72,24 +41,9 @@ class Data < Thor
     end
   end
 
-  desc "load_ror_reports PATH", "Load XML Datashare ROR Report data from PATH"
-  def load_ror_reports(path)
-    dcjs_filenames = Dir.glob(File.join(path, "*.xml"))
-    dcjs_filenames.each do |filename|
-      doc_xml = ""
-      File.open(filename, "r:UTF-8") do |file|
-        doc_xml = file.read.force_encoding("ISO-8859-1").encode("utf-8", replace: nil)
-      end
-
-      ror_data = @@xml_parser.parse(doc_xml)
-      ror_report = RorReport.new(ror_data)
-
-      incident = Incident.find_or_initialize_by(arrest_id: ror_report.arrest_id)
-      ror_report.incident = incident
-      ror_report.save!
-      puts "new!" unless incident.persisted?
-      puts "saved"
-    end
+  desc "load_ror_reports", "Load XML Datashare ROR Report data."
+  def load_ror_reports
+    load_data RorReport, "CJA"
   end
 
   desc "load_court_proceeding_reports PATH", "Load OCA XML reports from some location"
@@ -110,26 +64,15 @@ class Data < Thor
       puts "new!" unless incident.persisted?
       puts "saved"
     end
+
+  desc "load_oca_xml", "Load OCA XML reports."
+  def load_oca_xml
+    load_data OcaPush, "OCA\ -\ XML"
   end
 
-  desc "load_arrest_tracking PATH", "Load NYPD Arrestee Tracking XML dumps from some location"
-  def load_arrest_tracking(path)
-    arrest_tracking = Dir.glob(File.join(path, "*"))
-    arrest_tracking.each do |filename|
-      doc_xml = ""
-      File.open(filename, "r:UTF-8") do |file|
-        doc_xml = file.read.force_encoding("ISO-8859-1").encode("utf-8", replace: nil)
-      end
-
-      arrest_data = @@xml_parser.parse(doc_xml)
-      arrestee_tracking = ArresteeTracking.new(arrest_data)
-
-      incident = Incident.find_or_initialize_by(arrest_id: arrestee_tracking.arrest_id)
-      arrestee_tracking.incident = incident
-      arrestee_tracking.save!
-      puts "new!" unless incident.persisted?
-      puts "saved"
-    end
+  desc "load_arrest_tracking", "Load NYPD Arrestee Tracking XML dumps from some location"
+  def load_arrest_tracking
+    load_data ArresteeTracking, "ArrestTracking-Messages"
   end
 
   desc "load_docketing_notices PATH", "Load OCA Docketing Notice XML dumps from some location"
@@ -163,7 +106,7 @@ class Data < Thor
   end
 
   desc "load [path]", "Loads as much data as we can muster. Takes an optional path override."
-  def load(base_path="/Volumes/Datashare/")
+  def load(base_path = BASE_PATH)
     # Make sure there's some stuff to load.
     unless File.exists?(base_path)
       puts "We didn't see anything at #{base_path} to load! Exiting."
@@ -180,5 +123,48 @@ class Data < Thor
     self.load_docketing_notices(base_path + "Docketing")
 
     puts "Done loading data from #{base_path}."
+  end
+
+  private
+
+  def load_data(model, dir)
+    new_incidents = 0
+    updated_incidents = 0
+    path = BASE_PATH + dir
+
+    time = Benchmark.realtime do
+      files = Dir.glob(File.join(path, "*"))
+      files.each do |filename|
+        doc_xml = ""
+        File.open(filename, "r:UTF-8") do |file|
+          doc_xml = file.read.force_encoding("ISO-8859-1").encode("utf-8", replace: nil)
+        end
+
+        parsed_data = @@xml_parser.parse(doc_xml)
+        fresh_model = model.new(parsed_data)
+
+        begin
+          incident = Incident.find_or_initialize_by(arrest_id: fresh_model.arrest_id)
+        rescue Exception => e
+          puts fresh_model.body
+          puts e.inspect
+          next
+        end
+
+        fresh_model.incident = incident
+        fresh_model.save!
+
+        if incident.persisted?
+          updated_incidents += 1
+          print "◉ "
+        else
+          new_incidents += 1
+          print "◎ "
+        end
+      end
+    end
+
+    puts ""
+    puts "Imported #{updated_incidents + new_incidents} #{model} records from #{path} in #{time} seconds."
   end
 end
