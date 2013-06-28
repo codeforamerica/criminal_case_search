@@ -132,9 +132,15 @@ class Data < Thor
     end
   end
 
-  desc "clear_db", "Removes all of the collections in the current database."
-  def clear_db
-    Mongoid.default_session.collections.map { |c| Object.const_get(c.name.singularize.capitalize) }.each { |x| puts "Deleted #{x.destroy_all} record(s) from the #{x} collection." }
+  desc "clear", "Removes all of the collections in the current database."
+  def clear
+    Mongoid.default_session.collections.map do |c|
+      # Get all of the collections and tease out the DB object.
+      Object.const_get(c.name.singularize.capitalize)
+    end.each do |x|
+      # Destroy all of the records in each collection and whine about it.
+      puts "Deleted #{x.destroy_all} record(s) from the #{x} collection."
+    end
   end
 
   desc "load [path]", "Loads as much data as we can muster. Takes an optional path override."
