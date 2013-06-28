@@ -145,13 +145,21 @@ class Data < Thor
 
   desc "load [path]", "Loads as much data as we can muster. Takes an optional path override."
   def load
-    puts "Loading all data..."
     base_path = "/Volumes/Datashare/"
+
+    # Make sure there's some stuff to load.
+    unless File.exists?(base_path)
+      puts "We didn't see anything at #{base_path} to load! Exiting."
+      return
+    end
+
     self.load_arrest_reports(base_path + "NYPD")
     self.load_rap_sheets(base_path + "DCJS")
     self.load_complaints(base_path + "DANY")
     self.load_complaints(base_path + "KCDA")
     self.load_ror_reports(base_path + "CJA")
     self.load_arrest_tracking(base_path + "ArrestTracking-Messages")
+
+    puts "Done loading data from #{base_path}."
   end
 end
