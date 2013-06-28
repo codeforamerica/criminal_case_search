@@ -1,6 +1,6 @@
 require_relative 'datashare_document'
 
-class OcaPush < DatashareDocument
+class CourtProceedingReport < DatashareDocument
   include Mongoid::Document
   embedded_in :incident
 
