@@ -92,8 +92,8 @@ class Data < Thor
     end
   end
 
-  desc "load_oca_xml PATH", "Load OCA XML reports from some location"
-  def load_oca_xml(path)
+  desc "load_court_proceeding_reports PATH", "Load OCA XML reports from some location"
+  def load_court_proceeding_reports(path)
     oca_xml = Dir.glob(File.join(path, "*"))
     oca_xml.each do |filename|
       doc_xml = ""
@@ -102,11 +102,11 @@ class Data < Thor
       end
 
       oca_data = @@xml_parser.parse(doc_xml)
-      oca_push = OcaPush.new(oca_data)
+      court_proceeding_report = CourtProceedingReport.new(oca_data)
 
-      incident = Incident.find_or_initialize_by(arrest_id: oca_push.arrest_id)
-      oca_push.incident = incident
-      oca_push.save!
+      incident = Incident.find_or_initialize_by(arrest_id: court_proceeding_report.arrest_id)
+      court_proceeding_report.incident = incident
+      court_proceeding_report.save!
       puts "new!" unless incident.persisted?
       puts "saved"
     end
@@ -132,6 +132,25 @@ class Data < Thor
     end
   end
 
+  desc "load_docketing_notices PATH", "Load OCA Docketing Notice XML dumps from some location"
+  def load_docketing_notices(path)
+    docketing_notices = Dir.glob(File.join(path, "*"))
+    docketing_notices.each do |filename|
+      doc_xml = ""
+      File.open(filename, "r:UTF-8") do |file|
+        doc_xml = file.read.force_encoding("ISO-8859-1").encode("utf-8", replace: nil)
+      end
+
+      docketing_notice_data = @@xml_parser.parse(doc_xml)
+      docketing_notice = DocketingNotice.new(docketing_notice_data)
+      incident = Incident.find_or_initialize_by(arrest_id: docketing_notice.arrest_id)
+      docketing_notice.incident = incident
+      docketing_notice.save!
+      puts "new!" unless incident.persisted?
+      puts "saved"
+    end
+  end
+
   desc "clear", "Removes all of the collections in the current database."
   def clear
     Mongoid.default_session.collections.map do |c|
@@ -144,9 +163,7 @@ class Data < Thor
   end
 
   desc "load [path]", "Loads as much data as we can muster. Takes an optional path override."
-  def load
-    base_path = "/Volumes/Datashare/"
-
+  def load(base_path="/Volumes/Datashare/")
     # Make sure there's some stuff to load.
     unless File.exists?(base_path)
       puts "We didn't see anything at #{base_path} to load! Exiting."
@@ -159,6 +176,8 @@ class Data < Thor
     self.load_complaints(base_path + "KCDA")
     self.load_ror_reports(base_path + "CJA")
     self.load_arrest_tracking(base_path + "ArrestTracking-Messages")
+    self.load_court_proceeding_reports(base_path + "OCA - XML")
+    self.load_docketing_notices(base_path + "Docketing")
 
     puts "Done loading data from #{base_path}."
   end
