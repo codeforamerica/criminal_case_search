@@ -32,7 +32,7 @@ class DatashareFilter < Sinatra::Base
       incident_scope = incident_scope.defendant_sex("F") if params[:filter][:sex] == "Female"
     end
 
-    @incidents = incident_scope.limit(15).where(:ror_report.exists => true)
+    @incidents = incident_scope.limit(15).where(:arrest_report.exists => true)
     haml :index
   end
 
