@@ -6,6 +6,7 @@ gem "mongoid", "~> 3.1.0"
 gem "activesupport", require: "active_support/core_ext/string"
 gem "puma"
 gem "faker"
+gem "will_paginate", :git => "https://github.com/mislav/will_paginate.git", :ref => "7a45eab080ff0da7917ac4f6e76cfb2db29d90b1"
 
 # Views
 gem "haml"

@@ -1,3 +1,10 @@
+GIT
+  remote: https://github.com/mislav/will_paginate.git
+  revision: 7a45eab080ff0da7917ac4f6e76cfb2db29d90b1
+  ref: 7a45eab080ff0da7917ac4f6e76cfb2db29d90b1
+  specs:
+    will_paginate (3.0.4)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -79,3 +86,4 @@ DEPENDENCIES
   sinatra
   sinatra-twitter-bootstrap
   thor
+  will_paginate!
