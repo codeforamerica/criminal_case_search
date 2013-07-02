@@ -61,23 +61,9 @@ class Data < Thor
     load_data ArresteeTracking, "ArrestTracking-Messages"
   end
 
-  desc "load_docketing_notices PATH", "Load OCA Docketing Notice XML dumps from some location"
-  def load_docketing_notices(path)
-    docketing_notices = Dir.glob(File.join(path, "*"))
-    docketing_notices.each do |filename|
-      doc_xml = ""
-      File.open(filename, "r:UTF-8") do |file|
-        doc_xml = file.read.force_encoding("ISO-8859-1").encode("utf-8", replace: nil)
-      end
-
-      docketing_notice_data = @@xml_parser.parse(doc_xml)
-      docketing_notice = DocketingNotice.new(docketing_notice_data)
-      incident = Incident.find_or_initialize_by(arrest_id: docketing_notice.arrest_id)
-      docketing_notice.incident = incident
-      docketing_notice.save!
-      puts "new!" unless incident.persisted?
-      puts "saved"
-    end
+  desc "load_docketing_notices", "Load OCA Docketing Notice XML dumps."
+  def load_docketing_notices# (path)
+    load_data DocketingNotice, "Docketing"
   end
 
   desc "clear", "Removes all of the collections in the current database."
