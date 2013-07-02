@@ -4,7 +4,11 @@ class RapSheet < DatashareDocument
   include Mongoid::Document
   embedded_in :incident
 
+  def body_proxy
+    body
+  end
+
   def arrest_id
-    self.body["ds:RapSheetExchange"]["ds:rapSheet"]["ds:identity"]["ds:arrestId"]
+    body["ds:RapSheetExchange"]["ds:rapSheet"]["ds:identity"]["ds:arrestId"]
   end
 end
