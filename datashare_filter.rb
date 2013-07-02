@@ -2,6 +2,9 @@ require_relative "config/environment"
 
 class DatashareFilter < Sinatra::Base
   register Sinatra::Twitter::Bootstrap::Assets
+  register WillPaginate::Sinatra
+
+  WillPaginate.per_page = 15
 
   configure do
     set :views, settings.root + '/app/views'
@@ -32,7 +35,7 @@ class DatashareFilter < Sinatra::Base
       incident_scope = incident_scope.defendant_sex("F") if params[:filter][:sex] == "Female"
     end
 
-    @incidents = incident_scope.limit(15).where(:arrest_report.exists => true)
+    @incidents = incident_scope.where(:arrest_report.exists => true).paginate(:page => params[:page])
     haml :index
   end
 
