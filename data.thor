@@ -111,6 +111,12 @@ class Data < Thor
     puts "Done loading data from #{base_path}."
   end
 
+  desc "reset", "Runs the `clear` and then `load` tasks. For, you know, resetting."
+  def reset
+    self.clear
+    self.load
+  end
+
   private
 
   def load_data(model, dir)
