@@ -64,6 +64,7 @@ class Data < Thor
       puts "new!" unless incident.persisted?
       puts "saved"
     end
+  end
 
   desc "load_oca_xml", "Load OCA XML reports."
   def load_oca_xml
@@ -113,12 +114,12 @@ class Data < Thor
       return
     end
 
-    self.load_arrest_reports(base_path + "NYPD")
-    self.load_rap_sheets(base_path + "DCJS")
+    self.load_arrest_reports
+    self.load_rap_sheets
     self.load_complaints(base_path + "DANY")
     self.load_complaints(base_path + "KCDA")
-    self.load_ror_reports(base_path + "CJA")
-    self.load_arrest_tracking(base_path + "ArrestTracking-Messages")
+    self.load_ror_reports
+    self.load_arrest_tracking
     self.load_court_proceeding_reports(base_path + "OCA - XML")
     self.load_docketing_notices(base_path + "Docketing")
 
@@ -146,7 +147,7 @@ class Data < Thor
         begin
           incident = Incident.find_or_initialize_by(arrest_id: fresh_model.arrest_id)
         rescue Exception => e
-          puts fresh_model.body
+          puts fresh_model.inspect
           puts e.inspect
           next
         end
