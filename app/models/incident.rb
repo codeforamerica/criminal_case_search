@@ -27,6 +27,10 @@ class Incident
   field :top_charge_code, type: String
   validates :top_charge_code, inclusion: { in: %w(I V M F), allow_nil: true }
 
+  # From OCA Docket
+  field :docket_number, type: String
+  validates :docket_number, uniqueness: { allow_nil: true }
+
   scope :borough, ->(county_code) { where(borough: county_code) }
   scope :top_charge, ->(charge_code) { where(:top_charge_code.in => [charge_code].flatten) }
   scope :defendant_sex, ->(sex_code) { where(defendant_sex: sex_code) }
