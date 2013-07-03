@@ -18,11 +18,8 @@ class DatashareFilter < Sinatra::Base
     if params[:filter][:borough] && params[:filter][:borough] != "A"
       incident_scope = incident_scope.arrest_borough(params[:filter][:borough])
     end
-    if params[:filter][:infraction]
-      incident_scope = incident_scope.arrest_charges_include("I")
-    end
-    if params[:filter][:violation]
-      incident_scope = incident_scope.arrest_charges_include("V")
+    if params[:filter][:noncriminal]
+      incident_scope = incident_scope.arrest_charges_include("I").arrest_charges_include("V")
     end
     if params[:filter][:misdemeanor]
       incident_scope = incident_scope.arrest_charges_include("M")
