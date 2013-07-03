@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 require 'benchmark'
 require './config/environment'
 
@@ -92,7 +90,7 @@ class Data < Thor
     self.load_ror_reports
     self.load_arrest_tracking
     self.load_court_proceeding_reports
-    self.load_docketing_notices(base_path + "Docketing")
+    self.load_docketing_notices
 
     puts "Done loading data from #{base_path}."
   end
@@ -134,10 +132,10 @@ class Data < Thor
 
         if incident.persisted?
           updated_incidents += 1
-          print "◉ "
+          print "+"
         else
           new_incidents += 1
-          print "◎ "
+          print "."
         end
       end
     end
