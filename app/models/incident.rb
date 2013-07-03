@@ -20,6 +20,8 @@ class Incident
   validates :borough, inclusion: { in: BOROUGHS, allow_nil: true }
   field :defendant_sex, type: String
   validates :defendant_sex, inclusion: { in: %w(M F), allow_nil: true}
+  field :defendant_age, type: Integer
+  validates :defendant_sex, numericality: { greater_than_or_equal_to: 0, allow_nil: true}
 
   # From DA's Complaint
   field :top_charge_code, type: String
@@ -28,4 +30,6 @@ class Incident
   scope :borough, ->(county_code) { where(borough: county_code) }
   scope :top_charge, ->(charge_code) { where(:top_charge_code.in => [charge_code].flatten) }
   scope :defendant_sex, ->(sex_code) { where(defendant_sex: sex_code) }
+  scope :defendant_age_lte, ->(max_age) { where(:defendant_age.lte => max_age) }
+  scope :defendant_age_gte, ->(min_age) { where(:defendant_age.gte => min_age) }
 end

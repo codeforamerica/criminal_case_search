@@ -6,6 +6,7 @@ class ArrestReport < DatashareDocument
 
   before_save :update_incident_defendant_sex
   before_save :update_incident_borough
+  before_save :update_defendant_age
 
   def arrest_id
     arrest["j:ActivityID"]["j:ID"]
@@ -27,8 +28,16 @@ class ArrestReport < DatashareDocument
     "#{last_name.titlecase}, #{given_name.titlecase}"
   end
 
+  def defendant
+    arrest["p:ArrestSubject"]["p:Subject"]
+  end
+
+  def defendant_age
+    defendant["p:PersonAge"].to_i
+  end
+
   def defendant_sex
-    arrest["p:ArrestSubject"]["p:Subject"]["p:PersonPhysicalDetails"]["p:PersonSexCode"]
+    defendant["p:PersonPhysicalDetails"]["p:PersonSexCode"]
   end
 
   def borough
@@ -46,5 +55,9 @@ class ArrestReport < DatashareDocument
 
   def update_incident_borough
     self.incident.update_attribute(:borough, borough)
+  end
+
+  def update_defendant_age
+    self.incident.update_attribute(:defendant_age, defendant_age)
   end
 end
