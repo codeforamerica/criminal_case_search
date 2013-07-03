@@ -80,9 +80,9 @@
 
               %fieldset
                 %label Age
-                %input.inline.input-mini{name: "filter[age][min]", type: "text", placeholder: "Min Age" }
+                %input.inline.input-mini{name: "filter[min_age]", type: "text", placeholder: "Min Age", value: params[:filter][:min_age] }
                 &ndash;
-                %input.inline.input-mini{name: "filter[age][max]", type: "text", placeholder: "Max Age" }
+                %input.inline.input-mini{name: "filter[max_age]", type: "text", placeholder: "Max Age", value: params[:filter][:max_age] }
 
               %fieldset
                 %label Previous Misdemeanor/Felony Convictions
