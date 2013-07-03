@@ -16,16 +16,12 @@ class DatashareFilter < Sinatra::Base
     incident_scope = Incident.scoped
     params[:filter] = {} unless params[:filter]
     if params[:filter][:borough] && params[:filter][:borough] != "A"
-      incident_scope = incident_scope.arrest_borough(params[:filter][:borough])
+      incident_scope = incident_scope.borough(params[:filter][:borough])
     end
-    if params[:filter][:noncriminal]
-      incident_scope = incident_scope.arrest_charges_include("I").arrest_charges_include("V")
-    end
-    if params[:filter][:misdemeanor]
-      incident_scope = incident_scope.arrest_charges_include("M")
-    end
-    if params[:filter][:felony]
-      incident_scope = incident_scope.arrest_charges_include("F")
+    if params[:filter][:topcharge]
+      incident_scope = incident_scope.top_charge(%w(I V)) if params[:filter][:topcharge] == "Non-Criminal"
+      incident_scope = incident_scope.top_charge("M") if params[:filter][:topcharge] == "Misdemeanor"
+      incident_scope = incident_scope.top_charge("F") if params[:filter][:topcharge] == "Felony"
     end
     if params[:filter][:sex]
       incident_scope = incident_scope.defendant_sex("M") if params[:filter][:sex] == "Male"
