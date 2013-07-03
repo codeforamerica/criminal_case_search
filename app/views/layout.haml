@@ -47,7 +47,7 @@
 
     - container :fluid do
       .row-fluid
-        %span.span3
+        %span.span4
           .well.datashare-filter
             %form{action: "/"}
               %fieldset
@@ -104,5 +104,5 @@
                 %button.btn.btn-primary{ type: "submit"} Filter
                 %a.btn{href: "/"} Reset
 
-        .span9
+        .span8
           = yield
