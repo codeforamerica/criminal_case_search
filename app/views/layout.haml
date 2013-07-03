@@ -59,11 +59,8 @@
               %fieldset.inline
                 %label Top Charge
                 %label.checkbox
-                  %input{name: "filter[infraction]", type: "checkbox", value:"I", checked: params[:filter][:infraction] == "I" }
-                    Infraction
-                %label.checkbox
-                  %input{name: "filter[violation]", type: "checkbox", value:"V", checked: params[:filter][:violation] == "V"}
-                    Violation
+                  %input{name: "filter[noncriminal]", type: "checkbox", value:"N", checked: params[:filter][:noncriminal] == "N" }
+                    Non-Criminal Offense
                 %label.checkbox
                   %input{name: "filter[misdemeanor]", type: "checkbox", value:"M", checked: params[:filter][:misdemeanor] == "M"}
                     Misdemeanor
