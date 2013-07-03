@@ -23,7 +23,7 @@ class Complaint < SoapenvDocument
   end
 
   def top_charge
-    charges.detect { |c| c["next:NYCChargeAugmentation"]["next:ChargePriority"] == "1" }
+    charges.first
   end
 
   def top_charge_code
