@@ -5,6 +5,11 @@ class CourtProceedingReport < DatashareDocument
   embedded_in :incident
 
   def arrest_id
-    body["o:OCACourtProceedingReport"]["j:Arrest"]["j:ActivityID"]["j:ID"]
+    report["j:Arrest"]["j:ActivityID"]["j:ID"]
+  end
+
+  private
+  def report
+    body["o:OCACourtProceedingReport"]
   end
 end
