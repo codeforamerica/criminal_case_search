@@ -22,6 +22,16 @@ class Complaint < SoapenvDocument
     [defendant_for_incident["next:ComplaintCharge"]].flatten
   end
 
+  def charge_info
+    charges.map do |c|
+      {
+        description: c["j:ChargeDescriptionText"],
+        counts: c["j:ChargeCountQuantity"].to_i,
+        agency_code: c["next:NYCChargeAugmentation"]["next:ChargeAgencyCode"]
+      }
+    end
+  end
+
   def top_charge
     charges.first
   end

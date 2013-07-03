@@ -1,7 +1,5 @@
 class Incident
   include Mongoid::Document
-  BOROUGHS = %w(B K M Q S)
-  ARREST_PREAMBLE = "arrest_report.e:EnterpriseDatashareDocument.e:DocumentBody.p:NYPDArrestTransaction.p:NYPDArrestReport.p:Arrest"
 
   embeds_one :arrest_report
   embeds_one :rap_sheet
@@ -17,7 +15,7 @@ class Incident
 
   # From ArrestReport
   field :borough, type: String
-  validates :borough, inclusion: { in: BOROUGHS, allow_nil: true }
+  validates :borough, inclusion: { in: %w(B K M Q S), allow_nil: true }
   field :defendant_sex, type: String
   validates :defendant_sex, inclusion: { in: %w(M F), allow_nil: true}
   field :defendant_age, type: Integer
@@ -36,4 +34,8 @@ class Incident
   scope :defendant_sex, ->(sex_code) { where(defendant_sex: sex_code) }
   scope :defendant_age_lte, ->(max_age) { where(:defendant_age.lte => max_age) }
   scope :defendant_age_gte, ->(min_age) { where(:defendant_age.gte => min_age) }
+
+  def charges
+    complaint.try(:charge_info)
+  end
 end
