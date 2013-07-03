@@ -27,10 +27,10 @@ class DatashareFilter < Sinatra::Base
       incident_scope = incident_scope.defendant_sex("M") if params[:filter][:sex] == "Male"
       incident_scope = incident_scope.defendant_sex("F") if params[:filter][:sex] == "Female"
     end
-    if params[:filter][:min_age]
+    if params[:filter][:min_age].present?
       incident_scope = incident_scope.defendant_age_gte(params[:filter][:min_age])
     end
-    if params[:filter][:max_age]
+    if params[:filter][:max_age].present?
       incident_scope = incident_scope.defendant_age_lte(params[:filter][:max_age])
     end
     ap incident_scope
