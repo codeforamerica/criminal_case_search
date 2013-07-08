@@ -19,7 +19,7 @@ class Incident
   field :defendant_sex, type: String
   validates :defendant_sex, inclusion: { in: %w(M F), allow_nil: true}
   field :defendant_age, type: Integer
-  validates :defendant_sex, numericality: { greater_than_or_equal_to: 0, allow_nil: true}
+  validates :defendant_age, numericality: { greater_than_or_equal_to: 0, allow_nil: true}
 
   # From DA's Complaint
   field :top_charge_code, type: String
