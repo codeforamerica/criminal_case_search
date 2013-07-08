@@ -4,7 +4,7 @@ class Complaint < SoapenvDocument
   include Mongoid::Document
   embedded_in :incident
 
-  before_save :update_incident_top_charge_code
+  before_save :update_incident_attributes
 
   def defendants
     [complaint["next:Defendant"]].flatten
@@ -45,7 +45,7 @@ class Complaint < SoapenvDocument
     body["nycx:ComplaintXml"]
   end
 
-  def update_incident_top_charge_code
+  def update_incident_attributes
     self.incident.update_attribute(:top_charge_code, top_charge_code)
   end
 end
