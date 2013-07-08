@@ -4,7 +4,7 @@ class DocketingNotice < SoapenvDocument
   include Mongoid::Document
   embedded_in :incident
 
-  before_save :update_incident_docket_number
+  before_save :update_incident_attributes
 
   def arrest_id
     notice["j:Arrest"]["nc:ActivityIdentification"]["nc:IdentificationID"].strip
@@ -19,7 +19,7 @@ class DocketingNotice < SoapenvDocument
     body["CaseDocketingNoticeXml"]
   end
 
-  def update_incident_docket_number
+  def update_incident_attributes
     self.incident.update_attribute(:docket_number, docket_number)
   end
 end
