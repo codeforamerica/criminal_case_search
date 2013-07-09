@@ -116,12 +116,19 @@ class Data < Thor
           doc_xml = file.read.force_encoding("ISO-8859-1").encode("utf-8", replace: nil)
         end
 
+        # Remove cruft from the beginnings of files.
+        if doc_xml.index('<e:Enterprise') > 0
+          doc_xml = doc_xml[doc_xml.index('<e:Enterprise')..-1]
+        end
+
         parsed_data = @@xml_parser.parse(doc_xml)
         fresh_model = model.new(parsed_data)
 
         begin
           incident = Incident.find_or_initialize_by(arrest_id: fresh_model.arrest_id)
         rescue Exception => e
+          # binding.pry
+          puts filename
           puts fresh_model.inspect
           puts e.inspect
           next
