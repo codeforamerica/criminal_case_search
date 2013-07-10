@@ -2,22 +2,6 @@
   %table.table
     %thead
       %tr
-<<<<<<< HEAD
-        %td
-          = "2013CN#{Random.rand(999999)}" #incident.docket_number
-        %td
-          = "#{Faker::Name.last_name}, #{Faker::Name.first_name}"#incident.arrest_report.person_name
-        %td
-          - if incident.charges
-            = incident.charges.map { |c| %Q(<span title="#{c[:description]}"><b>#{c[:agency_code]}</b> - #{c[:counts]} #{c[:counts] > 1 ? "counts" : "count"} </span>)}.join(", ")
-        %td
-          = incident.ror_report.try { |r| r.recommendations.map { |x| x.capitalize }.join(", ") }
-  %tfoot
-    %tr
-      %td{colspan: "3"}
-        %a{href: "#", onclick: "alert('Coming soon.')"} Export CSV
-        = will_paginate @incidents, renderer: BootstrapPagination::Sinatra
-=======
         %th Docket
         %th Defendant
         %th Charges
@@ -40,4 +24,3 @@
           = will_paginate @incidents, renderer: BootstrapPagination::Sinatra
 - else
   No cases found.
->>>>>>> 2afc928c44304b2ac67534bfbda527395d05aa10
