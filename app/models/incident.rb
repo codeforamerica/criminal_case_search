@@ -36,6 +36,6 @@ class Incident
   scope :defendant_age_gte, ->(min_age) { where(:defendant_age.gte => min_age) }
 
   def charges
-    complaint.try(:charge_info)
+    rap_sheet.try(:charge_info)
   end
 end

@@ -34,7 +34,7 @@ class DatashareFilter < Sinatra::Base
       incident_scope = incident_scope.defendant_age_lte(params[:filter][:max_age])
     end
     ap incident_scope
-    @incidents = incident_scope.where(:complaint.exists => true).paginate(:page => params[:page])
+    @incidents = incident_scope.where(:rap_sheet.exists => true, :top_charge_code.exists => true).paginate(:page => params[:page])
     haml :index
   end
 

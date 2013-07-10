@@ -4,7 +4,6 @@ class Complaint < SoapenvDocument
   include Mongoid::Document
   embedded_in :incident
 
-  before_save :update_incident_attributes
 
   def defendants
     [complaint["next:Defendant"]].flatten
