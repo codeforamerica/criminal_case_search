@@ -14,6 +14,16 @@ class DocketingNotice < SoapenvDocument
     notice["ds:Case"]["nc:CaseDocketID"].strip
   end
 
+  def next_court_date
+    Date.parse(notice["ds:Case"]["ds:CaseAugmentation"]["j:CaseCourtEvent"]["j:CourtEventAppearance"]["j:CourtAppearanceDate"]["nc:Date"])
+  end
+
+  def next_court_part
+    court = notice["ds:Case"]["ds:CaseAugmentation"]["j:CaseCourtEvent"]["j:CourtEventAppearance"]["j:CourtAppearanceCourt"]["nc:OrganizationName"].strip
+    part = notice["ds:Case"]["ds:CaseAugmentation"]["j:CaseCourtEvent"]["j:CourtEventAppearance"]["j:CourtAppearanceCourt"]["nc:OrganizationIdentification"]["nc:IdentificationID"].strip
+    [court, part].join(": ")
+  end
+
   private
 
   def notice
@@ -21,6 +31,6 @@ class DocketingNotice < SoapenvDocument
   end
 
   def update_incident_attributes
-    self.incident.update_attribute(:docket_number, docket_number)
+    self.incident.update_attributes(:docket_number => docket_number, :next_court_date => next_court_date, :next_court_part => next_court_part)
   end
 end
