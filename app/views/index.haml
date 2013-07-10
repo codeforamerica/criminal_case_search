@@ -10,7 +10,7 @@
       - @incidents.each do |incident|
         %tr
           %td
-            = "2013CN#{Random.rand(999999)}" #incident.docket_number
+            = incident.docket_number
           %td
             = "#{Faker::Name.last_name}, #{Faker::Name.first_name}" #incident.arrest_report.person_name
           %td
@@ -20,7 +20,7 @@
     %tfoot
       %tr
         %td{colspan: "3"}
-          %a{href: "#", onclick: "alert('Coming soon.')"} Export CSV
           = will_paginate @incidents, renderer: BootstrapPagination::Sinatra
+          %a{href: "#", onclick: "alert('Coming soon.')"} Export CSV
 - else
   No cases found.
