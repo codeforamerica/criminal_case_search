@@ -23,4 +23,5 @@ group :development do
   gem "rb-fsevent"
   gem "guard"
   gem "guard-shotgun"
+  gem "thin"
 end
