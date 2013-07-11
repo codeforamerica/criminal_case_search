@@ -50,7 +50,7 @@ class RapSheet < DatashareDocument
       formatted_statue += statue_title
       formatted_statue += " "
       formatted_statue += statue_section if statue_section
-      formatted_statue += statue_subsection if statue_subsection
+      #formatted_statue += statue_subsection if statue_subsection
 
       {
         description: c["nys:CodedStatute"]["j:StatuteDescriptionText"],

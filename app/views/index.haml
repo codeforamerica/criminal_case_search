@@ -29,7 +29,7 @@
           %td
             = incident.ror_report.try { |r| r.recommendations.map { |x| x.capitalize }.join(", ") }
           %td
-            = incident.next_court_date
+            = incident.next_court_date.strftime("%b %-d")
           %td
             = incident.next_court_part
     %tfoot

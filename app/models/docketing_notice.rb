@@ -21,7 +21,8 @@ class DocketingNotice < SoapenvDocument
   def next_court_part
     court = notice["ds:Case"]["ds:CaseAugmentation"]["j:CaseCourtEvent"]["j:CourtEventAppearance"]["j:CourtAppearanceCourt"]["nc:OrganizationName"].strip
     part = notice["ds:Case"]["ds:CaseAugmentation"]["j:CaseCourtEvent"]["j:CourtEventAppearance"]["j:CourtAppearanceCourt"]["nc:OrganizationIdentification"]["nc:IdentificationID"].strip
-    [court, part].join(": ")
+    formatted_court = court.gsub("New York City Criminal Court, ","").gsub(" Branch","")
+    [formatted_court, part].join(": ")
   end
 
   private
