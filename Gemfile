@@ -9,6 +9,7 @@ gem "faker"
 gem "will_paginate", :git => "https://github.com/mislav/will_paginate.git",
                      :ref => "7a45eab080ff0da7917ac4f6e76cfb2db29d90b1"
 gem "will_paginate-bootstrap"
+gem "erubis"
 
 # Views
 gem "haml"

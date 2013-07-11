@@ -1,5 +1,6 @@
 require 'rubygems'
 require 'bundler'
+require 'csv'
 
 # Set default environment to development
 ENV['RACK_ENV'] = "development" unless ENV['RACK_ENV']
