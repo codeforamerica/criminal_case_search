@@ -4,7 +4,7 @@ Defendant,Docket,Top Charge Severity,Top Charge,Gender,Age,Release Recommendatio
   "#{Faker::Name.last_name}, #{Faker::Name.first_name}",
   incident.docket_number,
   incident.top_charge_code_expanded,
-  incident.charges.first[:agency_code],
+  incident.charges.present? ? incident.charges.try {|c| c.first[:agency_code]} : '',
   incident.defendant_sex,
   incident.defendant_age,
   incident.ror_report.try { |r| r.recommendations.map { |x| x.capitalize }.join(", ") },
