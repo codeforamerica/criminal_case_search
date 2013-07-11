@@ -36,6 +36,6 @@
       %tr
         %td{colspan: "9"}
           = will_paginate @incidents, renderer: BootstrapPagination::Sinatra
-          %a{href: "#", onclick: "alert('Coming soon.')"} Export CSV
+          %a{href: "/?format=csv&" + request.env['rack.request.query_string']} Export CSV
 - else
   No cases found.
