@@ -71,18 +71,18 @@
                   %input.topcharge{type: "hidden", name: "filter[topcharge]", value: params[:filter][:topcharge] || "Any" }
 
               %fieldset
+                %label Age
+                %input.inline.input-mini{name: "filter[min_age]", type: "text", placeholder: "Min Age", value: params[:filter][:min_age] }
+                &ndash;
+                %input.inline.input-mini{name: "filter[max_age]", type: "text", placeholder: "Max Age", value: params[:filter][:max_age] }
+
+              %fieldset
                 %label Sex
                 .btn-group.buttons-radio.sex{data: {toggle: "buttons-radio"}}
                   %button.btn{type: "button", class: params[:filter][:sex] == nil || params[:filter][:sex] == "All" ? "active" : ""  } All
                   %button.btn{type: "button", class: params[:filter][:sex] == "Male" ? "active" : "" } Male
                   %button.btn{type: "button", class: params[:filter][:sex] == "Female" ? "active" : "" } Female
                   %input.sex{type: "hidden", name: "filter[sex]", value: params[:filter][:sex] || "All" }
-
-              %fieldset
-                %label Age
-                %input.inline.input-mini{name: "filter[min_age]", type: "text", placeholder: "Min Age", value: params[:filter][:min_age] }
-                &ndash;
-                %input.inline.input-mini{name: "filter[max_age]", type: "text", placeholder: "Max Age", value: params[:filter][:max_age] }
 
               %fieldset
                 %label Previous Misdemeanor/Felony Convictions
