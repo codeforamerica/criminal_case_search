@@ -4,8 +4,6 @@ class RapSheet < DatashareDocument
   include Mongoid::Document
   embedded_in :incident
 
-  before_save :update_incident_attributes
-
   def body_proxy
     body
   end
@@ -72,9 +70,5 @@ class RapSheet < DatashareDocument
 
   def rap_sheet
     body["ds:RapSheetExchange"]["ds:rapSheet"]
-  end
-
-  def update_incident_attributes
-    self.incident.update_attributes(defendant_sex: defendant_sex, borough: borough, defendant_age: defendant_age, top_charge_code: top_charge_code)
   end
 end
