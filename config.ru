@@ -1,3 +1,3 @@
-#\ -s puma
+#\ -s thin
 require './config/environment'
 run DatashareFilter

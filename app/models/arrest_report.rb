@@ -4,6 +4,7 @@ class ArrestReport < DatashareDocument
   include Mongoid::Document
   embedded_in :incident
 
+  before_save :update_incident_attributes
 
   def arrest_id
     arrest["j:ActivityID"]["j:ID"]
