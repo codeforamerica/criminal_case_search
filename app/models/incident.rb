@@ -6,7 +6,7 @@ class Incident
   embeds_one :complaint
   embeds_one :ror_report
   embeds_one :court_proceeding_report
-  embeds_one :arrest_tracking
+  embeds_one :arrestee_tracking
   embeds_one :docketing_notice
 
   # Primary key; used to merge all documents. From ArrestReport
@@ -27,7 +27,7 @@ class Incident
 
   # From OCA Docket
   field :docket_number, type: String
-  validates :docket_number, uniqueness: { allow_nil: true }
+  #validates :docket_number, uniqueness: { allow_nil: true }
 
   field :next_court_date, type: Date
   field :next_court_part, type: String

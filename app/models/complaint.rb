@@ -11,7 +11,10 @@ class Complaint < SoapenvDocument
   end
 
   def defendant_for_incident
-    defendants.select { |d| d["next:DefendantArrest"]["nc:ActivityIdentification"]["nc:IdentificationID"] == incident.arrest_id }.first
+    # Original version:
+    #defendants.select { |d| d["next:DefendantArrest"]["nc:ActivityIdentification"]["nc:IdentificationID"] == incident.arrest_id }.first
+    # Hacky version: used to fake data packages
+    defendants.first
   end
 
   def arrest_ids
