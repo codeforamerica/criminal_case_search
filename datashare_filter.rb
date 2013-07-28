@@ -34,8 +34,16 @@ class DatashareFilter < Sinatra::Base
       incident_scope = incident_scope.defendant_age_lte(params[:filter][:max_age])
     end
     ap incident_scope
-    @incidents = incident_scope.where(:complaint.exists => true).paginate(:page => params[:page])
-    haml :index
+    @incidents = incident_scope.where(:rap_sheet.exists => true, :docketing_notice.exists => true)
+
+    if params[:format] == "csv"
+      response.headers["Content-Type"]        = "text/csv; charset=UTF-8; header=present"
+      response.headers["Content-Disposition"] = "attachment; filename=cases.csv"
+      erb :export_csv
+    else
+      @incidents = @incidents.paginate(:page => params[:page])
+      haml :index
+    end
   end
 
   helpers ApplicationHelper
