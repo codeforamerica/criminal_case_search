@@ -8,17 +8,17 @@ class Data < Thor
   @@xml_parser ||= Nori.new(parser: :nokogiri, advanced_typecasting: false, :convert_tags_to => lambda { |tag| tag.gsub("\.","_") })
 
   desc "load_arrest_reports", "Load XML Datashare Arrest Report data."
-  def load_arrest_reports
-    load_data ArrestReport, "NYPD"
+  def load_arrest_reports(incidents = nil)
+    load_data ArrestReport, "NYPD", incidents
   end
 
   desc "load_rap_sheets", "Load XML Datashare Rap Sheet data."
-  def load_rap_sheets
-    load_data RapSheet, "DCJS-2"
+  def load_rap_sheets(incidents = nil)
+    load_data RapSheet, "DCJS-2", incidents
   end
 
   desc "load_complaints PATH", "Load XML Datashare complaint data from PATH"
-  def load_complaints(path)
+  def load_complaints(path, incidents = nil)
     dcjs_filenames = Dir.glob(File.join(path, "*.xml"))
     dcjs_filenames.each do |filename|
       doc_xml = ""
@@ -31,7 +31,18 @@ class Data < Thor
 
       arrest_ids.each do |arrest_id|
         # TODO: See above; if we have messages with duplicate documents, we need a better heuristic.
-        incident = Incident.find_or_initialize_by(arrest_id: arrest_id)
+
+        if incidents.blank?
+          incident = Incident.find_or_initialize_by(arrest_id: arrest_id)
+        else
+          puts "NEW!"
+          incident = Incident.where(:complaint.exists => false).first
+          if incident.blank?
+            puts "no incident found missing a complaint"
+            next
+          end
+        end
+
         complaint = Complaint.new(complaint_data)
         complaint.incident = incident
         complaint.save!
@@ -40,28 +51,23 @@ class Data < Thor
   end
 
   desc "load_ror_reports", "Load XML Datashare ROR Report data."
-  def load_ror_reports
-    load_data RorReport, "CJA"
+  def load_ror_reports(incidents = nil)
+    load_data RorReport, "CJA", incidents
   end
 
   desc "load_court_proceeding_reports PATH", "Load OCA XML reports from some location"
-  def load_court_proceeding_reports
-    load_data CourtProceedingReport, "OCA - XML"
-  end
-
-  desc "load_oca_xml", "Load OCA XML reports."
-  def load_oca_xml
-    load_data OcaPush, "OCA\ -\ XML"
+  def load_court_proceeding_reports(incidents = nil)
+    load_data CourtProceedingReport, "OCA - XML", incidents
   end
 
   desc "load_arrest_tracking", "Load NYPD Arrestee Tracking XML dumps from some location"
-  def load_arrest_tracking
-    load_data ArresteeTracking, "ArrestTracking-Messages"
+  def load_arrest_tracking(incidents = nil)
+    load_data ArresteeTracking, "ArrestTracking-Messages", incidents
   end
 
   desc "load_docketing_notices", "Load OCA Docketing Notice XML dumps."
-  def load_docketing_notices# (path)
-    load_data DocketingNotice, "Docketing"
+  def load_docketing_notices(incidents = nil)
+    load_data DocketingNotice, "Docketing", incidents
   end
 
   desc "clear", "Removes all of the collections in the current database."
@@ -101,9 +107,27 @@ class Data < Thor
     self.load
   end
 
+  desc "load_and_compose", "Load all data and compose incomplete documents into complete sets."
+  def load_and_compose_data(n = 100)
+    self.load_arrest_reports
+
+    incidents = Incident.where(:arrest_report.exists => true)
+
+    self.load_rap_sheets(incidents)
+    self.load_complaints(BASE_PATH + "DANY", incidents)
+    self.load_complaints(BASE_PATH + "KCDA", incidents)
+    self.load_ror_reports(incidents)
+    self.load_arrest_tracking(incidents)
+    self.load_court_proceeding_reports(incidents)
+    self.load_docketing_notices(incidents)
+
+    Incident.where(:arrest_report.exists => false).destroy_all
+    Incident.where(:complaint.exists => false).destroy_all
+  end
+
   private
 
-  def load_data(model, dir)
+  def load_data(model, dir, incidents = nil)
     new_incidents = 0
     updated_incidents = 0
     path = BASE_PATH + dir
@@ -125,7 +149,17 @@ class Data < Thor
         fresh_model = model.new(parsed_data)
 
         begin
-          incident = Incident.find_or_initialize_by(arrest_id: fresh_model.arrest_id)
+          if incidents.blank?
+            incident = Incident.find_or_initialize_by(arrest_id: fresh_model.arrest_id)
+          else
+            puts "NEW!"
+            model_sym = model.name.underscore.to_sym
+            incident = Incident.where(model_sym.exists => false).first
+            if incident.blank?
+              puts "no incident found missing a " + model.name
+              next
+            end
+          end
         rescue Exception => e
           puts filename
           puts fresh_model.inspect
