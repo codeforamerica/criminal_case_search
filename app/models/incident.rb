@@ -15,7 +15,7 @@ class Incident
 
   # From ArrestReport
   field :borough, type: String
-  validates :borough, inclusion: { in: %w(B K M Q S), allow_nil: true }
+  validates :borough, inclusion: { in: ["Brooklyn", "Bronx", "Manhattan", "Queens", "Staten Island"], allow_nil: true }
   field :defendant_sex, type: String
   validates :defendant_sex, inclusion: { in: %w(M F), allow_nil: true}
   field :defendant_age, type: Integer

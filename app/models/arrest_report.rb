@@ -1,52 +1,46 @@
-require_relative 'datashare_document'
+require_relative 'xml_doc_importer'
 
-class ArrestReport < DatashareDocument
+class ArrestReport
   include Mongoid::Document
+
   embedded_in :incident
+
+  field :arrest_id, type: String
+  field :defendant_first_name, type: String
+  field :defendant_last_name, type: String
+  field :defendant_sex, type: String
+  field :defendant_age, type: Integer
+  field :borough, type: String
+  field :precinct, type: String
+  field :desk_appearance_ticket, type: Boolean
+  field :charges, type: Array
 
   before_save :update_incident_attributes
 
-  def arrest_id
-    arrest["j:ActivityID"]["j:ID"]
-  end
+  def self.from_xml(xml_string)
+    importer = XMLDocImporter.new(xml_string, "/e:EnterpriseDatashareDocument/e:DocumentBody/p:NYPDArrestTransaction/p:NYPDArrestReport")
 
-  def charges
-    charges = arrest["p:ArrestCharge"]
-    # Sometimes charges don't come through in arrays.
-    charges = [charges].flatten
-    formatted_charges = charges.map do |charge|
-      [charge['p:ChargeClassCode'], charge['j:ChargeStatute']['j:StatuteCodeID']['j:ID']].join(": ")
+    ar = ArrestReport.new
+    ar.arrest_id = importer.attribute_from_xpath("/p:Arrest/j:ActivityID/j:ID")
+    ar.borough = importer.attribute_from_xpath("/p:Arrest/p:ArrestComplaint/p:ComplaintRecordedLocation/j:LocationAddress/j:LocationCityName", &:titleize)
+    ar.precinct = importer.attribute_from_xpath("/p:Arrest/p:ArrestLocation/j:LocationLocale/j:LocalePoliceJurisdictionID/j:ID")
+    ar.defendant_first_name = importer.attribute_from_xpath("/p:Arrest/p:ArrestSubject/p:Subject/j:PersonName/j:PersonGivenName", &:titleize)
+    ar.defendant_last_name = importer.attribute_from_xpath("/p:Arrest/p:ArrestSubject/p:Subject/j:PersonName/j:PersonSurName", &:titleize)
+    ar.defendant_sex = importer.attribute_from_xpath("/p:Arrest/p:ArrestSubject/p:Subject/p:PersonPhysicalDetails/p:PersonSexCode")
+    ar.defendant_age = importer.attribute_from_xpath("/p:Arrest/p:ArrestSubject/p:Subject/p:PersonAge")
+    ar.desk_appearance_ticket = importer.attribute_from_xpath("/p:DeskAppearanceTicketData/p:DeskAppearanceTicketID/j:ID") { |dat_id| dat_id == "000000000" ? false : true }
+    ar.charges = importer.attribute_from_xpath("/p:Arrest/p:ArrestCharge") do |charges|
+      charges = [charges].flatten
     end
-    formatted_charges.join(", ")
+
+    ar
   end
 
-  def person_name
-    last_name = arrest["p:ArrestSubject"]["p:Subject"]["j:PersonName"]["j:PersonSurName"]
-    given_name = arrest["p:ArrestSubject"]["p:Subject"]["j:PersonName"]["j:PersonGivenName"]
-    "#{last_name.titlecase}, #{given_name.titlecase}"
-  end
-
-  def defendant
-    arrest["p:ArrestSubject"]["p:Subject"]
-  end
-
-  def defendant_age
-    defendant["p:PersonAge"].to_i
-  end
-
-  def defendant_sex
-    defendant["p:PersonPhysicalDetails"]["p:PersonSexCode"]
-  end
-
-  def borough
-    arrest["p:ArrestLocation"]["p:LocationCountyCode"]
+  def defendant_name
+    "#{defendant_last_name}, #{defendant_first_name}"
   end
 
   private
-  def arrest
-    body["p:NYPDArrestTransaction"]["p:NYPDArrestReport"]["p:Arrest"]
-  end
-
   def update_incident_attributes
     self.incident.update_attributes(defendant_sex: defendant_sex, borough: borough, defendant_age: defendant_age)
   end
