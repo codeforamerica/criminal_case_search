@@ -4,9 +4,6 @@ require './config/environment'
 class Data < Thor
   BASE_PATH = "/Volumes/Datashare/"
 
-  # Fix keys with periods; they are not valid BSON keys.
-  @@xml_parser ||= Nori.new(parser: :nokogiri, advanced_typecasting: false, :convert_tags_to => lambda { |tag| tag.gsub("\.","_") })
-
   desc "load_arrest_reports", "Load XML Datashare Arrest Report data."
   def load_arrest_reports(incidents = nil)
     load_data ArrestReport, "NYPD", incidents
@@ -144,9 +141,8 @@ class Data < Thor
         if header_location && (header_location > 0)
           doc_xml = doc_xml[doc_xml.index('<e:Enterprise')..-1]
         end
-          
-        parsed_data = @@xml_parser.parse(doc_xml)
-        fresh_model = model.new(parsed_data)
+
+        fresh_model = model.from_xml(doc_xml)
 
         begin
           if incidents.blank?
