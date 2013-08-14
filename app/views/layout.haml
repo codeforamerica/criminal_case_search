@@ -3,7 +3,13 @@
 %html
   %head
     %title Criminal Case Search
-    = bootstrap_assets
+    =# bootstrap_assets
+    %script{ src: "/jquery-ui-bootstrap/js/jquery-1.9.0.min.js" }
+    %script{ src: "/jquery-ui-bootstrap/js/jquery-ui-1.10.0.custom.min.js" }
+    %script{ src: "/jquery-ui-bootstrap/js/bootstrap.min.js" }
+    %link{ type: "text/css", rel: "stylesheet", href: "/jquery-ui-bootstrap/css/bootstrap.min.css" }
+    %link{ type: "text/css", rel: "stylesheet", href: "/jquery-ui-bootstrap/css/jquery-ui-1.10.0.custom.css" }
+
     :css
       body {
         padding-top: 60px;
@@ -11,6 +17,41 @@
       }
       .datashare-filter {
         padding: 9px;
+      }
+      .datashare-filter fieldset {
+        display: block;
+      }
+      .datashare-filter legend {
+        display: block;
+        margin-bottom: 3px;
+        height: auto;
+      }      
+      .datashare-filter fieldset.secondary legend.top {
+        font-weight: 400;
+        font-size: 18px;
+      }
+      .datashare-filter fieldset.tertiary legend {
+        font-size: 14px;
+        font-weight: 600;
+        border: 0;
+      }
+      .datashare-filter .field {
+        display: block;
+        padding-top: 2px;
+      }
+      .datashare-filter .field input {
+        padding: 0;
+        display: inline;
+        margin-bottom: 7px;
+      }
+      .datashare-filter .field label {
+        padding: 0;
+        display: inline-block;
+        margin-left: 2px;
+      }
+      .horiz-control {
+        display: block;
+        padding: 10px;
       }
     :javascript
       $(function(){
@@ -28,6 +69,13 @@
             hidden_field.val($(this).text());
           })
         })
+
+        $('.slider').slider({
+          range: true,
+          min: 18,
+          max: 100,
+          values: [ 18, 65 ]
+        });
       })
 
   %body
@@ -50,87 +98,194 @@
 
     - container :fluid do
       .row-fluid
-        %span.span4
+        %span.span3
           .well.datashare-filter
             %form{action: "/"}
               %fieldset
-                %legend Filter Options
-                %select.input-xlarge{name: "filter[borough]", }
-                  %option{value: "A", selected: params[:filter][:borough] == "A"} All Boroughs
-                  %option{value: "B", selected: params[:filter][:borough] == "B"} Bronx
-                  %option{value: "K", selected: params[:filter][:borough] == "K"} Brooklyn
-                  %option{value: "M", selected: params[:filter][:borough] == "M"} Manhattan
-                  %option{value: "Q", selected: params[:filter][:borough] == "Q"} Queens
-                  %option{value: "S", selected: params[:filter][:borough] == "S"} Staten Island
-                -#%input.input-xlarge{ type: "text", placeholder: "Arrest ID"}
-                -#%span.help-block help text
-              %fieldset.inline
-                %label Top Charge
-                .btn-group.buttons-radio.topcharge{data: {toggle: "buttons-radio"}}
-                  %button.btn{type: "button", class: params[:filter][:topcharge] == nil || params[:filter][:topcharge] == "Any" ? "active" : ""  } Any
-                  %button.btn{type: "button", class: params[:filter][:topcharge] == "Non-Criminal" ? "active" : ""  } Non-Criminal
-                  %button.btn{type: "button", class: params[:filter][:topcharge] == "Misdemeanor" ? "active" : "" } Misdemeanor
-                  %button.btn{type: "button", class: params[:filter][:topcharge] == "Felony" ? "active" : "" } Felony
-                  %input.topcharge{type: "hidden", name: "filter[topcharge]", value: params[:filter][:topcharge] || "Any" }
+                -# %legend Filter
+              
+                %fieldset.secondary
+                  %legend.top Borough
 
-              %fieldset
-                %label Age
-                %input.inline.input-mini{name: "filter[min_age]", type: "text", placeholder: "Min Age", value: params[:filter][:min_age] }
-                &ndash;
-                %input.inline.input-mini{name: "filter[max_age]", type: "text", placeholder: "Max Age", value: params[:filter][:max_age] }
+                  .field
+                    %input{ type: "checkbox", name: "borough", id: "borough-manhattan" }
+                    %label{ for: "borough-manhattan" } Manhattan
 
-              %fieldset
-                %label Sex
-                .btn-group.buttons-radio.sex{data: {toggle: "buttons-radio"}}
-                  %button.btn{type: "button", class: params[:filter][:sex] == nil || params[:filter][:sex] == "All" ? "active" : ""  } All
-                  %button.btn{type: "button", class: params[:filter][:sex] == "Male" ? "active" : "" } Male
-                  %button.btn{type: "button", class: params[:filter][:sex] == "Female" ? "active" : "" } Female
-                  %input.sex{type: "hidden", name: "filter[sex]", value: params[:filter][:sex] || "All" }
+                  .field
+                    %input{ type: "checkbox", name: "borough", id: "borough-brooklyn" }
+                    %label{ for: "borough-brooklyn" } Brooklyn     
 
-              %fieldset
-                %label Previous Violent Felony Convictions
-                .input-append.more-or-less
-                  %input.input-mini{name: "filter[previous_violent_felony_convictions_number]", type: "text", value: params[:filter][:previous_violent_felony_convictions_number] }
-                  .btn-group.previous-convictions
-                    %button.btn.dropdown-toggle{"data-toggle" => "dropdown" }
-                      = params[:filter][:previous_violent_felony_convictions_type] || "or more"
-                      %span.caret
-                    %ul.dropdown-menu
-                      %li
-                        %a or more
-                      %li
-                        %a or less
-                    %input.more-or-less-type{name: "filter[previous_violent_felony_convictions_type]", type: "hidden", value: params[:filter][:previous_violent_felony_convictions_type] || "or more" }
+                  .field
+                    %input{ type: "checkbox", name: "borough", id: "borough-bronx" }
+                    %label{ for: "borough-bronx" } Bronx
 
-                %label Previous Felony Convictions
-                .input-append.more-or-less
-                  %input.input-mini{name: "filter[previous_felony_convictions_number]", type: "text", value: params[:filter][:previous_felony_convictions_number] }
-                  .btn-group.previous-convictions
-                    %button.btn.dropdown-toggle{"data-toggle" => "dropdown" }
-                      = params[:filter][:previous_felony_convictions_type] || "or more"
-                      %span.caret
-                    %ul.dropdown-menu
-                      %li
-                        %a or more
-                      %li
-                        %a or less
-                    %input.more-or-less-type{name: "filter[previous_felony_convictions_type]", type: "hidden", value: params[:filter][:previous_felony_convictions_type] || "or more" }
+                  .field
+                    %input{ type: "checkbox", name: "borough", id: "borough-queens" }
+                    %label{ for: "borough-queens" } Queens
 
+                  .field
+                    %input{ type: "checkbox", name: "borough", id: "borough-staten" }
+                    %label{ for: "borough-staten" } Staten Island
 
+                  .btn-group.pull-right
+                    %button.btn.inline.btn-mini All
+                    %button.btn.inline.btn-mini.btn-danger  Reset
 
-                %label Previous Misdemeanor Convictions
-                .input-append.more-or-less
-                  %input.input-mini{name: "filter[previous_misdemeanor_convictions_number]", type: "text", value: params[:filter][:previous_misdemeanor_convictions_number] }
-                  .btn-group.previous-convictions
-                    %button.btn.dropdown-toggle{"data-toggle" => "dropdown" }
-                      = params[:filter][:previous_misdemeanor_convictions_type] || "or more"
-                      %span.caret
-                    %ul.dropdown-menu
-                      %li
-                        %a or more
-                      %li
-                        %a or less
-                    %input.more-or-less-type{name: "filter[previous_misdemeanor_convictions_type]", type: "hidden", value: params[:filter][:previous_misdemeanor_convictions_type] || "or more" }
+              %fieldset.secondary
+                %legend.top Charges
+
+                %fieldset.tertiary
+                  %legend Top Charge
+
+                  .field
+                    %input{ type: "radio", name: "top-charge", id: "top-charge-drugs" }
+                    %label{ for: "top-charge-drugs" } Any
+
+                  .field
+                    %input{ type: "radio", name: "top-charge", id: "top-charge-felony" }
+                    %label{ for: "top-charge-felony" } Felony
+
+                  .field
+                    %input{ type: "radio", name: "top-charge", id: "top-charge-felony" }
+                    %label{ for: "top-charge-felony" } Violent Felony           
+
+                  .field                    
+                    %input{ type: "radio", name: "top-charge", id: "top-charge-felony" }
+                    %label{ for: "top-charge-felony" } Misdemeanor
+
+                  .field
+                    %input{ type: "radio", name: "top-charge", id: "top-charge-felony" }
+                    %label{ for: "top-charge-felony" } Violation
+
+                %fieldset.tertiary
+                  %legend Include Charge
+
+                  .field
+                    %input{ type: "checkbox", name: "include-charge", id: "top-charge-drugs" }
+                    %label{ for: "top-charge-drugs" } Drug Offense
+
+                  .field
+                    %input{ type: "checkbox", name: "include-charge", id: "top-charge-drugs" }
+                    %label{ for: "top-charge-drugs" } Misdemeanor Assault
+
+                  .field
+                    %input{ type: "checkbox", name: "include-charge", id: "top-charge-drugs" }
+                    %label{ for: "top-charge-drugs" } Criminal Contempt
+
+                  .field
+                    %input{ type: "checkbox", name: "include-charge", id: "top-charge-drugs" }
+                    %label{ for: "top-charge-drugs" } Sex Offense
+
+              %fieldset.secondary
+                %legend.top Age
+                
+                .horiz-control
+                  .slider{ data: { debug: "foo" } }
+                    %input.slider-data{ type: "hidden" }
+
+              %fieldset.secondary
+                %legend.top Sex
+                
+                .horiz-control
+                  .btn-group.buttons-radio.sex{  data: { toggle: "buttons-checkbox" } }
+                    %button.btn{type: "button", class: params[:filter][:sex] == "Male" ? "active" : "" } Male
+                    %button.btn{type: "button", class: params[:filter][:sex] == "Female" ? "active" : "" } Female                
+
+              %fieldset.secondary
+                %legend.top Criminal History
+
+                %fieldset.tertiary
+                  %legend Open Cases
+                  
+                  .field
+                    %input{ type: "radio", name: "open-cases", id: "open-cases-include", checked: "checked" }
+                    %label{ for: "open-cases-include" } Include
+                  
+                  .field
+                    %input{ type: "radio", name: "open-cases", id: "open-cases-exclude" }
+                    %label{ for: "open-cases-exclude" } Exclude
+
+                %fieldset.tertiary
+                  %legend Prior Convictions
+
+                  .field
+                    %input{ type: "radio", name: "prior-convictions", id: "prior-convictions-none" }
+                    %label{ for: "prior-convictions-none" } None
+
+                  .field
+                    %input{ type: "radio", name: "prior-convictions", id: "prior-convictions-one-plus" }
+                    %label{ for: "prior-convictions-one-plus" } One or More
+
+                  .field
+                    %input{ type: "radio", name: "prior-convictions", id: "prior-convictions-three-plus"}
+                    %label{ for: "prior-convictions-three-plus" } Three or More
+
+                  .field
+                    %input{ type: "radio", name: "prior-convictions", id: "prior-convictions-five-plus" }
+                    %label{ for: "prior-convictions-five-plus" } Five or More
+
+                %fieldset.tertiary
+                  %legend Number of Prior Convictions
+
+                  .field
+                    %input{ type: "radio", name: "prior-convictions", id: "prior-convictions-none" }
+                    %label{ for: "prior-convictions-none" } None
+
+                  .field
+                    %input{ type: "radio", name: "prior-convictions", id: "prior-convictions-one-plus" }
+                    %label{ for: "prior-convictions-one-plus" } One or More
+
+                  .field
+                    %input{ type: "radio", name: "prior-convictions", id: "prior-convictions-three-plus"}
+                    %label{ for: "prior-convictions-three-plus" } Three or More
+
+                  .field
+                    %input{ type: "radio", name: "prior-convictions", id: "prior-convictions-five-plus" }
+                    %label{ for: "prior-convictions-five-plus" } Five or More
+
+                %fieldset.tertiary
+                  %legend Prior Bench Warrants
+
+                  .field
+                    %input{ type: "radio", name: "prior-bench-warrants", id: "prior-bench-warrants-include", checked: "checked" }
+                    %label{ for: "prior-bench-warrants-include" } Include
+                  
+                  .field
+                    %input{ type: "radio", name: "prior-bench-warrants", id: "prior-bench-warrants-exclude" }
+                    %label{ for: "prior-bench-warrants-exclude" } Exclude
+
+              %fieldset.secondary
+                %legend Next Court Appearance
+                
+                %fieldset.tertiary
+                  %legend Type
+
+                  .field
+                    %input{ type: "radio", name: "appearance-type", id: "appearance-type-all" }
+                    %label{ for: "appearance-type-all" } All
+
+                  .field
+                    %input{ type: "radio", name: "appearance-type", id: "appearance-type-pre-arraignment" }
+                    %label{ for: "appearance-type-pre-arraignment" } Pre-Arraignment
+
+                  .field
+                    %input{ type: "radio", name: "appearance-type", id: "appearance-type-post-arraignment" }
+                    %label{ for: "appearance-type-post-arraignment" } Post-Arraignment
+
+                %fieldset.tertiary
+                  %legend Date
+
+                  .field
+                    %input{ type: "radio", name: "appearance-date", id: "appearance-date-all" }
+                    %label{ for: "appearance-date-all" } All
+
+                  .field
+                    %input{ type: "radio", name: "appearance-date", id: "appearance-date-today" }
+                    %label{ for: "appearance-date-today" } Today
+
+                  .field
+                    %input{ type: "radio", name: "appearance-date", id: "appearance-date-tomorrow" }
+                    %label{ for: "appearance-date-tomorrow" } Tomorrow
 
               .form-actions
                 %button.btn.btn-primary{ type: "submit"} Filter
