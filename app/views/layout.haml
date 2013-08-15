@@ -117,24 +117,28 @@
                   %legend Top Charge
 
                   .field
-                    %input{ type: "radio", name: "top-charge", id: "top-charge-any" }
+                    %input{ type: "radio", name: "filter[top-charge]", id: "top-charge-any", value: "" }
                     %label{ for: "top-charge-any" } Any
 
                   .field
-                    %input{ type: "radio", name: "top-charge", id: "top-charge-felony" }
+                    %input{ type: "radio", name: "filter[top-charge]", id: "top-charge-felony", value: "F" }
                     %label{ for: "top-charge-felony" } Felony
 
                   .field
-                    %input{ type: "radio", name: "top-charge", id: "top-charge-violent-felony" }
+                    %input{ type: "radio", name: "filter[top-charge]", id: "top-charge-violent-felony", value: "X" }
                     %label{ for: "top-charge-violent-felony" } Violent Felony           
 
                   .field                    
-                    %input{ type: "radio", name: "top-charge", id: "top-charge-misdemeanor" }
+                    %input{ type: "radio", name: "filter[top-charge]", id: "top-charge-misdemeanor", value: "M" }
                     %label{ for: "top-charge-misdemeanor" } Misdemeanor
 
                   .field
-                    %input{ type: "radio", name: "top-charge", id: "top-charge-violation" }
+                    %input{ type: "radio", name: "filter[top-charge]", id: "top-charge-violation", value: "V" }
                     %label{ for: "top-charge-violation" } Violation
+
+                  .field
+                    %input{ type: "radio", name: "filter[top-charge]", id: "top-charge-infraction", value: "I" }
+                    %label{ for: "top-charge-infraction" } Infraction
 
                 %fieldset.tertiary
                   %legend Include Charge

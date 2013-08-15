@@ -20,11 +20,18 @@ class DatashareFilter < Sinatra::Base
       incident_scope = incident_scope.borough(params[:filter][:borough])
     end
 
-    if params[:filter][:topcharge]
-      incident_scope = incident_scope.top_charge(%w(I V)) if params[:filter][:topcharge] == "Non-Criminal"
-      incident_scope = incident_scope.top_charge("M") if params[:filter][:topcharge] == "Misdemeanor"
-      incident_scope = incident_scope.top_charge("F") if params[:filter][:topcharge] == "Felony"
+    if params[:filter]["top-charge"].present?
+      top_charge = params[:filter]["top-charge"]
+      
+      # Check the top charge code and make sure it's one we allow.
+      # TODO: This should probably be in the model.
+      if %w(I V M F).include?(top_charge)        
+        incident_scope = incident_scope.top_charge(params[:filter]["top-charge"])
+      else
+        puts "Top charge '#{top_charge}' wasn't in the allowed charge list."                                                   
+      end
     end
+
     if params[:filter][:sex]
       incident_scope = incident_scope.defendant_sex("M") if params[:filter][:sex] == "Male"
       incident_scope = incident_scope.defendant_sex("F") if params[:filter][:sex] == "Female"
