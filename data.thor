@@ -142,38 +142,40 @@ class Data < Thor
           doc_xml = doc_xml[doc_xml.index('<e:Enterprise')..-1]
         end
 
-        fresh_model = model.from_xml(doc_xml)
+        fresh_models = model.from_xml(doc_xml)
 
-        begin
-          if incidents.blank?
-            incident = Incident.find_or_initialize_by(arrest_id: fresh_model.arrest_id)
-          else
-            puts "NEW!"
-            model_sym = model.name.underscore.to_sym
-            incident = Incident.where(model_sym.exists => false).first
-            if incident.blank?
-              puts "no incident found missing a " + model.name
-              next
+        fresh_models.each do |fresh_model|
+          begin
+            if incidents.blank?
+              incident = Incident.find_or_initialize_by(arrest_id: fresh_model.arrest_id)
+            else
+              puts "NEW!"
+              model_sym = model.name.underscore.to_sym
+              incident = Incident.where(model_sym.exists => false).first
+              if incident.blank?
+                puts "no incident found missing a " + model.name
+                next
+              end
             end
+          rescue Exception => e
+            puts filename
+            puts fresh_model.inspect
+            puts e.inspect
+            puts header_location
+            binding.pry
+            next
           end
-        rescue Exception => e
-          puts filename
-          puts fresh_model.inspect
-          puts e.inspect
-          puts header_location
-          binding.pry
-          next
-        end
 
-        fresh_model.incident = incident
-        fresh_model.save!
+          fresh_model.incident = incident
+          fresh_model.save!
 
-        if incident.persisted?
-          updated_incidents += 1
-          print "+"
-        else
-          new_incidents += 1
-          print "."
+          if incident.persisted?
+            updated_incidents += 1
+            print "+"
+          else
+            new_incidents += 1
+            print "."
+          end
         end
       end
     end
