@@ -104,27 +104,29 @@
               %fieldset
                 -# %legend Filter
               
+                -# %p= params[:filter][:borough].inspect
+
                 %fieldset.secondary
                   %legend.top Borough
 
                   .field
-                    %input{ type: "checkbox", name: "borough", id: "borough-manhattan" }
+                    %input{ type: "checkbox", name: "filter[borough][]", id: "borough-manhattan", value: "M", checked: params[:filter][:borough].try(:include?, "M") }
                     %label{ for: "borough-manhattan" } Manhattan
 
                   .field
-                    %input{ type: "checkbox", name: "borough", id: "borough-brooklyn" }
+                    %input{ type: "checkbox", name: "filter[borough][]", id: "borough-brooklyn", value: "K", checked: params[:filter][:borough].try(:include?, "K") }
                     %label{ for: "borough-brooklyn" } Brooklyn     
 
                   .field
-                    %input{ type: "checkbox", name: "borough", id: "borough-bronx" }
+                    %input{ type: "checkbox", name: "filter[borough][]", id: "borough-bronx", value: "B", checked: params[:filter][:borough].try(:include?, "B")}
                     %label{ for: "borough-bronx" } Bronx
 
                   .field
-                    %input{ type: "checkbox", name: "borough", id: "borough-queens" }
+                    %input{ type: "checkbox", name: "filter[borough][]", id: "borough-queens", value: "Q", checked: params[:filter][:borough].try(:include?, "Q") }
                     %label{ for: "borough-queens" } Queens
 
                   .field
-                    %input{ type: "checkbox", name: "borough", id: "borough-staten" }
+                    %input{ type: "checkbox", name: "filter[borough][]", id: "borough-staten", value: "S", checked: params[:filter][:borough].try(:include?, "S")}
                     %label{ for: "borough-staten" } Staten Island
 
                   .btn-group.pull-right
