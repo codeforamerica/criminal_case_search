@@ -20,4 +20,9 @@ $(function(){
     max: 100,
     values: [ 18, 65 ]
   });
+
+  $(".select-all").click(function(event) {
+    $(event.target).parent().parent().find("input").prop("checked", true);
+    event.preventDefault();
+  });
 })
