@@ -23,27 +23,8 @@ class Data < Thor
         doc_xml = file.read.force_encoding("ISO-8859-1").encode("utf-8", replace: nil)
       end
 
-      complaint_data = @@xml_parser.parse(doc_xml)
-      arrest_ids = Complaint.new(complaint_data).arrest_ids
-
-      arrest_ids.each do |arrest_id|
-        # TODO: See above; if we have messages with duplicate documents, we need a better heuristic.
-
-        if incidents.blank?
-          incident = Incident.find_or_initialize_by(arrest_id: arrest_id)
-        else
-          puts "NEW!"
-          incident = Incident.where(:complaint.exists => false).first
-          if incident.blank?
-            puts "no incident found missing a complaint"
-            next
-          end
-        end
-
-        complaint = Complaint.new(complaint_data)
-        complaint.incident = incident
-        complaint.save!
-      end
+      complaints = Complaint.from_xml(doc_xml)
+      complaints.each { |c| c.save! }
     end
   end
 

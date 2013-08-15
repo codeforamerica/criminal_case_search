@@ -21,7 +21,7 @@
           %td
             = incident.top_charge_code_expanded
           %td
-            = %Q(<span title="#{incident.charges.first[:description]}"><b>#{incident.charges.first[:agency_code]}</b> - #{incident.charges.first[:counts]} #{incident.charges.first[:counts] > 1 ? "counts" : "count"} </span>) unless incident.charges.blank?
+            = %Q(<span title="#{incident.top_charge["description"]}"><b>#{incident.top_charge["agency_code"]}</b> - #{incident.top_charge["counts"]} #{incident.top_charge["counts"] > 1 ? "counts" : "count"} </span>) unless incident.charges.blank?
           %td
             = incident.defendant_sex
           %td
