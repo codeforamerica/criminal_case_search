@@ -13,7 +13,6 @@ class ArrestReport
   field :borough, type: String
   field :precinct, type: String
   field :desk_appearance_ticket, type: Boolean
-  field :charges, type: Array
 
   before_save :update_incident_attributes
 
@@ -29,9 +28,6 @@ class ArrestReport
     ar.defendant_sex = importer.attribute_from_xpath("/p:Arrest/p:ArrestSubject/p:Subject/p:PersonPhysicalDetails/p:PersonSexCode")
     ar.defendant_age = importer.attribute_from_xpath("/p:Arrest/p:ArrestSubject/p:Subject/p:PersonAge")
     ar.desk_appearance_ticket = importer.attribute_from_xpath("/p:DeskAppearanceTicketData/p:DeskAppearanceTicketID/j:ID") { |dat_id| dat_id == "000000000" ? false : true }
-    ar.charges = importer.attribute_from_xpath("/p:Arrest/p:ArrestCharge") do |charges|
-      charges = [charges].flatten
-    end
 
     ar
   end
