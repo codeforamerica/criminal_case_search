@@ -29,7 +29,7 @@ class ArrestReport
     ar.defendant_age = importer.attribute_from_xpath("/p:Arrest/p:ArrestSubject/p:Subject/p:PersonAge")
     ar.desk_appearance_ticket = importer.attribute_from_xpath("/p:DeskAppearanceTicketData/p:DeskAppearanceTicketID/j:ID") { |dat_id| dat_id == "000000000" ? false : true }
 
-    ar
+    [ar]
   end
 
   def defendant_name
