@@ -7,6 +7,7 @@
     %script{ src: "/jquery-ui-bootstrap/js/jquery-1.9.0.min.js" }
     %script{ src: "/jquery-ui-bootstrap/js/jquery-ui-1.10.0.custom.min.js" }
     %script{ src: "/jquery-ui-bootstrap/js/bootstrap.min.js" }
+    %script{ src: "/app.js" }
     %link{ type: "text/css", rel: "stylesheet", href: "/jquery-ui-bootstrap/css/bootstrap.min.css" }
     %link{ type: "text/css", rel: "stylesheet", href: "/jquery-ui-bootstrap/css/jquery-ui-1.10.0.custom.css" }
 
@@ -53,30 +54,6 @@
         display: block;
         padding: 10px;
       }
-    :javascript
-      $(function(){
-        $('.more-or-less').each(function(i, el) {
-        console.log(el);
-          $(el).find("li a").click(function() {
-          $(el).find("button").html($(this).text() + ' <span class="caret"></span>');
-          $(el).find("input.more-or-less-type").val($(this).text()); 
-          });
-        });
-
-        $(".btn-group.buttons-radio").each(function(i, el) {
-          $(el).find("button").click(function() {
-            var hidden_field = $(el).find('input[type="hidden"]')
-            hidden_field.val($(this).text());
-          })
-        })
-
-        $('.slider').slider({
-          range: true,
-          min: 18,
-          max: 100,
-          values: [ 18, 65 ]
-        });
-      })
 
   %body
     .navbar.navbar-inverse.navbar-fixed-top
@@ -131,7 +108,7 @@
 
                   .btn-group.pull-right
                     %button.btn.inline.btn-mini All
-                    %button.btn.inline.btn-mini.btn-danger  Reset
+                    %button.btn.inline.btn-mini.btn-danger Clear
 
               %fieldset.secondary
                 %legend.top Charges
