@@ -1,4 +1,6 @@
 class XMLDocImporter
+  attr_reader :namespaces
+
   def initialize(xml_string, xpath_prefix = '')
     @xml_doc = Nokogiri::XML(xml_string)
     @namespaces = @xml_doc.collect_namespaces
@@ -6,13 +8,12 @@ class XMLDocImporter
   end
 
   def attribute_from_xpath(xpath, &transformation)
-    full_xpath = @xpath_prefix + xpath
-    nodes = @xml_doc.xpath(full_xpath, @namespaces)
+    nodes = nodes_from_xpath(xpath)
 
     if nodes.length == 1
       data = XMLDocImporter.get_content_from_node(nodes.first)
     elsif nodes.length > 1
-      data = nodes.collect {|node| XMLDocImporter.get_content_from_node(nodes.first)}
+      data = nodes.collect {|node| XMLDocImporter.get_content_from_node(node)}
     end
 
     if data && transformation
@@ -20,6 +21,11 @@ class XMLDocImporter
     end
 
     data
+  end
+
+  def nodes_from_xpath(xpath)
+    full_xpath = @xpath_prefix + xpath
+    @xml_doc.xpath(full_xpath, @namespaces)
   end
 
   def self.get_content_from_node(node)
