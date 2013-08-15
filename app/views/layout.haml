@@ -65,13 +65,13 @@
             %span.icon-bar
           %a.brand{ href: "#"}
             Criminal Case Search
-          .nav-collapse.collapse
-            %p.navbar-text.pull-right
-              Logged in as <a href="#" class="navbar-link">Username</a>
-            %ul.nav
-              %li.active
-                %a{ href: "/"}
-                  Home
+            -# .nav-collapse.collapse
+              -# %p.navbar-text.pull-
+              -# Logged in as <a href="#" class="navbar-link">Username</a>
+            -# %ul.nav
+              -# %li.active
+              -#   %a{ href: "/"}
+              -#     Home
 
     - container :fluid do
       .row-fluid
@@ -170,9 +170,11 @@
                 %legend.top Sex
                 
                 .horiz-control
-                  .btn-group.buttons-radio.sex{  data: { toggle: "buttons-checkbox" } }
+                  .btn-group.buttons-radio.sex{data: {toggle: "buttons-checkbox"}}
+                    %button.btn{type: "button", class: params[:filter][:sex] == nil || params[:filter][:sex] == "All" ? "active" : ""  } All
                     %button.btn{type: "button", class: params[:filter][:sex] == "Male" ? "active" : "" } Male
-                    %button.btn{type: "button", class: params[:filter][:sex] == "Female" ? "active" : "" } Female                
+                    %button.btn{type: "button", class: params[:filter][:sex] == "Female" ? "active" : "" } Female
+                    %input.sex{type: "hidden", name: "filter[sex]", value: params[:filter][:sex] || "All" }
 
               %fieldset.secondary
                 %legend.top Criminal History
