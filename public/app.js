@@ -25,4 +25,9 @@ $(function(){
     $(event.target).parent().parent().find("input").prop("checked", true);
     event.preventDefault();
   });
+
+  $(".clear-all").click(function(event) {
+    $(event.target).parent().parent().find("input").prop("checked", false);
+    event.preventDefault();
+  });
 })
