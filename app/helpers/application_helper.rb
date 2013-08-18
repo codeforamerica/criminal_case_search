@@ -18,7 +18,9 @@ module ApplicationHelper
 html
 
     if type == "checkbox"
-      html += params[:filter][name].include?(value) ? "checked" : ""
+      if params[:filter][name].present?
+        html += params[:filter][name].include?(value) ? "checked" : ""
+      end
     else
       html += params[:filter][name] == value ? "checked" : ""
     end
