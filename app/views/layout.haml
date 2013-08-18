@@ -126,21 +126,10 @@
                 %fieldset.tertiary
                   %legend Include Charge
 
-                  .field
-                    %input{ type: "checkbox", name: "include-charge", id: "top-charge-drugs" }
-                    %label{ for: "top-charge-drugs" } Drug Offense
-
-                  .field
-                    %input{ type: "checkbox", name: "include-charge", id: "top-charge-drugs" }
-                    %label{ for: "top-charge-drugs" } Misdemeanor Assault
-
-                  .field
-                    %input{ type: "checkbox", name: "include-charge", id: "top-charge-drugs" }
-                    %label{ for: "top-charge-drugs" } Criminal Contempt
-
-                  .field
-                    %input{ type: "checkbox", name: "include-charge", id: "top-charge-drugs" }
-                    %label{ for: "top-charge-drugs" } Sex Offense
+                  = build_checkbox_field("include-charge", "D", "Drug Offense")
+                  = build_checkbox_field("include-charge", "MA", "Misdemeanor Assault")
+                  = build_checkbox_field("include-charge", "CC", "Criminal Contempt")
+                  = build_checkbox_field("include-charge", "SO", "Sex Offense")
 
               %fieldset.secondary
                 %legend.top Age
