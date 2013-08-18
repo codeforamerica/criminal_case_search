@@ -1,6 +1,4 @@
-require_relative 'datashare_document'
-
-class ArresteeTracking < DatashareDocument
+class ArresteeTracking
   include Mongoid::Document
   embedded_in :incident
 
