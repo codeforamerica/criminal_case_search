@@ -145,13 +145,13 @@
                 
                 .slider.horiz-control
                   %p
-                    %span.slider-display-low 18
+                    %span.slider-display-min
                     to
-                    %span.slider-display-high 65
+                    %span.slider-display-max
 
                   .slider-control
-                    %input.slider-data-low{ type: "hidden", name: "filter[min_age]", value: params[:filter][:min_age] || 18 }
-                    %input.slider-data-high{ type: "hidden", name: "filter[max_age]", value: params[:filter][:max_age] || 65 }
+                    %input.slider-data-min{ type: "hidden", name: "filter[min_age]", value: params[:filter][:min_age] || 18 }
+                    %input.slider-data-max{ type: "hidden", name: "filter[max_age]", value: params[:filter][:max_age] || 65 }
 
               %fieldset.secondary
                 %legend.top Sex
@@ -171,22 +171,15 @@
 
                 %fieldset.tertiary
                   %legend Prior Convictions
+                  
+                  = build_radio_field("prior-convictions", "include", "Include")
+                  = build_radio_field("prior-convictions", "exclude", "Exclude")
 
-                  .field
-                    %input{ type: "radio", name: "prior-convictions", id: "prior-convictions-none" }
-                    %label{ for: "prior-convictions-none" } None
+                %fieldset.tertiary
+                  %legend Prior Bench Warrants
 
-                  .field
-                    %input{ type: "radio", name: "prior-convictions", id: "prior-convictions-one-plus" }
-                    %label{ for: "prior-convictions-one-plus" } One or More
-
-                  .field
-                    %input{ type: "radio", name: "prior-convictions", id: "prior-convictions-three-plus"}
-                    %label{ for: "prior-convictions-three-plus" } Three or More
-
-                  .field
-                    %input{ type: "radio", name: "prior-convictions", id: "prior-convictions-five-plus" }
-                    %label{ for: "prior-convictions-five-plus" } Five or More
+                  = build_radio_field("prior-bench-warrants", "include", "Include")
+                  = build_radio_field("prior-bench-warrants", "exclude", "Exclude")
 
                 %fieldset.tertiary
                   %legend Number of Prior Convictions
@@ -206,17 +199,6 @@
                   .field
                     %input{ type: "radio", name: "prior-convictions", id: "prior-convictions-five-plus" }
                     %label{ for: "prior-convictions-five-plus" } Five or More
-
-                %fieldset.tertiary
-                  %legend Prior Bench Warrants
-
-                  .field
-                    %input{ type: "radio", name: "prior-bench-warrants", id: "prior-bench-warrants-include", checked: "checked" }
-                    %label{ for: "prior-bench-warrants-include" } Include
-                  
-                  .field
-                    %input{ type: "radio", name: "prior-bench-warrants", id: "prior-bench-warrants-exclude" }
-                    %label{ for: "prior-bench-warrants-exclude" } Exclude
 
               %fieldset.secondary
                 %legend Next Court Appearance

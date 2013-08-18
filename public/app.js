@@ -9,19 +9,26 @@ $(function(){
 
   $("#select-sex").buttonset();
 
-  $('.slider-control').slider({
-    range: true,
-    min: 18,
-    max: 100,
-    values: [ 18, 65 ],
-    slide: function(event, ui) {
-      var parent = $(this).parent();
-      parent.find(".slider-display-low").text(ui.values[0]);
-      parent.find(".slider-data-low").val(ui.values[0]);
-      parent.find(".slider-display-high").text(ui.values[1]);
-      parent.find(".slider-data-high").val(ui.values[1]);
+  (function(element) {
+    var update_label = function(event, ui) {
+      element.find(".slider-display-min").text(ui.values[0]);
+      element.find(".slider-data-min").val(ui.values[0]);
+      element.find(".slider-display-max").text(ui.values[1]);
+      element.find(".slider-data-max").val(ui.values[1]);
     }
-  });
+
+    var slider_min = element.find(".slider-data-min").val();
+    var slider_max = element.find(".slider-data-max").val();
+    update_label(null, { values: [ slider_min, slider_max ] });
+
+    element.find('.slider-control').slider({
+      range: true,
+      min: 18,
+      max: 100,
+      values: [ slider_min, slider_max ],
+      slide: update_label
+    });
+  })($(".slider"));
 
   $(".select-all").click(function(event) {
     $(event.target).parent().parent().find("input").prop("checked", true);
