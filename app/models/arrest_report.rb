@@ -29,6 +29,8 @@ class ArrestReport
     ar.defendant_age = importer.attribute_from_xpath("/p:Arrest/p:ArrestSubject/p:Subject/p:PersonAge")
     ar.desk_appearance_ticket = importer.attribute_from_xpath("/p:DeskAppearanceTicketData/p:DeskAppearanceTicketID/j:ID") { |dat_id| dat_id == "000000000" ? false : true }
 
+    ar.incident = Incident.find_or_initialize_by(arrest_id: ar.arrest_id)
+
     [ar]
   end
 
