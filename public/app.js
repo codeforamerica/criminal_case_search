@@ -9,11 +9,18 @@ $(function(){
 
   $("#select-sex").buttonset();
 
-  $('.slider').slider({
+  $('.slider-control').slider({
     range: true,
     min: 18,
     max: 100,
-    values: [ 18, 65 ]
+    values: [ 18, 65 ],
+    slide: function(event, ui) {
+      var parent = $(this).parent();
+      parent.find(".slider-display-low").text(ui.values[0]);
+      parent.find(".slider-data-low").val(ui.values[0]);
+      parent.find(".slider-display-high").text(ui.values[1]);
+      parent.find(".slider-data-high").val(ui.values[1]);
+    }
   });
 
   $(".select-all").click(function(event) {

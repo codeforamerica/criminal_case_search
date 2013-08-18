@@ -60,7 +60,6 @@
         margin: auto;
         font-size: auto;
       }
-      
   %body
     .navbar.navbar-inverse.navbar-fixed-top
       .navbar-inner
@@ -144,9 +143,15 @@
               %fieldset.secondary
                 %legend.top Age
                 
-                .horiz-control
-                  .slider{ data: { debug: "foo" } }
-                    %input.slider-data{ type: "hidden" }
+                .slider.horiz-control
+                  %p
+                    %span.slider-display-low 18
+                    to
+                    %span.slider-display-high 65
+
+                  .slider-control
+                    %input.slider-data-low{ type: "hidden", name: "filter[min_age]", value: params[:filter][:min_age] || 18 }
+                    %input.slider-data-high{ type: "hidden", name: "filter[max_age]", value: params[:filter][:max_age] || 65 }
 
               %fieldset.secondary
                 %legend.top Sex
