@@ -54,7 +54,13 @@
         display: block;
         padding: 10px;
       }
-
+      .ui-buttonset .field {
+        display: inline;
+        padding: auto;
+        margin: auto;
+        font-size: auto;
+      }
+      
   %body
     .navbar.navbar-inverse.navbar-fixed-top
       .navbar-inner
@@ -108,7 +114,7 @@
 
                   .btn-group.pull-right
                     %button.btn.inline.btn-mini.select-all All
-                    %button.btn.inline.btn-mini.btn-danger.clear-all Clear
+                    %button.btn.inline.btn-mini.clear-all Clear
 
               %fieldset.secondary
                 %legend.top Charges
@@ -133,7 +139,7 @@
 
                   .btn-group.pull-right
                     %button.btn.inline.btn-mini.select-all All
-                    %button.btn.inline.btn-mini.btn-danger.clear-all Clear
+                    %button.btn.inline.btn-mini.clear-all Clear
 
               %fieldset.secondary
                 %legend.top Age
@@ -145,12 +151,9 @@
               %fieldset.secondary
                 %legend.top Sex
                 
-                .horiz-control
-                  .btn-group.buttons-radio.sex{data: {toggle: "buttons-checkbox"}}
-                    %button.btn{type: "button", class: params[:filter][:sex] == nil || params[:filter][:sex] == "All" ? "active" : ""  } All
-                    %button.btn{type: "button", class: params[:filter][:sex] == "Male" ? "active" : "" } Male
-                    %button.btn{type: "button", class: params[:filter][:sex] == "Female" ? "active" : "" } Female
-                    %input.sex{type: "hidden", name: "filter[sex]", value: params[:filter][:sex] || "All" }
+                #select-sex.ui-buttonset
+                  = build_checkbox_field("sex", "m", "Male")
+                  = build_checkbox_field("sex", "f", "Female")
 
               %fieldset.secondary
                 %legend.top Criminal History
@@ -158,13 +161,8 @@
                 %fieldset.tertiary
                   %legend Open Cases
                   
-                  .field
-                    %input{ type: "radio", name: "open-cases", id: "open-cases-include", checked: "checked" }
-                    %label{ for: "open-cases-include" } Include
-                  
-                  .field
-                    %input{ type: "radio", name: "open-cases", id: "open-cases-exclude" }
-                    %label{ for: "open-cases-exclude" } Exclude
+                  = build_radio_field("open-cases", "include", "Include")
+                  = build_radio_field("open-cases", "exclude", "Exclude")
 
                 %fieldset.tertiary
                   %legend Prior Convictions

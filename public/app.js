@@ -7,12 +7,7 @@ $(function(){
     });
   });
 
-  $(".btn-group.buttons-radio").each(function(i, el) {
-    $(el).find("button").click(function() {
-      var hidden_field = $(el).find('input[type="hidden"]')
-      hidden_field.val($(this).text());
-    })
-  })
+  $("#select-sex").buttonset();
 
   $('.slider').slider({
     range: true,
