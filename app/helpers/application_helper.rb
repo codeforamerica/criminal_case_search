@@ -1,14 +1,31 @@
 module ApplicationHelper
   def build_radio_field(name, value, label)
-<<html
+    build_field("radio", name, value, label)
+  end
+
+  def build_checkbox_field(name, value, label)
+    build_field("checkbox", name, value, label)
+  end
+
+  # LOL
+  def build_field(type, name, value, label)
+    html = <<html
   <div class="field">
-    <input type="radio"
-           name="filter[#{name}]"
+    <input type="#{type}"
+           name="#{type == 'checkbox' ? 'filter[' + name + '][]' : 'filter[' + name + ']'}"
            id="#{name}-#{value}"
            value="#{value}"
-           #{params[:filter][name] == value ? "checked" : ""}>
-    <label for="#{name}-#{value}">#{label}</label>
-  </div>
 html
+
+    if type == "checkbox"
+      html += params[:filter][name].include?(value) ? "checked" : ""
+    else
+      html += params[:filter][name] == value ? "checked" : ""
+    end
+    
+    html += ">" # Close the input tag.
+
+    html += "<label for=\"#{name}-#{value}\">#{label}</label></div>"
+    html
   end
 end
