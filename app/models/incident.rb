@@ -27,10 +27,11 @@ class Incident
 
   # From OCA Docket
   field :docket_number, type: String
-  #validates :docket_number, uniqueness: { allow_nil: true }
+  validates :docket_number, uniqueness: { allow_nil: true }
 
   field :next_court_date, type: Date
   field :next_court_part, type: String
+  field :next_courthouse, type: String
 
   scope :borough, ->(county_code) { where(borough: county_code) }
   scope :top_charge, ->(charge_code) { where(:top_charge_code.in => [charge_code].flatten) }
