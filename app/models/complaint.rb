@@ -1,5 +1,3 @@
-require_relative 'xml_doc_importer'
-
 class Complaint
   include Mongoid::Document
   embedded_in :incident
