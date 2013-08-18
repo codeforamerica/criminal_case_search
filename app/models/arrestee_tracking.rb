@@ -4,17 +4,22 @@ class ArresteeTracking < DatashareDocument
   include Mongoid::Document
   embedded_in :incident
 
-  def arrest_id
-    body["ds:ArresteeTrackingXml"]["j:Arrest"]["nc:ActivityIdentification"]["nc:IdentificationID"]
-  end
+  field :arrest_id, type: String
 
-  private
-  
-  def body
-    self["soapenv:Envelope"]["soapenv:Body"]
-  end
+  def self.from_xml(xml_string)
+    importer = XMLDocImporter.new(xml_string, "/soapenv:Envelope/soapenv:Body/ds:ArresteeTrackingXml")
 
-  def header
-    self["soapenv:Envelope"]["soapenv:Header"]
+    arrestee_trackings = []
+    arrest_ids = importer.attribute_from_xpath("/j:Arrest/nc:ActivityIdentification/nc:IdentificationID").compact
+
+    # TODO: There are separate arrest IDS for ARR_ID and LEAD_ARR_ID. Should we choose one instead of both?
+    arrest_ids.each do |arrest_id|
+      at = ArresteeTracking.new
+      at.arrest_id = arrest_id
+      at.incident = Incident.find_or_initialize_by(arrest_id: at.arrest_id)
+      arrestee_trackings << at
+    end
+
+    arrestee_trackings
   end
 end
