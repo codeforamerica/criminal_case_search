@@ -22,6 +22,7 @@ class DocketingNotice
       courthouse_text.strip.gsub("New York City Criminal Court, ","").gsub(" Branch","")
     end
     d.next_court_part = importer.attribute_from_xpath("/ds:Case/ds:CaseAugmentation/j:CaseCourtEvent/j:CourtEventAppearance/j:CourtAppearanceCourt/nc:OrganizationIdentification/nc:IdentificationID").strip
+    d.incident = Incident.find_or_initialize_by(arrest_id: d.arrest_id)
 
     [d]
   end
