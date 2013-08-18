@@ -1,5 +1,3 @@
-require_relative 'xml_doc_importer'
-
 class ArrestReport
   include Mongoid::Document
 
