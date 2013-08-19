@@ -8,7 +8,7 @@ $(function(){
   });
 
   $("#select-sex").buttonset();
-  $(".triple-select, .double-select").buttonset();
+  $(".triple-select, .double-select, .buttonset").buttonset();
   $(".spinner").spinner();
 
   (function(element) {

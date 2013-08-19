@@ -162,45 +162,45 @@
                     %input.slider-data-min{ type: "hidden", name: "filter[min_age]", value: params[:filter][:min_age] || 18 }
                     %input.slider-data-max{ type: "hidden", name: "filter[max_age]", value: params[:filter][:max_age] || 65 }
 
-              %fieldset.secondary
+              %fieldset.secondary.text-center
                 %legend.top Sex
                 
-                #select-sex.ui-buttonset
-                  = build_checkbox_field("sex", "m", "Male")
-                  = build_checkbox_field("sex", "f", "Female")
+                .text-center
+                  .buttonset
+                    %input{ type: "checkbox", name: "filter[sex]", value: "m", id: "filter-sex-m" }
+                    %label{ for: "filter-sex-m" } Male
+                    %input{ type: "checkbox", name: "filter[sex]", value: "f", id: "filter-sex-f" }
+                    %label{ for: "filter-sex-f" } Female
 
               %fieldset.secondary
                 %legend.top Criminal History
 
                 %fieldset.tertiary.horizontal
-                  .span2
-                    %legend Has open cases?
-                  .span2
+                  .span7
+                    %legend Has other open cases?
+                  .span5.pull-right
                     = double_select("open-cases")
-                  
-                %fieldset.tertiary.horizontal
-                  %legend Prior Convictions
-                  = double_select("prior-convictions")
 
                 %fieldset.tertiary.horizontal
-                  %legend Prior Bench Warrants
-                  = double_select("bench-warrants")
+                  .span7
+                    %legend Has failed to appear?
+                  .span5.pull-right
+                    = double_select("bench-warrants")
 
                 %fieldset.tertiary
                   %legend Number of Prior Convictions
-                  
-                  .btn-group.previous-convictions
-                    %button.btn.dropdown-toggle{"data-toggle" => "dropdown" }
-                      = params[:filter][:previous_misdemeanor_convictions_type] || "More than"
-                      %span.caret
-                    %ul.dropdown-menu
-                      %li
-                        %a More than
-                      %li
-                        %a Less than
-                    %input.more-or-less-type{name: "filter[previous_misdemeanor_convictions_type]", type: "hidden", value: params[:filter][:previous_misdemeanor_convictions_type] || "or more" }
 
-                    %input.input-mini.spinner{name: "filter[previous_misdemeanor_convictions_number]", type: "text", value: params[:filter][:previous_misdemeanor_convictions_number] }
+                  .input-prepend
+                    .btn-group
+                      %button.btn.dropdown-toggle{ data: { toggle: "dropdown" } }
+                        More than
+                        %span.caret
+                      %ul.dropdown-menu
+                        %li
+                          %a More than
+                        %li
+                          %a Less than
+                    %input.span3{ type: "number", value: "0" }
 
               %fieldset.secondary
                 %legend Next Court Appearance
