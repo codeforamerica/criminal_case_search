@@ -208,30 +208,26 @@
                 %fieldset.tertiary
                   %legend Type
 
-                  .field
-                    %input{ type: "radio", name: "appearance-type", id: "appearance-type-all" }
+                  .buttonset
+                    %input{ type: "radio", name: "appearance-type", id: "appearance-type-all", selected: "" }
                     %label{ for: "appearance-type-all" } All
 
-                  .field
                     %input{ type: "radio", name: "appearance-type", id: "appearance-type-pre-arraignment" }
-                    %label{ for: "appearance-type-pre-arraignment" } Pre-Arraignment
+                    %label{ for: "appearance-type-pre-arraignment" } Pre-Arr.
 
-                  .field
                     %input{ type: "radio", name: "appearance-type", id: "appearance-type-post-arraignment" }
-                    %label{ for: "appearance-type-post-arraignment" } Post-Arraignment
+                    %label{ for: "appearance-type-post-arraignment" } Post-Arr.
 
                 %fieldset.tertiary
                   %legend Date
 
-                  .field
-                    %input{ type: "radio", name: "appearance-date", id: "appearance-date-all" }
+                  .buttonset
+                    %input{ type: "radio", name: "appearance-date", id: "appearance-date-all",  selected: "" }
                     %label{ for: "appearance-date-all" } All
 
-                  .field
                     %input{ type: "radio", name: "appearance-date", id: "appearance-date-today" }
                     %label{ for: "appearance-date-today" } Today
 
-                  .field
                     %input{ type: "radio", name: "appearance-date", id: "appearance-date-tomorrow" }
                     %label{ for: "appearance-date-tomorrow" } Tomorrow
 
