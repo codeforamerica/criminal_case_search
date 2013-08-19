@@ -8,6 +8,7 @@ $(function(){
   });
 
   $("#select-sex").buttonset();
+  $(".triple-select, .double-select").buttonset();
 
   (function(element) {
     var update_label = function(event, ui) {
