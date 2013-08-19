@@ -9,6 +9,7 @@ $(function(){
 
   $("#select-sex").buttonset();
   $(".triple-select, .double-select").buttonset();
+  $(".spinner").spinner();
 
   (function(element) {
     var update_label = function(event, ui) {
