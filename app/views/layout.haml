@@ -60,6 +60,15 @@
         margin: auto;
         font-size: auto;
       }
+      -# fieldset.horizontal legend {
+      -#   display: inline;
+      -#   float: left;
+      -# }
+      -# fieldset.horizontal div.double-select {
+      -#   display: inline;
+      -#   float: right;
+      -# }
+
   %body
     .navbar.navbar-inverse.navbar-fixed-top
       .navbar-inner
@@ -163,36 +172,35 @@
               %fieldset.secondary
                 %legend.top Criminal History
 
-                %fieldset.tertiary
-                  %legend Open Cases
-                  = double_select("open-cases")
+                %fieldset.tertiary.horizontal
+                  .span2
+                    %legend Has open cases?
+                  .span2
+                    = double_select("open-cases")
                   
-                %fieldset.tertiary
+                %fieldset.tertiary.horizontal
                   %legend Prior Convictions
                   = double_select("prior-convictions")
 
-                %fieldset.tertiary
+                %fieldset.tertiary.horizontal
                   %legend Prior Bench Warrants
                   = double_select("bench-warrants")
 
                 %fieldset.tertiary
                   %legend Number of Prior Convictions
+                  
+                  .btn-group.previous-convictions
+                    %button.btn.dropdown-toggle{"data-toggle" => "dropdown" }
+                      = params[:filter][:previous_misdemeanor_convictions_type] || "More than"
+                      %span.caret
+                    %ul.dropdown-menu
+                      %li
+                        %a More than
+                      %li
+                        %a Less than
+                    %input.more-or-less-type{name: "filter[previous_misdemeanor_convictions_type]", type: "hidden", value: params[:filter][:previous_misdemeanor_convictions_type] || "or more" }
 
-                  .field
-                    %input{ type: "radio", name: "prior-convictions", id: "prior-convictions-none" }
-                    %label{ for: "prior-convictions-none" } None
-
-                  .field
-                    %input{ type: "radio", name: "prior-convictions", id: "prior-convictions-one-plus" }
-                    %label{ for: "prior-convictions-one-plus" } One or More
-
-                  .field
-                    %input{ type: "radio", name: "prior-convictions", id: "prior-convictions-three-plus"}
-                    %label{ for: "prior-convictions-three-plus" } Three or More
-
-                  .field
-                    %input{ type: "radio", name: "prior-convictions", id: "prior-convictions-five-plus" }
-                    %label{ for: "prior-convictions-five-plus" } Five or More
+                    %input.input-mini.spinner{name: "filter[previous_misdemeanor_convictions_number]", type: "text", value: params[:filter][:previous_misdemeanor_convictions_number] }
 
               %fieldset.secondary
                 %legend Next Court Appearance
