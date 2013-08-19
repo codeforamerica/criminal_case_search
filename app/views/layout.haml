@@ -165,21 +165,15 @@
 
                 %fieldset.tertiary
                   %legend Open Cases
+                  = double_select("open-cases")
                   
-                  = build_radio_field("open-cases", "include", "Include")
-                  = build_radio_field("open-cases", "exclude", "Exclude")
-
                 %fieldset.tertiary
                   %legend Prior Convictions
-                  
-                  = build_radio_field("prior-convictions", "include", "Include")
-                  = build_radio_field("prior-convictions", "exclude", "Exclude")
+                  = double_select("prior-convictions")
 
                 %fieldset.tertiary
                   %legend Prior Bench Warrants
-
-                  = build_radio_field("prior-bench-warrants", "include", "Include")
-                  = build_radio_field("prior-bench-warrants", "exclude", "Exclude")
+                  = double_select("bench-warrants")
 
                 %fieldset.tertiary
                   %legend Number of Prior Convictions
