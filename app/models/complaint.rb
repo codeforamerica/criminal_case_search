@@ -6,6 +6,10 @@ class Complaint
   field :top_charge_code, type: String
   field :charges, type: Array
   field :complaint_image, type: Moped::BSON::Binary
+  field :drug_charge, type: Boolean
+  field :misdemeanor_assault_charge, type: Boolean
+  field :criminal_contempt_charge, type: Boolean
+  field :sex_offense_charge, type: Boolean
 
   before_save :update_incident_attributes
 
@@ -20,13 +24,31 @@ class Complaint
       c = Complaint.find_or_initialize_by(arrest_id: arrest_id)
 
       c.incident = Incident.find_or_initialize_by(arrest_id: c.arrest_id)
-      c.charges = defendant_node.xpath("next:ComplaintCharge", importer.namespaces).map do |charge|
-        { category: charge.xpath("j:ChargeCategoryDescriptionText", importer.namespaces).first.content,
-          counts: charge.xpath("j:ChargeCountQuantity", importer.namespaces).first.content.to_i,
-          description: charge.xpath("j:ChargeDescriptionText", importer.namespaces).first.content,
-          attempted: charge.xpath("next:NYCChargeAugmentation/next:ChargeApplicabilityAttemptedIndicator", importer.namespaces).first.content,
-          agency_code: charge.xpath("next:NYCChargeAugmentation/next:ChargeAgencyCode", importer.namespaces).first.content
-        }
+      c.charges = defendant_node.xpath("next:ComplaintCharge", importer.namespaces).map do |charge_node|
+        charge = { category: charge_node.xpath("j:ChargeCategoryDescriptionText", importer.namespaces).first.content,
+                   counts: charge_node.xpath("j:ChargeCountQuantity", importer.namespaces).first.content.to_i,
+                   description: charge_node.xpath("j:ChargeDescriptionText", importer.namespaces).first.content,
+                   attempted: charge_node.xpath("next:NYCChargeAugmentation/next:ChargeApplicabilityAttemptedIndicator", importer.namespaces).first.content,
+                   agency_code: charge_node.xpath("next:NYCChargeAugmentation/next:ChargeAgencyCode", importer.namespaces).first.content
+                 }
+
+        if charge[:agency_code] =~ /PL 220/
+          c.drug_charge = true
+        end
+
+        if charge[:agency_code] =~ /PL 120\.00/
+          c.misdemeanor_assault_charge = true
+        end
+
+        if charge[:agency_code] =~ /PL (215.50|215.51|215.52)/
+          c.criminal_contempt_charge = true
+        end
+
+        if charge[:agency_code] =~ /PL 130/
+          c.sex_offense_charge = true
+        end
+
+        charge
       end
       c.top_charge_code = c.charges.first[:category]
 
