@@ -3,6 +3,8 @@ class Complaint
   embedded_in :incident
 
   field :arrest_id, type: String
+  validates :arrest_id, presence: true, uniqueness: true
+
   field :top_charge_code, type: String
   field :charges, type: Array
   field :complaint_image, type: Moped::BSON::Binary

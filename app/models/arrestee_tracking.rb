@@ -3,6 +3,7 @@ class ArresteeTracking
   embedded_in :incident
 
   field :arrest_id, type: String
+  validates :arrest_id, presence: true, uniqueness: true
 
   def self.from_xml(xml_string)
     importer = XMLDocImporter.new(xml_string, "/soapenv:Envelope/soapenv:Body/ds:ArresteeTrackingXml")
