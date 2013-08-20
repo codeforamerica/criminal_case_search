@@ -13,8 +13,9 @@ class DocketingNotice
   def self.from_xml(xml_string)
     importer = XMLDocImporter.new(xml_string, "/soapenv:Envelope/soapenv:Body/xmlns:CaseDocketingNoticeXml")
 
-    d = DocketingNotice.new
-    d.arrest_id = importer.attribute_from_xpath("/j:Arrest/nc:ActivityIdentification/nc:IdentificationID").strip
+    arrest_id = importer.attribute_from_xpath("/j:Arrest/nc:ActivityIdentification/nc:IdentificationID").strip
+    d = DocketingNotice.find_or_initialize_by(arrest_id: arrest_id)
+
     d.docket_number = importer.attribute_from_xpath("/ds:Case/nc:CaseDocketID").strip
     next_court_date_string = importer.attribute_from_xpath("/ds:Case/ds:CaseAugmentation/j:CaseCourtEvent/j:CourtEventAppearance/j:CourtAppearanceDate/nc:Date")
     d.next_court_date = Date.parse(next_court_date_string)
