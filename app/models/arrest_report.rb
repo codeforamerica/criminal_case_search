@@ -9,8 +9,14 @@ class ArrestReport
   field :defendant_first_name, type: String
   field :defendant_last_name, type: String
   field :defendant_sex, type: String
+  validates :defendant_sex, inclusion: { in: %w(M F), allow_nil: true}
+
   field :defendant_age, type: Integer
+  validates :defendant_age, numericality: { greater_than_or_equal_to: 0, allow_nil: true}
+
   field :borough, type: String
+  validates :borough, inclusion: { in: ["Brooklyn", "Bronx", "Manhattan", "Queens", "Staten Island"], allow_nil: true }
+
   field :precinct, type: String
   field :desk_appearance_ticket, type: Boolean
 

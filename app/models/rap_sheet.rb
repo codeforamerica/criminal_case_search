@@ -9,7 +9,9 @@ class RapSheet
 
   # Supercedes Arrest Report
   field :defendant_age, type: Integer
+  validates :defendant_age, numericality: { greater_than_or_equal_to: 0, allow_nil: true}
   field :defendant_sex, type: String
+  validates :defendant_sex, inclusion: { in: %w(M F), allow_nil: true}
 
   # Supercedes Complaint (?)
   #field :top_charge_code, type: String
