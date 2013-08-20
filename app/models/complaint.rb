@@ -6,6 +6,8 @@ class Complaint
   validates :arrest_id, presence: true, uniqueness: true
 
   field :top_charge_code, type: String
+  validates :top_charge_code, inclusion: { in: %w(I V M F), allow_nil: true }
+
   field :charges, type: Array
   field :complaint_image, type: Moped::BSON::Binary
   field :drug_charge, type: Boolean
