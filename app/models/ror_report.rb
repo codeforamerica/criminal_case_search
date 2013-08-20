@@ -3,6 +3,8 @@ class RorReport
   embedded_in :incident
 
   field :arrest_id, type: String
+  validates :arrest_id, presence: true, uniqueness: true
+
   field :recommendations, type: String
 
   def self.from_xml(xml_string)

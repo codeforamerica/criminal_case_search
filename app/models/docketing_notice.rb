@@ -3,6 +3,8 @@ class DocketingNotice
   embedded_in :incident
 
   field :arrest_id, type: String
+  validates :arrest_id, presence: true, uniqueness: true
+
   field :docket_number, type: String
   field :next_court_date, type: Date
   field :next_courthouse, type: String

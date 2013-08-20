@@ -4,6 +4,8 @@ class ArrestReport
   embedded_in :incident
 
   field :arrest_id, type: String
+  validates :arrest_id, presence: true, uniqueness: true
+
   field :defendant_first_name, type: String
   field :defendant_last_name, type: String
   field :defendant_sex, type: String
