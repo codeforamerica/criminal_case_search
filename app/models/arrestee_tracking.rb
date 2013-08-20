@@ -12,11 +12,12 @@ class ArresteeTracking
 
     # TODO: There are separate arrest IDS for ARR_ID and LEAD_ARR_ID. Should we choose one instead of both?
     arrest_ids.each do |arrest_id|
-      at = ArresteeTracking.new
+      at = ArresteeTracking.find_or_initialize_by(arrest_id: arrest_id)
       at.arrest_id = arrest_id
       at.incident = Incident.find_or_initialize_by(arrest_id: at.arrest_id)
       arrestee_trackings << at
     end
+    # TODO: Save other data
 
     arrestee_trackings
   end

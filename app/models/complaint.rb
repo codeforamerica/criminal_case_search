@@ -16,8 +16,9 @@ class Complaint
 
     defendants = importer.nodes_from_xpath("/next:Defendant")
     defendants.each do |defendant_node|
-      c = Complaint.new
-      c.arrest_id = defendant_node.xpath("next:DefendantArrest/nc:ActivityIdentification/nc:IdentificationID", importer.namespaces).first.content
+      arrest_id = defendant_node.xpath("next:DefendantArrest/nc:ActivityIdentification/nc:IdentificationID", importer.namespaces).first.content
+      c = Complaint.find_or_initialize_by(arrest_id: arrest_id)
+
       c.incident = Incident.find_or_initialize_by(arrest_id: c.arrest_id)
       c.charges = defendant_node.xpath("next:ComplaintCharge", importer.namespaces).map do |charge|
         { category: charge.xpath("j:ChargeCategoryDescriptionText", importer.namespaces).first.content,

@@ -17,8 +17,9 @@ class ArrestReport
   def self.from_xml(xml_string)
     importer = XMLDocImporter.new(xml_string, "/e:EnterpriseDatashareDocument/e:DocumentBody/p:NYPDArrestTransaction/p:NYPDArrestReport")
 
-    ar = ArrestReport.new
-    ar.arrest_id = importer.attribute_from_xpath("/p:Arrest/j:ActivityID/j:ID")
+    arrest_id = importer.attribute_from_xpath("/p:Arrest/j:ActivityID/j:ID")
+    ar = ArrestReport.find_or_initialize_by(arrest_id: arrest_id)
+
     ar.borough = importer.attribute_from_xpath("/p:Arrest/p:ArrestComplaint/p:ComplaintRecordedLocation/j:LocationAddress/j:LocationCityName", &:titleize)
     ar.precinct = importer.attribute_from_xpath("/p:Arrest/p:ArrestLocation/j:LocationLocale/j:LocalePoliceJurisdictionID/j:ID")
     ar.defendant_first_name = importer.attribute_from_xpath("/p:Arrest/p:ArrestSubject/p:Subject/j:PersonName/j:PersonGivenName", &:titleize)

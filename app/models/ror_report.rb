@@ -8,8 +8,8 @@ class RorReport
   def self.from_xml(xml_string)
     importer = XMLDocImporter.new(xml_string, "/e:EnterpriseDatashareDocument/e:DocumentBody/c:RORInterviewReports/c:RORInterviewReport")
 
-    ror = RorReport.new
-    ror.arrest_id = importer.attribute_from_xpath("/n:Arrest/j:ActivityID/j:ID")
+    arrest_id = importer.attribute_from_xpath("/n:Arrest/j:ActivityID/j:ID")
+    ror = RorReport.find_or_initialize_by(arrest_id: arrest_id)
     ror.incident = Incident.find_or_initialize_by(arrest_id: ror.arrest_id)
     recs = importer.attribute_from_xpath("/c:RORInterview/j:ActivityCommentText").to_a
     ror.recommendations = recs.map do |rec|
