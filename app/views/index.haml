@@ -1,4 +1,37 @@
 - if @incidents.present?
+  #incidents.span11
+    - @incidents.each do |incident|
+      .incident
+        .row-fluid
+          .span8
+            .row-fluid
+              %h3.name= "#{Faker::Name.last_name}, #{Faker::Name.first_name}" #incident.arrest_report.person_name
+              %p.docket-number= incident.docket_number
+          .span3
+            %h3.court-date= incident.next_court_date.strftime("%b %-d")
+            %span.court-date-note Next Court Date
+        .row-fluid
+          .span1
+            %p.sex Male
+            %p.age 17
+          .span3
+            %p.severity= incident.top_charge_code_expanded
+            %p.charge-code PL 120.00 - 1 count
+          .span3
+            %p.priors
+              %span.count 3
+              prior convictions
+            %p.open-cases
+              %span.count 1
+              open case
+          .span3.offset1
+            %p.court-part= incident.next_court_part
+            %p.last-updated
+              Last updated
+              %span.updated-date
+                May 16
+
+-#
   %table.table
     %thead
       %tr
@@ -15,11 +48,11 @@
       - @incidents.each do |incident|
         %tr
           %td
-            = "#{Faker::Name.last_name}, #{Faker::Name.first_name}" #incident.arrest_report.person_name
+            
           %td
-            = incident.docket_number
+
           %td
-            = incident.top_charge_code_expanded
+            
           %td
             = %Q(<span title="#{incident.charges.first[:description]}"><b>#{incident.charges.first[:agency_code]}</b> - #{incident.charges.first[:counts]} #{incident.charges.first[:counts] > 1 ? "counts" : "count"} </span>) unless incident.charges.blank?
           %td
@@ -31,7 +64,7 @@
           %td
             = incident.next_court_date.strftime("%b %-d")
           %td
-            = incident.next_court_part
+            
     %tfoot
       %tr
         %td{colspan: "9"}

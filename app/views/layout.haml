@@ -12,6 +12,8 @@
     %link{ type: "text/css", rel: "stylesheet", href: "/jquery-ui-bootstrap/css/jquery-ui-1.10.0.custom.css" }
 
     :css
+      -# [class*="span"] { background: #EEF; }
+      -# [class*="span"] [class*="span"] { background: #FEE; }
       body {
         padding-top: 60px;
         padding-bottom: 40px;
@@ -60,14 +62,32 @@
         margin: auto;
         font-size: auto;
       }
-      -# fieldset.horizontal legend {
-      -#   display: inline;
-      -#   float: left;
-      -# }
-      -# fieldset.horizontal div.double-select {
-      -#   display: inline;
-      -#   float: right;
-      -# }
+      .incident {
+        border-bottom: 1px solid #000;
+        margin-bottom: 5px;
+        padding-left: 10px;
+        padding-bottom: 5px;
+      }
+      .incident.selected {
+        color: #fff;
+        background-color: #999;
+      }
+      .incident h3 {
+        margin: 0;
+        padding: 0;
+      }
+      .incident h3.name {
+        color: #0077EE;
+      }
+      .incident p {
+        margin-bottom: 5px;
+      }
+      .priors .count, .open-cases .count {
+        font-weight: bold;
+      }
+      .last-updated {
+        color: #999;
+      }
 
   %body
     .navbar.navbar-inverse.navbar-fixed-top
@@ -235,5 +255,5 @@
                 %button.btn.btn-primary{ type: "submit"} Filter
                 %a.btn{href: "/"} Reset
 
-        .span8
+        .span9
           = yield
