@@ -208,7 +208,7 @@
                     = double_select("bench-warrants")
 
                 %fieldset.tertiary
-                  %legend Number of Prior Convictions
+                  %legend Number of Prior Criminal Convictions
 
                   .input-prepend
                     .btn-group
@@ -220,7 +220,7 @@
                           %a More than
                         %li
                           %a Less than
-                    %input.span3{ type: "number", value: "0" }
+                    %input.span3{ type: "number", value: "0", min: "0"  }
 
               %fieldset.secondary
                 %legend Next Court Appearance
