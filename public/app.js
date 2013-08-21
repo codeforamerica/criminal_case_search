@@ -11,6 +11,10 @@ $(function(){
   $(".triple-select, .double-select, .buttonset").buttonset();
   $(".spinner").spinner();
 
+  $(".incident").click(function() {
+    $(this).toggleClass("selected");
+  });
+
   (function(element) {
     var update_label = function(event, ui) {
       element.find(".slider-display-min").text(ui.values[0]);
