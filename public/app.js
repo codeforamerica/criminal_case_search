@@ -29,7 +29,7 @@ $(function(){
 
     element.find('.slider-control').slider({
       range: true,
-      min: 18,
+      min: 16,
       max: 100,
       values: [ slider_min, slider_max ],
       slide: update_label
