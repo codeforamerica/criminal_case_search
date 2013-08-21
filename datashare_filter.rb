@@ -1,6 +1,16 @@
 require_relative "config/environment"
 
+class SassHandler < Sinatra::Base   
+  set :views, File.dirname(__FILE__) + '/app/assets/stylesheets'
+    
+  get '/css/*.css' do
+    filename = params[:splat].first
+    sass filename.to_sym
+  end    
+end
+
 class DatashareFilter < Sinatra::Base
+  use SassHandler
   register Sinatra::Twitter::Bootstrap::Assets
   register WillPaginate::Sinatra
 
