@@ -42,19 +42,19 @@ class Complaint
                    agency_code: charge_node.xpath("next:NYCChargeAugmentation/next:ChargeAgencyCode", importer.namespaces).first.content
                  }
 
-        if charge[:agency_code] =~ /PL (110\/)220/
+        if charge[:agency_code] =~ /PL (110\/)?220/
           c.drug_charge = true
         end
 
-        if charge[:agency_code] =~ /PL (110\/)120\.00/
+        if charge[:agency_code] =~ /PL (110\/)?120\.00/
           c.misdemeanor_assault_charge = true
         end
 
-        if charge[:agency_code] =~ /PL (110\/)(215.50|215.51|215.52)/
+        if charge[:agency_code] =~ /PL (110\/)?(215.50|215.51|215.52)/
           c.criminal_contempt_charge = true
         end
 
-        if charge[:agency_code] =~ /PL (110\/)130/
+        if charge[:agency_code] =~ /PL (110\/)?130/
           c.sex_offense_charge = true
         end
 
@@ -99,7 +99,7 @@ class Complaint
   def self.violent_felony_offense?(charge)
     if charge[:attempted] == "true"
       ATTEMPTED_VFOS.each do |vfo|
-        return true if charge[:agency_code] =~ /PL (110\/)#{Regexp.quote(vfo)}/i
+        return true if charge[:agency_code] =~ /PL (110\/)?#{Regexp.quote(vfo)}/i
       end
     else
       VFOS.each do |vfo|
