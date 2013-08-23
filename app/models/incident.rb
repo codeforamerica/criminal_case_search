@@ -1,5 +1,6 @@
 class Incident
   include Mongoid::Document
+  include Mongoid::Timestamps
 
   embeds_one :arrest_report
   embeds_one :rap_sheet
@@ -23,7 +24,7 @@ class Incident
 
   # From DA's Complaint
   field :top_charge_code, type: String
-  validates :top_charge_code, inclusion: { in: %w(I V M F), allow_nil: true }
+  validates :top_charge_code, inclusion: { in: %w(I V M F VF), allow_nil: true }
 
   # From OCA Docket
   field :docket_number, type: String
