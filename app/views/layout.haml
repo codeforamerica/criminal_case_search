@@ -145,27 +145,30 @@
                   %legend Type
 
                   .buttonset
-                    %input{ type: "radio", name: "appearance-type", id: "appearance-type-all", selected: "" }
-                    %label{ for: "appearance-type-all" } All
-
                     %input{ type: "radio", name: "appearance-type", id: "appearance-type-pre-arraignment" }
                     %label{ for: "appearance-type-pre-arraignment" } Pre-Arr.
 
                     %input{ type: "radio", name: "appearance-type", id: "appearance-type-post-arraignment" }
                     %label{ for: "appearance-type-post-arraignment" } Post-Arr.
 
+                    %input{ type: "radio", name: "appearance-type", id: "appearance-type-any", checked: "" }
+                    %label{ for: "appearance-type-any" } Any
+
                 %fieldset.tertiary
                   %legend Date
 
                   .buttonset
-                    %input{ type: "radio", name: "appearance-date", id: "appearance-date-all",  selected: "" }
-                    %label{ for: "appearance-date-all" } All
-
                     %input{ type: "radio", name: "appearance-date", id: "appearance-date-today" }
                     %label{ for: "appearance-date-today" } Today
 
                     %input{ type: "radio", name: "appearance-date", id: "appearance-date-tomorrow" }
                     %label{ for: "appearance-date-tomorrow" } Tomorrow
+
+                    %input{ type: "radio", name: "appearance-date", id: "appearance-date-week" }
+                    %label{ for: "appearance-date-week" } Week
+
+                    %input{ type: "radio", name: "appearance-date", id: "appearance-date-any",  checked: "" }
+                    %label{ for: "appearance-date-any" } Any
 
               %fieldset
                 %legend
