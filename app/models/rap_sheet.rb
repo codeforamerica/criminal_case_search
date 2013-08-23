@@ -34,6 +34,8 @@ class RapSheet
   field :serving_probation, type: Boolean
   field :serving_parole, type: Boolean
 
+  before_save :update_incident_attributes
+
   def self.from_xml(xml_string)
     importer = XMLDocImporter.new(xml_string, "/e:EnterpriseDatashareDocument/e:DocumentBody/ds:RapSheetExchange/ds:rapSheet/ds:attachment/ds:content")
 
@@ -127,5 +129,20 @@ class RapSheet
 
   def self.boolean_from_int(int)
     int > 0 ? true : false
+  end
+
+  def update_incident_attributes
+    incident.update_attributes(defendant_age: defendant_age,
+                               defendant_sex: defendant_sex,
+                               number_of_prior_criminal_convictions: number_of_prior_criminal_convictions,
+                               has_prior_felony_conviction: has_prior_felony_conviction,
+                               has_prior_violent_felony_conviction: has_prior_violent_felony_conviction,
+                               has_prior_misdemeanor_conviction: has_prior_misdemeanor_conviction,
+                               has_prior_drug_conviction: has_prior_drug_conviction,
+                               has_prior_misdemeanor_assault_conviction: has_prior_misdemeanor_assault_conviction,
+                               has_prior_criminal_contempt_conviction: has_prior_criminal_contempt_conviction,
+                               has_prior_sex_offense_conviction: has_prior_sex_offense_conviction,
+                               has_other_open_cases: has_other_open_cases,
+                               has_failed_to_appear: has_failed_to_appear)
   end
 end

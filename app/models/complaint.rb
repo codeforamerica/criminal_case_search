@@ -92,6 +92,10 @@ class Complaint
     complaints
   end
 
+  def top_charge
+    charges.first
+  end
+
   def self.violent_felony_offense?(charge)
     if charge[:attempted] == "true"
       ATTEMPTED_VFOS.each do |vfo|
@@ -107,6 +111,10 @@ class Complaint
 
   private
   def update_incident_attributes
-    self.incident.update_attribute(:top_charge_code, top_charge_code)
+    incident.update_attributes(top_charge_code: top_charge_code,
+                               drug_charge: drug_charge,
+                               misdemeanor_assault_charge: misdemeanor_assault_charge,
+                               criminal_contempt_charge: criminal_contempt_charge,
+                               sex_offense_charge: sex_offense_charge)
   end
 end

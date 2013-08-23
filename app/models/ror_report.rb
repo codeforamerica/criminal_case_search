@@ -5,7 +5,9 @@ class RorReport
   field :arrest_id, type: String
   validates :arrest_id, presence: true, uniqueness: true
 
-  field :recommendations, type: String
+  field :recommendations, type: Array
+
+  before_save :update_incident_attributes
 
   def self.from_xml(xml_string)
     importer = XMLDocImporter.new(xml_string, "/e:EnterpriseDatashareDocument/e:DocumentBody/c:RORInterviewReports/c:RORInterviewReport")
@@ -19,8 +21,17 @@ class RorReport
          .gsub("ror","ROR")
          .gsub("nysid", "NYSID")
          .gsub("fta", "FTA")
-    end.join(", ")
+    end
 
     [ror]
+  end
+
+  def all_recommendations
+    recommendations.join(", ")
+  end
+
+  private
+  def update_incident_attributes
+    incident.update_attributes(recommendations: recommendations)
   end
 end
