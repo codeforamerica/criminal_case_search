@@ -31,11 +31,13 @@ class Incident
   field :misdemeanor_assault_charge, type: Boolean
   field :criminal_contempt_charge, type: Boolean
   field :sex_offense_charge, type: Boolean
+  delegate :top_charge, to: :complaint, allow_nil: true
 
   # From OCA Docket
   field :docket_number, type: String
   validates :docket_number, uniqueness: { allow_nil: true }
   field :next_court_date, type: Date #Superceded by OCA Court Action
+  field :next_court_date_is_arraignment, type: Boolean
   field :next_court_part, type: String
   field :next_courthouse, type: String
 
@@ -58,13 +60,23 @@ class Incident
   # From CJA Report
   field :recommendations, type: Array
 
-  scope :borough, ->(county_code) { where(borough: county_code) }
-  scope :top_charge, ->(charge_code) { any_in(:top_charge_code => [charge_code].flatten) }
+  scope :borough, ->(borough_name) { any_in(borough: borough_name) }
   scope :defendant_sex, ->(sex_code) { where(defendant_sex: sex_code) }
   scope :defendant_age_lte, ->(max_age) { lte(:defendant_age => max_age) }
   scope :defendant_age_gte, ->(min_age) { gte(:defendant_age => min_age) }
-
-  delegate :top_charge, to: :complaint, allow_nil: true
+  scope :top_charge_in, ->(charge_code) { any_in(:top_charge_code => [charge_code].flatten) }
+  scope :has_drug_charge, where(drug_charge: true)
+  scope :has_misdemeanor_assault_charge, where(misdemeanor_assault_charge: true)
+  scope :has_criminal_contempt_charge, where(criminal_contempt_charge: true)
+  scope :has_sex_offense_charge, where(sex_offense_charge: true)
+  scope :has_other_open_cases, where(has_other_open_cases: true)
+  scope :has_failed_to_appear, where(has_failed_to_appear: true)
+  scope :number_of_prior_criminal_convictions_gte, ->(min) { gte(number_of_prior_criminal_convictions: min) }
+  scope :number_of_prior_criminal_convictions_lte, ->(max) { lte(number_of_prior_criminal_convictions: max) }
+  scope :pre_arraignment, where(next_court_date_is_arraignment: true)
+  scope :post_arraignment, ne(next_court_date_is_arraignment: true)
+  scope :next_court_date_is, ->(date) { where(next_court_date: date) }
+  scope :next_court_date_between, ->(start_date, end_date) { between(next_court_date: start_date...end_date) }
 
   def charges
     if complaint.present?
@@ -75,7 +87,9 @@ class Incident
   end
 
   def top_charge_code_expanded
-    if top_charge_code == "F"
+    if top_charge_code == "VF"
+      return "Violent Felony"
+    elsif top_charge_code == "F"
       return "Felony"
     elsif top_charge_code == "M"
       return "Misdemeanor"
