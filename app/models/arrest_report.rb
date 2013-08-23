@@ -47,6 +47,6 @@ class ArrestReport
 
   private
   def update_incident_attributes
-    self.incident.update_attributes(defendant_sex: defendant_sex, borough: borough, defendant_age: defendant_age)
+    incident.update_attributes(defendant_sex: defendant_sex, borough: borough, defendant_age: defendant_age)
   end
 end
