@@ -37,6 +37,7 @@ class DocketingNotice
     self.incident.update_attributes(docket_number: docket_number,
                                     next_court_date: next_court_date,
                                     next_court_part: next_court_part,
-                                    next_courthouse: next_courthouse)
+                                    next_courthouse: next_courthouse,
+                                    next_court_date_is_arraignment: true)
   end
 end
