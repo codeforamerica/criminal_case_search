@@ -36,9 +36,6 @@
           .well.datashare-filter
             %form{action: "/"}
               %fieldset
-                -# %legend Filter
-              
-                -# %p= params[:filter][:borough].inspect
 
                 %fieldset.secondary
                   %legend.top Borough
@@ -63,57 +60,53 @@
                     %input{ type: "checkbox", name: "filter[borough][]", id: "borough-staten", value: "S", checked: params[:filter][:borough].try(:include?, "S")}
                     %label{ for: "borough-staten" } Staten Island
 
-                  .btn-group.pull-right
+                  .btn-group
                     %button.btn.inline.btn-mini.select-all All
                     %button.btn.inline.btn-mini.clear-all Clear
 
               %fieldset.secondary
-                %legend.top Charges
+                %legend.top Top Charge
 
                 %fieldset.tertiary
-                  %legend Top Charge
+                  %legend Severity
 
                   = build_radio_field("top-charge", "A", "Any")
                   = build_radio_field("top-charge", "X", "Violent Felony")
-                  = build_radio_field("top-charge", "F", "Felony")
+                  = build_radio_field("top-charge", "F", "Non-Violent Felony")
                   = build_radio_field("top-charge", "M", "Misdemeanor")
-                  = build_radio_field("top-charge", "V", "Violation")
-                  = build_radio_field("top-charge", "I", "Infraction")
+                  = build_radio_field("top-charge", "VI", "Violation/Infraction")
 
                 %fieldset.tertiary
-                  %legend Include Charge
+                  %legend Charge
 
                   = build_checkbox_field("include-charge", "D", "Drug Offense")
                   = build_checkbox_field("include-charge", "MA", "Misdemeanor Assault")
                   = build_checkbox_field("include-charge", "CC", "Criminal Contempt")
                   = build_checkbox_field("include-charge", "SO", "Sex Offense")
-
-                  .btn-group.pull-right
-                    %button.btn.inline.btn-mini.select-all All
-                    %button.btn.inline.btn-mini.clear-all Clear
+                  = build_checkbox_field("include-charge", "A", "All Other Offenses")
 
               %fieldset.secondary
                 %legend.top Age
                 
-                .slider.horiz-control
-                  %p
-                    %span.slider-display-min
-                    to
-                    %span.slider-display-max
-
-                  .slider-control
-                    %input.slider-data-min{ type: "hidden", name: "filter[min_age]", value: params[:filter][:min_age] || 16 }
-                    %input.slider-data-max{ type: "hidden", name: "filter[max_age]", value: params[:filter][:max_age] || 100 }
+                .age-selector
+                  .horiz-box
+                    %label{ for: "min_age" } Min. Age
+                    %input{ type: "number", name: "filter[min_age]", min: "16", max: "100", value: params[:filter][:min_age] || 16, id: "min_age" }
+                  .horiz-box
+                    %label{ for: "max_age" } Max. Age
+                    %input{ type: "number", name: "filter[max_age]", min: "16", max: "100", value: params[:filter][:max_age] || 100 }
 
               %fieldset.secondary.text-center
                 %legend.top Sex
                 
                 .text-center
                   .buttonset
-                    %input{ type: "checkbox", name: "filter[sex]", value: "m", id: "filter-sex-m" }
+                    %input{ type: "radio", name: "filter[sex]", value: "m", id: "filter-sex-m" }
                     %label{ for: "filter-sex-m" } Male
-                    %input{ type: "checkbox", name: "filter[sex]", value: "f", id: "filter-sex-f" }
+                    %input{ type: "radio", name: "filter[sex]", value: "f", id: "filter-sex-f" }
                     %label{ for: "filter-sex-f" } Female
+                    %input{ type: "radio", name: "filter[sex]", value: "f", id: "filter-sex-a", checked: "checked" }
+                    %label{ for: "filter-sex-a" } All
 
               %fieldset.secondary
                 %legend.top Criminal History
