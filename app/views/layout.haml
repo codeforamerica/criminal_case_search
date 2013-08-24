@@ -38,6 +38,11 @@
               %fieldset
 
                 %fieldset.secondary
+                  .pull-right
+                    %a.btn{href: "/"} Reset
+                    %button.btn.btn-primary{ type: "submit"} Search
+
+                %fieldset.secondary
                   %legend.top Borough
 
                   = build_checkbox_field("borough", "M", "Manhattan", :selected => true)
@@ -63,7 +68,7 @@
                   = build_radio_field("top-charge", "VI", "Violation/Infraction")
 
                 %fieldset.tertiary
-                  %legend Charge
+                  %legend Type
 
                   = build_checkbox_field("include-charge", "D", "Drug Offense")
                   = build_checkbox_field("include-charge", "MA", "Misdemeanor Assault")
@@ -125,7 +130,7 @@
                     %input.span3{ type: "number", value: "0", min: "0"  }
                     .btn-group
                       %button.btn.dropdown-toggle{ data: { toggle: "dropdown" } }
-                        or fewer
+                        or more
                         %span.caret
                       %ul.dropdown-menu
                         %li
@@ -164,12 +169,6 @@
 
                     %input{ type: "radio", name: "appearance-date", id: "appearance-date-any",  checked: "" }
                     %label{ for: "appearance-date-any" } Any
-
-              %fieldset
-                %legend
-                .pull-right
-                  %a.btn{href: "/"} Reset
-                  %button.btn.btn-primary{ type: "submit"} Search
 
         .span9
           = yield
