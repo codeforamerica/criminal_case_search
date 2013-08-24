@@ -40,25 +40,11 @@
                 %fieldset.secondary
                   %legend.top Borough
 
-                  .field
-                    %input{ type: "checkbox", name: "filter[borough][]", id: "borough-manhattan", value: "M", checked: params[:filter][:borough].try(:include?, "M") }
-                    %label{ for: "borough-manhattan" } Manhattan
-
-                  .field
-                    %input{ type: "checkbox", name: "filter[borough][]", id: "borough-brooklyn", value: "K", checked: params[:filter][:borough].try(:include?, "K") }
-                    %label{ for: "borough-brooklyn" } Brooklyn     
-
-                  .field
-                    %input{ type: "checkbox", name: "filter[borough][]", id: "borough-bronx", value: "B", checked: params[:filter][:borough].try(:include?, "B")}
-                    %label{ for: "borough-bronx" } Bronx
-
-                  .field
-                    %input{ type: "checkbox", name: "filter[borough][]", id: "borough-queens", value: "Q", checked: params[:filter][:borough].try(:include?, "Q") }
-                    %label{ for: "borough-queens" } Queens
-
-                  .field
-                    %input{ type: "checkbox", name: "filter[borough][]", id: "borough-staten", value: "S", checked: params[:filter][:borough].try(:include?, "S")}
-                    %label{ for: "borough-staten" } Staten Island
+                  = build_checkbox_field("borough", "M", "Manhattan", :selected => true)
+                  = build_checkbox_field("borough", "K", "Brooklyn", :selected => true)
+                  = build_checkbox_field("borough", "B", "Bronx", :selected => true)
+                  = build_checkbox_field("borough", "Q", "Queens", :selected => true)
+                  = build_checkbox_field("borough", "S", "Staten Island", :selected => true)
 
                   .btn-group
                     %button.btn.inline.btn-mini.select-all All
@@ -112,31 +98,40 @@
                 %legend.top Criminal History
 
                 %fieldset.tertiary.horizontal
-                  .span7
-                    %legend Has other open cases?
-                  .span5.pull-right
-                    = double_select("open-cases")
+                  %legend Has other open cases?
+                  = double_select("open-cases")
 
                 %fieldset.tertiary.horizontal
-                  .span7
-                    %legend Has failed to appear?
-                  .span5.pull-right
-                    = double_select("bench-warrants")
+                  %legend Has failed to appear?                  
+                  = double_select("bench-warrants")
 
                 %fieldset.tertiary
-                  %legend Number of Prior Criminal Convictions
+                  %legend Type of Prior Convictions
 
-                  .input-prepend
+                  = build_checkbox_field("prior-convictions", "D", "Drug Offense", :selected => true)
+                  = build_checkbox_field("prior-convictions", "S", "Sex Offense", :selected => true)
+                  = build_checkbox_field("prior-convictions", "MA", "Misdemeanor Assault", :selected => true)
+                  = build_checkbox_field("prior-convictions", "CC", "Criminal Contempt", :selected => true)
+                  = build_checkbox_field("prior-convictions", "A", "All Other Offenses", :selected => true)
+
+                  .btn-group
+                    %button.btn.inline.btn-mini.select-all All
+                    %button.btn.inline.btn-mini.clear-all Clear
+
+                %fieldset.tertiary
+                  %legend Number of Prior Convictions
+
+                  .input-append
+                    %input.span3{ type: "number", value: "0", min: "0"  }
                     .btn-group
                       %button.btn.dropdown-toggle{ data: { toggle: "dropdown" } }
-                        More than
+                        or fewer
                         %span.caret
                       %ul.dropdown-menu
                         %li
-                          %a More than
+                          %a or more
                         %li
-                          %a Less than
-                    %input.span3{ type: "number", value: "0", min: "0"  }
+                          %a or fewer
 
               %fieldset.secondary
                 %legend Next Court Appearance
