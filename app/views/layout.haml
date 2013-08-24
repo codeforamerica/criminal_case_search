@@ -185,10 +185,10 @@
                     %a Top Charge
                   %li
                     %a Next Court Date
-            .span2
+            .span3
               %span.results             
                 = @incidents.length
-            .span2
+            .span3
               %a{href: "/?format=csv&" + request.env['rack.request.query_string']} Export CSV
           .row-fluid
             = yield
