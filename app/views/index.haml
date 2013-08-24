@@ -26,10 +26,6 @@
               open case
           .span3.offset1
             %p.court-part= incident.next_court_part
-            %p.last-updated
-              Last updated
-              %span.updated-date
-                May 16
     .row-fluid
       = will_paginate @incidents, renderer: BootstrapPagination::Sinatra          
 
