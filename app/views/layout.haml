@@ -171,4 +171,24 @@
                     %label{ for: "appearance-date-any" } Any
 
         .span9
-          = yield
+          .row-fluid
+            .span3
+              Sort by:
+              .btn-group
+                %button.btn.dropdown-toggle{ data: { toggle: "dropdown" } }
+                  Defendant Name
+                  %span.caret
+                %ul.dropdown-menu
+                  %li
+                    %a Defendant Name
+                  %li
+                    %a Top Charge
+                  %li
+                    %a Next Court Date
+            .span2
+              %span.results             
+                = @incidents.length
+            .span2
+              %a{href: "/?format=csv&" + request.env['rack.request.query_string']} Export CSV
+          .row-fluid
+            = yield
