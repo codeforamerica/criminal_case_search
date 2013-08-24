@@ -3,29 +3,29 @@
     - @incidents.each do |incident|
       .incident
         .row-fluid
-          .span8
-            .row-fluid
-              %h3.name= "#{Faker::Name.last_name}, #{Faker::Name.first_name}" #incident.arrest_report.person_name
-              %p.docket-number= incident.docket_number
-          .span3
-            %h3.court-date= incident.next_court_date.strftime("%b %-d")
-            %span.court-date-note Next Court Date
+          .span5
+            %h3.name= "#{Faker::Name.last_name}, #{Faker::Name.first_name}" #incident.arrest_report.person_name
+          .span2
+            %p.docket-number= incident.docket_number
+          .span3.offset1
+            %p.court-part= incident.next_court_part            
         .row-fluid
           .span1
             %p.sex= incident.defendant_sex
             %p.age= incident.defendant_age
-          .span3
+          .span3.offset1
             %p.severity= incident.top_charge_code_expanded
             %p.charge-code= format_top_charge(incident)              
           .span3
-            %p.priors
-              %span.count 3
-              prior convictions
             %p.open-cases
               %span.count 1
-              open case
-          .span3.offset1
-            %p.court-part= incident.next_court_part
+              Open Case
+            %p.priors
+              %span.count 3
+              Prior Convictions
+          .span3
+            %p.court-date= incident.next_court_date.strftime("%b %-d")
+            %span.court-date-note Next Court Date
     .row-fluid
       = will_paginate @incidents, renderer: BootstrapPagination::Sinatra          
 

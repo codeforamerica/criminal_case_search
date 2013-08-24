@@ -59,7 +59,7 @@ html
 
   # Takes in an incident and tries to build a view around the top charge.
   def format_top_charge(incident)
-    return %Q(<span title="#{incident.charges.first[:description]}"><b>#{incident.charges.first[:agency_code]}</b> - #{incident.charges.first[:counts]} #{incident.charges.first[:counts] > 1 ? "counts" : "count"} </span>) unless incident.charges.blank?
+    return %Q(<span title="#{incident.charges.first[:description]}"><b>#{incident.charges.first[:agency_code]}</b></span>) unless incident.charges.blank?
   end
 
   def show_ror_recommendations(incident)
