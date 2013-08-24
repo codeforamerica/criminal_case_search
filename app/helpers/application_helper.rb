@@ -1,14 +1,14 @@
 module ApplicationHelper
-  def build_radio_field(name, value, label)
-    build_field("radio", name, value, label)
+  def build_radio_field(name, value, label, options = {})
+    build_field("radio", name, value, label, options)
   end
 
-  def build_checkbox_field(name, value, label)
-    build_field("checkbox", name, value, label)
+  def build_checkbox_field(name, value, label, options = {})
+    build_field("checkbox", name, value, label, options)
   end
 
   # LOL
-  def build_field(type, name, value, label)
+  def build_field(type, name, value, label, options = {})
     html = <<html
   <div class="field">
     <input type="#{type}"
@@ -17,14 +17,16 @@ module ApplicationHelper
            value="#{value}"
 html
 
-    if type == "checkbox"
-      if params[:filter][name].present?
-        html += params[:filter][name].include?(value) ? "checked" : ""
+    if params[:filter][name].present?
+      if params[:filter][name].include?(value)
+        html += " checked "
       end
+    elsif !!options[:selected] == true
+      html += " checked "
     else
-      html += params[:filter][name] == value ? "checked" : ""
+      ""
     end
-    
+
     html += ">" # Close the input tag.
 
     html += "<label for=\"#{name}-#{value}\">#{label}</label></div>"
@@ -50,6 +52,8 @@ html
 <label for="#{name}-disable"><span class="icon-ok">Yes</span></label>
 <input type="radio" name="filter[#{name}]" value="#{name}-enable" id="#{name}-enable">
 <label for="#{name}-enable"><span class="icon-minus">No</span></label>
+<input type="radio" name="filter[#{name}]" value="#{name}-all" id="#{name}-all" checked>
+<label for="#{name}-all"><span class="icon-minus">All</span></label>
 html
   end
 end
