@@ -187,7 +187,9 @@
                     %a Next Court Date
             .span3
               %span.results             
-                = @incidents.length
+                Found
+                %span.total-results= @incidents.total_entries
+                matching incidents.
             .span3
               %a{href: "/?format=csv&" + request.env['rack.request.query_string']} Export CSV
           .row-fluid
