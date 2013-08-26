@@ -5,9 +5,9 @@
         .row-fluid
           .span5
             %h3.name= "#{Faker::Name.last_name}, #{Faker::Name.first_name}" #incident.arrest_report.person_name
-          .span2
+          .span3
             %p.docket-number= incident.docket_number
-          .span3.offset1
+          .span3
             %p.court-part= incident.next_court_part            
         .row-fluid
           .span1
