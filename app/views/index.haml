@@ -5,10 +5,11 @@
         .row-fluid
           .span5
             %h3.name= "#{Faker::Name.last_name}, #{Faker::Name.first_name}" #incident.arrest_report.person_name
-          .span3
             %p.docket-number= incident.docket_number
           .span3
-            %p.court-part= incident.next_court_part            
+          .span3
+            %span.court-date-note Next Court Date
+            %h3.court-date= incident.next_court_date.strftime("%b %-d")
         .row-fluid
           .span1
             %p.sex= incident.defendant_sex
@@ -24,8 +25,7 @@
               %span.count 3
               Prior Convictions
           .span3
-            %p.court-date= incident.next_court_date.strftime("%b %-d")
-            %span.court-date-note Next Court Date
+            %p.court-part= incident.next_court_part            
     .row-fluid
       = will_paginate @incidents, renderer: BootstrapPagination::Sinatra          
 
