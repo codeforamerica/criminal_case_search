@@ -7,6 +7,12 @@
             %h3.name= "#{Faker::Name.last_name}, #{Faker::Name.first_name}" #incident.arrest_report.person_name
             %p.docket-number= incident.docket_number
           .span3
+            .disc
+              .disc-internal SO
+            .disc
+              .disc-internal VFO
+            .disc
+              .disc-internal N
           .span3
             %span.court-date-note Next Court Date
             %h3.court-date= incident.next_court_date.strftime("%b %-d")
