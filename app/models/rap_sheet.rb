@@ -29,7 +29,7 @@ class RapSheet
   field :has_prior_criminal_contempt_conviction, type: Boolean
   field :has_prior_sex_offense_conviction, type: Boolean
 
-  field :has_outstanding_bench_warrant, type: Boolean
+  field :has_outstanding_bench_warrant, type: Boolean #Todo
   field :persistent_misdemeanant, type: Boolean
   field :serving_probation, type: Boolean
   field :serving_parole, type: Boolean

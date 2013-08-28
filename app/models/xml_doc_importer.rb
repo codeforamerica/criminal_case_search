@@ -39,6 +39,7 @@ class XMLDocImporter
   end
 
   def self.node_to_hash(node)
+    # TODO: look at node.traverse(&block)
     hash = {}
     if node.children.count > 1
       hash[node.name] = node.children.collect { |child_node| XMLDocImporter.node_to_hash(child_node) }
