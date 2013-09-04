@@ -139,8 +139,26 @@ class Data < Thor
       }
       arrest_report = ArrestReport.create!(arrest_report_attributes)
 
-      #rap_sheet_attributes = {}
-      #rap_sheet = RapSheet.create!(rap_sheet_attributes)
+      number_of_prior_convictions = Random.rand(0..10)
+      rap_sheet_attributes = {
+        incident: incident,
+        arrest_id: arrest_id,
+        number_of_prior_criminal_convictions: number_of_prior_convictions,
+        has_prior_felony_conviction: number_of_prior_convictions > 0 ? [true, false].sample : false,
+        has_prior_violent_felony_conviction: number_of_prior_convictions > 0 ? [true, false].sample : false,
+        has_prior_misdemeanor_conviction: number_of_prior_convictions > 0 ? [true, false].sample : false,
+        has_other_open_cases: number_of_prior_convictions > 0 ? [true, false].sample : false,
+        has_failed_to_appear: number_of_prior_convictions > 0 ? [true, false].sample : false,
+        has_prior_drug_conviction: number_of_prior_convictions > 0 ? [true, false].sample : false,
+        has_prior_misdemeanor_assault_conviction: number_of_prior_convictions > 0 ? [true, false].sample : false,
+        has_prior_criminal_contempt_conviction: number_of_prior_convictions > 0 ? [true, false].sample : false,
+        has_prior_sex_offense_conviction: number_of_prior_convictions > 0 ? [true, false].sample : false,
+        has_outstanding_bench_warrant: number_of_prior_convictions > 0 ? [true, false].sample : false,
+        persistent_misdemeanant: number_of_prior_convictions > 5 ? [true, false].sample : false,
+        serving_probation: number_of_prior_convictions > 0 ? [true, false].sample : false,
+        serving_parole: number_of_prior_convictions > 0 ? [true, false].sample : false
+      }
+      rap_sheet = RapSheet.create!(rap_sheet_attributes)
 
       complaint_attributes = {
         incident: incident,
@@ -187,6 +205,7 @@ class Data < Thor
         "Midtown Community Court" => ["APAR6"],
         "Richmond County" => ["APAR1", "APAR4"],
         "Kings County" => ["APAR2", "APAR2/3A", "APAR1/3"],
+        "Redhook Community Court" => ["APAR6"],
         "Bronx County" => ["APAR2", "APAR1/3"],
         "Queens County" => ["AR2A", "APAR1/3", "APAR4/3"]
       }
@@ -201,7 +220,7 @@ class Data < Thor
         next_court_part: part
       }
       docketing_notice = DocketingNotice.create!(docketing_notice_attributes)
-      binding.pry
+      print "+"
     end
   end
 
