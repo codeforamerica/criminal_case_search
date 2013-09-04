@@ -1,6 +1,16 @@
 require_relative "config/environment"
 
+class SassHandler < Sinatra::Base   
+  set :views, File.dirname(__FILE__) + '/app/assets/stylesheets'
+    
+  get '/css/*.css' do
+    filename = params[:splat].first
+    sass filename.to_sym
+  end    
+end
+
 class DatashareFilter < Sinatra::Base
+  use SassHandler
   register Sinatra::Twitter::Bootstrap::Assets
   register WillPaginate::Sinatra
 
@@ -15,14 +25,23 @@ class DatashareFilter < Sinatra::Base
     puts params.inspect
     incident_scope = Incident.scoped
     params[:filter] = {} unless params[:filter]
-    if params[:filter][:borough] && params[:filter][:borough] != "A"
+
+    if params[:filter][:borough]
       incident_scope = incident_scope.borough(params[:filter][:borough])
     end
-    if params[:filter][:topcharge]
-      incident_scope = incident_scope.top_charge(%w(I V)) if params[:filter][:topcharge] == "Non-Criminal"
-      incident_scope = incident_scope.top_charge("M") if params[:filter][:topcharge] == "Misdemeanor"
-      incident_scope = incident_scope.top_charge("F") if params[:filter][:topcharge] == "Felony"
+
+    if params[:filter]["top-charge"].present?
+      top_charge = params[:filter]["top-charge"]
+      
+      # Check the top charge code and make sure it's one we allow.
+      # TODO: This should probably be in the model.
+      if %w(I V M F).include?(top_charge)        
+        incident_scope = incident_scope.top_charge(params[:filter]["top-charge"])
+      else
+        puts "Top charge '#{top_charge}' wasn't in the allowed charge list."                                                   
+      end
     end
+
     if params[:filter][:sex]
       incident_scope = incident_scope.defendant_sex("M") if params[:filter][:sex] == "Male"
       incident_scope = incident_scope.defendant_sex("F") if params[:filter][:sex] == "Female"

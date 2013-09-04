@@ -3,32 +3,14 @@
 %html
   %head
     %title Criminal Case Search
-    = bootstrap_assets
-    :css
-      body {
-        padding-top: 60px;
-        padding-bottom: 40px;
-      }
-      .datashare-filter {
-        padding: 9px;
-      }
-    :javascript
-      $(function(){
-        $('.more-or-less').each(function(i, el) {
-        console.log(el);
-          $(el).find("li a").click(function() {
-          $(el).find("button").html($(this).text() + ' <span class="caret"></span>');
-          $(el).find("input.more-or-less-type").val($(this).text()); 
-          });
-        });
-
-        $(".btn-group.buttons-radio").each(function(i, el) {
-          $(el).find("button").click(function() {
-            var hidden_field = $(el).find('input[type="hidden"]')
-            hidden_field.val($(this).text());
-          })
-        })
-      })
+    =# bootstrap_assets
+    %script{ src: "/jquery-ui-bootstrap/js/jquery-1.9.0.min.js" }
+    %script{ src: "/jquery-ui-bootstrap/js/jquery-ui-1.10.0.custom.min.js" }
+    %script{ src: "/jquery-ui-bootstrap/js/bootstrap.min.js" }
+    %script{ src: "/app.js" }
+    %link{ type: "text/css", rel: "stylesheet", href: "/jquery-ui-bootstrap/css/bootstrap.min.css" }
+    %link{ type: "text/css", rel: "stylesheet", href: "/jquery-ui-bootstrap/css/jquery-ui-1.10.0.custom.css" }
+    %link{ type: "text/css", rel: "stylesheet", href: "/css/app.css" }
 
   %body
     .navbar.navbar-inverse.navbar-fixed-top
@@ -39,102 +21,174 @@
             %span.icon-bar
             %span.icon-bar
           %a.brand{ href: "#"}
-            Criminal Case Search
-          .nav-collapse.collapse
-            %p.navbar-text.pull-right
-              Logged in as <a href="#" class="navbar-link">Username</a>
-            %ul.nav
-              %li.active
-                %a{ href: "/"}
-                  Home
+            %img{ src: "/images/logo.png", alt: "Criminal Case Search" }
+          -# .nav-collapse.collapse
+            -# %p.navbar-text.pull-
+            -# Logged in as <a href="#" class="navbar-link">Username</a>
+          -# %ul.nav
+            -# %li.active
+            -#   %a{ href: "/"}
+            -#     Home
 
     - container :fluid do
       .row-fluid
-        %span.span4
+        %span.span3
           .well.datashare-filter
             %form{action: "/"}
               %fieldset
-                %legend Filter Options
-                %select.input-xlarge{name: "filter[borough]", }
-                  %option{value: "A", selected: params[:filter][:borough] == "A"} All Boroughs
-                  %option{value: "B", selected: params[:filter][:borough] == "B"} Bronx
-                  %option{value: "K", selected: params[:filter][:borough] == "K"} Brooklyn
-                  %option{value: "M", selected: params[:filter][:borough] == "M"} Manhattan
-                  %option{value: "Q", selected: params[:filter][:borough] == "Q"} Queens
-                  %option{value: "S", selected: params[:filter][:borough] == "S"} Staten Island
-                -#%input.input-xlarge{ type: "text", placeholder: "Arrest ID"}
-                -#%span.help-block help text
-              %fieldset.inline
-                %label Top Charge
-                .btn-group.buttons-radio.topcharge{data: {toggle: "buttons-radio"}}
-                  %button.btn{type: "button", class: params[:filter][:topcharge] == nil || params[:filter][:topcharge] == "Any" ? "active" : ""  } Any
-                  %button.btn{type: "button", class: params[:filter][:topcharge] == "Non-Criminal" ? "active" : ""  } Non-Criminal
-                  %button.btn{type: "button", class: params[:filter][:topcharge] == "Misdemeanor" ? "active" : "" } Misdemeanor
-                  %button.btn{type: "button", class: params[:filter][:topcharge] == "Felony" ? "active" : "" } Felony
-                  %input.topcharge{type: "hidden", name: "filter[topcharge]", value: params[:filter][:topcharge] || "Any" }
 
-              %fieldset
-                %label Age
-                %input.inline.input-mini{name: "filter[min_age]", type: "text", placeholder: "Min Age", value: params[:filter][:min_age] }
-                &ndash;
-                %input.inline.input-mini{name: "filter[max_age]", type: "text", placeholder: "Max Age", value: params[:filter][:max_age] }
+                %fieldset.secondary
+                  .pull-right
+                    %a.btn{href: "/"} Reset
+                    %button.btn.btn-primary{ type: "submit"} Search
 
-              %fieldset
-                %label Sex
-                .btn-group.buttons-radio.sex{data: {toggle: "buttons-radio"}}
-                  %button.btn{type: "button", class: params[:filter][:sex] == nil || params[:filter][:sex] == "All" ? "active" : ""  } All
-                  %button.btn{type: "button", class: params[:filter][:sex] == "Male" ? "active" : "" } Male
-                  %button.btn{type: "button", class: params[:filter][:sex] == "Female" ? "active" : "" } Female
-                  %input.sex{type: "hidden", name: "filter[sex]", value: params[:filter][:sex] || "All" }
+                %fieldset.secondary
+                  %legend.top Borough
 
-              %fieldset
-                %label Previous Violent Felony Convictions
-                .input-append.more-or-less
-                  %input.input-mini{name: "filter[previous_violent_felony_convictions_number]", type: "text", value: params[:filter][:previous_violent_felony_convictions_number] }
-                  .btn-group.previous-convictions
-                    %button.btn.dropdown-toggle{"data-toggle" => "dropdown" }
-                      = params[:filter][:previous_violent_felony_convictions_type] || "or more"
-                      %span.caret
-                    %ul.dropdown-menu
-                      %li
-                        %a or more
-                      %li
-                        %a or less
-                    %input.more-or-less-type{name: "filter[previous_violent_felony_convictions_type]", type: "hidden", value: params[:filter][:previous_violent_felony_convictions_type] || "or more" }
+                  = build_checkbox_field("borough", "M", "Manhattan", :selected => true)
+                  = build_checkbox_field("borough", "K", "Brooklyn", :selected => true)
+                  = build_checkbox_field("borough", "B", "Bronx", :selected => true)
+                  = build_checkbox_field("borough", "Q", "Queens", :selected => true)
+                  = build_checkbox_field("borough", "S", "Staten Island", :selected => true)
 
-                %label Previous Felony Convictions
-                .input-append.more-or-less
-                  %input.input-mini{name: "filter[previous_felony_convictions_number]", type: "text", value: params[:filter][:previous_felony_convictions_number] }
-                  .btn-group.previous-convictions
-                    %button.btn.dropdown-toggle{"data-toggle" => "dropdown" }
-                      = params[:filter][:previous_felony_convictions_type] || "or more"
-                      %span.caret
-                    %ul.dropdown-menu
-                      %li
-                        %a or more
-                      %li
-                        %a or less
-                    %input.more-or-less-type{name: "filter[previous_felony_convictions_type]", type: "hidden", value: params[:filter][:previous_felony_convictions_type] || "or more" }
+                  .btn-group
+                    %button.btn.inline.btn-mini.select-all All
+                    %button.btn.inline.btn-mini.clear-all Clear
 
+              %fieldset.secondary
+                %legend.top Top Charge
 
+                %fieldset.tertiary
+                  %legend Severity
 
-                %label Previous Misdemeanor Convictions
-                .input-append.more-or-less
-                  %input.input-mini{name: "filter[previous_misdemeanor_convictions_number]", type: "text", value: params[:filter][:previous_misdemeanor_convictions_number] }
-                  .btn-group.previous-convictions
-                    %button.btn.dropdown-toggle{"data-toggle" => "dropdown" }
-                      = params[:filter][:previous_misdemeanor_convictions_type] || "or more"
-                      %span.caret
-                    %ul.dropdown-menu
-                      %li
-                        %a or more
-                      %li
-                        %a or less
-                    %input.more-or-less-type{name: "filter[previous_misdemeanor_convictions_type]", type: "hidden", value: params[:filter][:previous_misdemeanor_convictions_type] || "or more" }
+                  = build_radio_field("top-charge", "A", "Any")
+                  = build_radio_field("top-charge", "X", "Violent Felony")
+                  = build_radio_field("top-charge", "F", "Non-Violent Felony")
+                  = build_radio_field("top-charge", "M", "Misdemeanor")
+                  = build_radio_field("top-charge", "VI", "Violation/Infraction")
 
-              .form-actions
-                %button.btn.btn-primary{ type: "submit"} Filter
-                %a.btn{href: "/"} Reset
+                %fieldset.tertiary
+                  %legend Type
 
-        .span8
-          = yield
+                  = build_checkbox_field("include-charge", "D", "Drug Offense")
+                  = build_checkbox_field("include-charge", "MA", "Misdemeanor Assault")
+                  = build_checkbox_field("include-charge", "CC", "Criminal Contempt")
+                  = build_checkbox_field("include-charge", "SO", "Sex Offense")
+                  = build_checkbox_field("include-charge", "A", "All Other Offenses")
+
+              %fieldset.secondary
+                %legend.top Age
+                
+                .age-selector
+                  .horiz-box
+                    %label{ for: "min_age" } Min. Age
+                    %input{ type: "number", name: "filter[min_age]", min: "16", max: "100", value: params[:filter][:min_age] || 16, id: "min_age" }
+                  .horiz-box
+                    %label{ for: "max_age" } Max. Age
+                    %input{ type: "number", name: "filter[max_age]", min: "16", max: "100", value: params[:filter][:max_age] || 100 }
+
+              %fieldset.secondary.text-center
+                %legend.top Sex
+                
+                .text-center
+                  .buttonset
+                    %input{ type: "radio", name: "filter[sex]", value: "m", id: "filter-sex-m" }
+                    %label{ for: "filter-sex-m" } Male
+                    %input{ type: "radio", name: "filter[sex]", value: "f", id: "filter-sex-f" }
+                    %label{ for: "filter-sex-f" } Female
+                    %input{ type: "radio", name: "filter[sex]", value: "f", id: "filter-sex-a", checked: "checked" }
+                    %label{ for: "filter-sex-a" } All
+
+              %fieldset.secondary
+                %legend.top Criminal History
+
+                %fieldset.tertiary.horizontal
+                  %legend Has other open cases?
+                  = double_select("open-cases")
+
+                %fieldset.tertiary.horizontal
+                  %legend Has failed to appear?                  
+                  = double_select("bench-warrants")
+
+                %fieldset.tertiary
+                  %legend Type of Prior Convictions
+
+                  = build_checkbox_field("prior-convictions", "D", "Drug Offense", :selected => true)
+                  = build_checkbox_field("prior-convictions", "S", "Sex Offense", :selected => true)
+                  = build_checkbox_field("prior-convictions", "MA", "Misdemeanor Assault", :selected => true)
+                  = build_checkbox_field("prior-convictions", "CC", "Criminal Contempt", :selected => true)
+                  = build_checkbox_field("prior-convictions", "A", "All Other Offenses", :selected => true)
+
+                  .btn-group
+                    %button.btn.inline.btn-mini.select-all All
+                    %button.btn.inline.btn-mini.clear-all Clear
+
+                %fieldset.tertiary
+                  %legend Number of Prior Convictions
+
+                  .input-append
+                    %input.span3{ type: "number", value: "0", min: "0"  }
+                    .btn-group
+                      %button.btn.dropdown-toggle{ data: { toggle: "dropdown" } }
+                        or more
+                        %span.caret
+                      %ul.dropdown-menu
+                        %li
+                          %a or more
+                        %li
+                          %a or fewer
+
+              %fieldset.secondary
+                %legend Next Court Appearance
+                
+                %fieldset.tertiary
+                  %legend Type
+
+                  .buttonset
+                    %input{ type: "radio", name: "appearance-type", id: "appearance-type-pre-arraignment" }
+                    %label{ for: "appearance-type-pre-arraignment" } Pre-Arr.
+
+                    %input{ type: "radio", name: "appearance-type", id: "appearance-type-post-arraignment" }
+                    %label{ for: "appearance-type-post-arraignment" } Post-Arr.
+
+                    %input{ type: "radio", name: "appearance-type", id: "appearance-type-any", checked: "" }
+                    %label{ for: "appearance-type-any" } Any
+
+                %fieldset.tertiary
+                  %legend Date
+
+                  .buttonset
+                    %input{ type: "radio", name: "appearance-date", id: "appearance-date-today" }
+                    %label{ for: "appearance-date-today" } Today
+
+                    %input{ type: "radio", name: "appearance-date", id: "appearance-date-tomorrow" }
+                    %label{ for: "appearance-date-tomorrow" } Tomorrow
+
+                    %input{ type: "radio", name: "appearance-date", id: "appearance-date-week" }
+                    %label{ for: "appearance-date-week" } Week
+
+                    %input{ type: "radio", name: "appearance-date", id: "appearance-date-any",  checked: "" }
+                    %label{ for: "appearance-date-any" } Any
+
+        .span9
+          .row-fluid
+            .span3
+              Sort by:
+              .btn-group
+                %button.btn.dropdown-toggle{ data: { toggle: "dropdown" } }
+                  Defendant Name
+                  %span.caret
+                %ul.dropdown-menu
+                  %li
+                    %a Defendant Name
+                  %li
+                    %a Top Charge
+                  %li
+                    %a Next Court Date
+            .span3
+              %span.results             
+                = @incidents.length
+            .span3
+              %a{href: "/?format=csv&" + request.env['rack.request.query_string']} Export CSV
+          .row-fluid
+            = yield

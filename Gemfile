@@ -13,6 +13,7 @@ gem "nokogiri"
 
 # Views
 gem "haml"
+gem "sass"
 gem "sinatra-twitter-bootstrap", require: "sinatra/twitter-bootstrap"
 
 group :development do
