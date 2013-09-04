@@ -119,11 +119,13 @@ class Data < Thor
 
       incident = Incident.create!(arrest_id: arrest_id)
 
-      borough_to_precinct = {"Manhattan" => %w(1 5 6 7 9 10 13 14 17 18 19 20 22 23 24 25 26 28 30 32 33 34),
-                             "Staten Island" => %w(120 121 122 123),
-                             "Brooklyn" => %w(60 61 62 63 66 67 68 69 70 71 72 73 75 76 77 78 79 81 83 84 88 90 94),
-                             "Bronx" => %w(40 41 42 43 44 45 46 47 48 49 50 52),
-                             "Queens" => %w(100 101 102 103 104 105 106 107 108 109 110 111 112 113 114 115)}
+      borough_to_precinct = {
+        "Manhattan" => %w(1 5 6 7 9 10 13 14 17 18 19 20 22 23 24 25 26 28 30 32 33 34),
+        "Staten Island" => %w(120 121 122 123),
+        "Brooklyn" => %w(60 61 62 63 66 67 68 69 70 71 72 73 75 76 77 78 79 81 83 84 88 90 94),
+        "Bronx" => %w(40 41 42 43 44 45 46 47 48 49 50 52),
+        "Queens" => %w(100 101 102 103 104 105 106 107 108 109 110 111 112 113 114 115)
+      }
       arrest_report_attributes = {
         incident: incident,
         arrest_id: arrest_id,
@@ -165,23 +167,29 @@ class Data < Thor
       }
       ror_report = RorReport.create!(ror_report_attributes)
 
-      borough_to_docket_code = { "Manhattan" => "NY",
-                                 "Staten Island" => "RI",
-                                 "Brooklyn" => "KN",
-                                 "Bronx" => "BX",
-                                 "Queens" => "QN" }
+      borough_to_docket_code = {
+        "Manhattan" => "NY",
+        "Staten Island" => "RI",
+        "Brooklyn" => "KN",
+        "Bronx" => "BX",
+        "Queens" => "QN"
+      }
       #TODO: separate out Redhook and MCC cases out, and DATs
-      borough_to_courthouses = { "Manhattan" => ["New York County", "Midtown Community Court"],
-                                 "Staten Island" => ["Richmond County"],
-                                 "Brooklyn" => ["Kings County", "Redhook Community Court"],
-                                 "Bronx" => ["Bronx County"],
-                                 "Queens" => ["Queens County"] }
-      courthouses_to_parts = { "New York County" => ["APAR3", "APAR1"],
-                               "Midtown Community Court" => ["APAR6"],
-                               "Richmond County" => ["APAR1", "APAR4"],
-                               "Kings County" => ["APAR2", "APAR2/3A", "APAR1/3"],
-                               "Bronx County" => ["APAR2", "APAR1/3"],
-                               "Queens County" => ["AR2A", "APAR1/3", "APAR4/3"] }
+      borough_to_courthouses = {
+        "Manhattan" => ["New York County", "Midtown Community Court"],
+        "Staten Island" => ["Richmond County"],
+        "Brooklyn" => ["Kings County", "Redhook Community Court"],
+        "Bronx" => ["Bronx County"],
+        "Queens" => ["Queens County"]
+      }
+      courthouses_to_parts = {
+        "New York County" => ["APAR3", "APAR1"],
+        "Midtown Community Court" => ["APAR6"],
+        "Richmond County" => ["APAR1", "APAR4"],
+        "Kings County" => ["APAR2", "APAR2/3A", "APAR1/3"],
+        "Bronx County" => ["APAR2", "APAR1/3"],
+        "Queens County" => ["AR2A", "APAR1/3", "APAR4/3"]
+      }
       courthouse = borough_to_courthouses[borough].sample
       part = courthouses_to_parts[courthouse].sample
       docketing_notice_attributes = {
