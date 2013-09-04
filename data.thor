@@ -149,9 +149,21 @@ class Data < Thor
       complaint.set_attributes_based_on_charges
       complaint.save!
 
-
-      #ror_report_attributes = {}
-      #ror_report = RorReport.create!(ror_report_attributes)
+      ror_recommendations = [
+        "Not recommended for ROR",
+        "High risk for FTA",
+        "Recommended for ROR",
+        "Moderate risk for ROR",
+        "No recommendation",
+        "Interview incomplete",
+        "Defendant declined interview"
+      ]
+      ror_report_attributes = {
+        incident: incident,
+        arrest_id: arrest_id,
+        recommendations: [ror_recommendations.sample]
+      }
+      ror_report = RorReport.create!(ror_report_attributes)
 
       borough_to_docket_code = { "Manhattan" => "NY",
                                  "Staten Island" => "RI",
