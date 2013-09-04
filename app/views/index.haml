@@ -1,41 +1,33 @@
 - if @incidents.present?
-  %table.table
-    %thead
-      %tr
-        %th Defendant
-        %th Docket
-        %th Top Charge Severity
-        %th Top Charge
-        %th Gender
-        %th Age
-        %th Release Recommendation
-        %th Next Court Date
-        %th Next Court Part
-    %tbody
-      - @incidents.each do |incident|
-        %tr
-          %td
-            = "#{Faker::Name.last_name}, #{Faker::Name.first_name}" #incident.arrest_report.person_name
-          %td
-            = incident.docket_number
-          %td
-            = incident.top_charge_code_expanded
-          %td
-            = %Q(<span title="#{incident.top_charge["description"]}"><b>#{incident.top_charge["agency_code"]}</b> - #{incident.top_charge["counts"]} #{incident.top_charge["counts"] > 1 ? "counts" : "count"} </span>) unless incident.charges.blank?
-          %td
-            = incident.defendant_sex
-          %td
-            = incident.defendant_age
-          %td
-            = incident.ror_report.try { |r| r.recommendations.map { |x| x.capitalize }.join(", ") }
-          %td
-            = incident.next_court_date.strftime("%b %-d")
-          %td
-            = incident.next_court_part
-    %tfoot
-      %tr
-        %td{colspan: "9"}
-          = will_paginate @incidents, renderer: BootstrapPagination::Sinatra
-          %a{href: "/?format=csv&" + request.env['rack.request.query_string']} Export CSV
+  #incidents.span9
+    - @incidents.each do |incident|
+      .incident
+        .row-fluid
+          .span5
+            %h3.name= "#{Faker::Name.last_name}, #{Faker::Name.first_name}" #incident.arrest_report.person_name
+          .span2
+            %p.docket-number= incident.docket_number
+          .span3.offset1
+            %p.court-part= incident.next_court_part            
+        .row-fluid
+          .span1
+            %p.sex= incident.defendant_sex
+            %p.age= incident.defendant_age
+          .span3.offset1
+            %p.severity= incident.top_charge_code_expanded
+            %p.charge-code= format_top_charge(incident)              
+          .span3
+            %p.open-cases
+              %span.count 1
+              Open Case
+            %p.priors
+              %span.count 3
+              Prior Convictions
+          .span3
+            %p.court-date= incident.next_court_date.strftime("%b %-d")
+            %span.court-date-note Next Court Date
+    .row-fluid
+      = will_paginate @incidents, renderer: BootstrapPagination::Sinatra          
+
 - else
   No cases found.
