@@ -103,6 +103,62 @@ class Data < Thor
     Incident.where(:complaint.exists => false).destroy_all
   end
 
+  desc "generate_samples [N]", "Generate N sample Incidents. Defaults to 100 samples."
+  def generate_samples(n = 100)
+    sample_charges = JSON.parse(File.read("fixtures/charges.json"))
+
+    n.to_i.times do
+      borough_code = %w(M S K B Q).sample
+      borough_code_to_name = {"M" => "Manhattan", "S" => "Staten Island", "K" => "Brooklyn", "B" => "Bronx", "Q" => "Queens"}
+      borough = borough_code_to_name[borough_code]
+
+      arrest_id = borough_code + Random.rand(10000000...30000000).to_s
+      while Incident.where(arrest_id: arrest_id).count > 0
+        arrest_id = borough_code + Random.rand(10000000...30000000).to_s
+      end
+
+      incident = Incident.create!(arrest_id: arrest_id)
+
+      borough_to_precinct = {"Manhattan" => %w(1 5 6 7 9 10 13 14 17 18 19 20 22 23 24 25 26 28 30 32 33 34),
+                             "Staten Island" => %w(120 121 122 123),
+                             "Brooklyn" => %w(60 61 62 63 66 67 68 69 70 71 72 73 75 76 77 78 79 81 83 84 88 90 94),
+                             "Bronx" => %w(40 41 42 43 44 45 46 47 48 49 50 52),
+                             "Queens" => %w(100 101 102 103 104 105 106 107 108 109 110 111 112 113 114 115)}
+      arrest_report_attributes = {
+        incident: incident,
+        arrest_id: arrest_id,
+        borough: borough,
+        defendant_first_name: Faker::Name.first_name,
+        defendant_last_name: Faker::Name.last_name,
+        defendant_sex: ["M","F"].sample,
+        defendant_age: Random.rand(18..65),
+        precinct: borough_to_precinct[borough].sample,
+        desk_appearance_ticket: [true, false].sample
+      }
+      arrest_report = ArrestReport.create!(arrest_report_attributes)
+
+      #rap_sheet_attributes = {}
+      #rap_sheet = RapSheet.create!(rap_sheet_attributes)
+
+      complaint_attributes = {
+        incident: incident,
+        arrest_id: arrest_id,
+        charges: sample_charges.sample
+      }
+      complaint = Complaint.new(complaint_attributes)
+      complaint.set_attributes_based_on_charges
+      complaint.save!
+
+
+      binding.pry
+      #ror_report_attributes = {}
+      #ror_report = RorReport.create!(ror_report_attributes)
+
+      #docketing_notice_attributes = {}
+      #docketing_notice = DocketingNotice.create!(docketing_notice_attributes)
+    end
+  end
+
   private
 
   def load_data(model, dir, incidents = nil)
