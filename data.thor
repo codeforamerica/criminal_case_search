@@ -126,6 +126,7 @@ class Data < Thor
         "Bronx" => %w(40 41 42 43 44 45 46 47 48 49 50 52),
         "Queens" => %w(100 101 102 103 104 105 106 107 108 109 110 111 112 113 114 115)
       }
+      dat = [true, false].sample
       arrest_report_attributes = {
         incident: incident,
         arrest_id: arrest_id,
@@ -135,7 +136,8 @@ class Data < Thor
         defendant_sex: ["M","F"].sample,
         defendant_age: Random.rand(18..65),
         precinct: borough_to_precinct[borough].sample,
-        desk_appearance_ticket: [true, false].sample
+        desk_appearance_ticket: dat,
+        desk_appearance_ticket_court_date: dat ? Random.rand(0..10).days.from_today : nil
       }
       arrest_report = ArrestReport.create!(arrest_report_attributes)
 
