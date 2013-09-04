@@ -211,10 +211,14 @@ class Data < Thor
       }
       courthouse = borough_to_courthouses[borough].sample
       part = courthouses_to_parts[courthouse].sample
+      docket_number = "#{Date.today.year}#{borough_to_docket_code[borough]}#{sprintf("%06d",Random.rand(050000..200000))}"
+      while Incident.where(docket_number: docket_number).count > 0
+        docket_number = "#{Date.today.year}#{borough_to_docket_code[borough]}#{sprintf("%06d",Random.rand(050000..200000))}"
+      end
       docketing_notice_attributes = {
         incident: incident,
         arrest_id: arrest_id,
-        docket_number: "#{Date.today.year}#{borough_to_docket_code[borough]}#{sprintf("%06d",Random.rand(050000..200000))}",
+        docket_number: docket_number,
         next_court_date: Random.rand(1..8).days.from_now,
         next_courthouse: courthouse,
         next_court_part: part
