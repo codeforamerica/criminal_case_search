@@ -81,8 +81,6 @@ class Incident
   def charges
     if complaint.present?
       complaint.try(:charges)
-    else
-      rap_sheet.try(:charge_info)
     end
   end
 
