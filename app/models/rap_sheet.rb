@@ -13,10 +13,6 @@ class RapSheet
   field :defendant_sex, type: String
   validates :defendant_sex, inclusion: { in: %w(M F), allow_nil: true}
 
-  # Supercedes Complaint (?)
-  #field :top_charge_code, type: String
-  #field :charges, type: Array
-
   field :number_of_prior_criminal_convictions, type: Integer
   field :has_prior_felony_conviction, type: Boolean
   field :has_prior_violent_felony_conviction, type: Boolean
@@ -110,10 +106,10 @@ class RapSheet
       end
     elsif importer.namespaces.keys.include?("xmlns:nysIIIRap")
       # rs.arrest_id = importer.attribute_from_xpath("/nysIIIRap:IIILateResponse/nys:TransactionData/nys:Arrest/nc:ActivityIdentification/nc:IdentificationID")
-      # Ignoring interstate rap sheets.
+      # TODO: Ignoring interstate rap sheets.
     elsif importer.namespaces.keys.include?("xmlns:nysNCICRap")
       # rs.arrest_id = importer.attribute_from_xpath("/nysNCICRap:NCICLateResponse/nys:TransactionData/nys:Arrest/nc:ActivityIdentification/nc:IdentificationID")
-      # Ignoring NCIC rap sheets.
+      # TODO: Ignoring NCIC rap sheets.
     else
       raise UnknownRapSheetFormatException
     end
