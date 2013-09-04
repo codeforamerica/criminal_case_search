@@ -150,12 +150,38 @@ class Data < Thor
       complaint.save!
 
 
-      binding.pry
       #ror_report_attributes = {}
       #ror_report = RorReport.create!(ror_report_attributes)
 
-      #docketing_notice_attributes = {}
-      #docketing_notice = DocketingNotice.create!(docketing_notice_attributes)
+      borough_to_docket_code = { "Manhattan" => "NY",
+                                 "Staten Island" => "RI",
+                                 "Brooklyn" => "KN",
+                                 "Bronx" => "BX",
+                                 "Queens" => "QN" }
+      #TODO: separate out Redhook and MCC cases out, and DATs
+      borough_to_courthouses = { "Manhattan" => ["New York County", "Midtown Community Court"],
+                                 "Staten Island" => ["Richmond County"],
+                                 "Brooklyn" => ["Kings County", "Redhook Community Court"],
+                                 "Bronx" => ["Bronx County"],
+                                 "Queens" => ["Queens County"] }
+      courthouses_to_parts = { "New York County" => ["APAR3", "APAR1"],
+                               "Midtown Community Court" => ["APAR6"],
+                               "Richmond County" => ["APAR1", "APAR4"],
+                               "Kings County" => ["APAR2", "APAR2/3A", "APAR1/3"],
+                               "Bronx County" => ["APAR2", "APAR1/3"],
+                               "Queens County" => ["AR2A", "APAR1/3", "APAR4/3"] }
+      courthouse = borough_to_courthouses[borough].sample
+      part = courthouses_to_parts[courthouse].sample
+      docketing_notice_attributes = {
+        incident: incident,
+        arrest_id: arrest_id,
+        docket_number: "#{Date.today.year}#{borough_to_docket_code[borough]}#{sprintf("%06d",Random.rand(050000..200000))}",
+        next_court_date: Random.rand(1..8).days.from_now,
+        next_courthouse: courthouse,
+        next_court_part: part
+      }
+      docketing_notice = DocketingNotice.create!(docketing_notice_attributes)
+      binding.pry
     end
   end
 
