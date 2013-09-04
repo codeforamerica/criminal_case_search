@@ -35,38 +35,15 @@ class Complaint
 
       c.incident = Incident.find_or_initialize_by(arrest_id: c.arrest_id)
       c.charges = defendant_node.xpath("next:ComplaintCharge", importer.namespaces).map do |charge_node|
-        charge = { category: charge_node.xpath("j:ChargeCategoryDescriptionText", importer.namespaces).first.content,
-                   counts: charge_node.xpath("j:ChargeCountQuantity", importer.namespaces).first.content.to_i,
-                   description: charge_node.xpath("j:ChargeDescriptionText", importer.namespaces).first.content,
-                   attempted: charge_node.xpath("next:NYCChargeAugmentation/next:ChargeApplicabilityAttemptedIndicator", importer.namespaces).first.content,
-                   agency_code: charge_node.xpath("next:NYCChargeAugmentation/next:ChargeAgencyCode", importer.namespaces).first.content
-                 }
-
-        if charge[:agency_code] =~ /PL (110\/)?220/
-          c.drug_charge = true
-        end
-
-        if charge[:agency_code] =~ /PL (110\/)?120\.00/
-          c.misdemeanor_assault_charge = true
-        end
-
-        if charge[:agency_code] =~ /PL (110\/)?(215.50|215.51|215.52)/
-          c.criminal_contempt_charge = true
-        end
-
-        if charge[:agency_code] =~ /PL (110\/)?130/
-          c.sex_offense_charge = true
-        end
-
-        charge
+        { "category" => charge_node.xpath("j:ChargeCategoryDescriptionText", importer.namespaces).first.content,
+          "counts" => charge_node.xpath("j:ChargeCountQuantity", importer.namespaces).first.content.to_i,
+          "description" => charge_node.xpath("j:ChargeDescriptionText", importer.namespaces).first.content,
+          "attempted" => charge_node.xpath("next:NYCChargeAugmentation/next:ChargeApplicabilityAttemptedIndicator", importer.namespaces).first.content,
+          "agency_code" => charge_node.xpath("next:NYCChargeAugmentation/next:ChargeAgencyCode", importer.namespaces).first.content
+        }
       end
 
-      if Complaint.violent_felony_offense?(c.charges.first)
-        c.top_charge_code = "VF"
-      else
-        c.top_charge_code = c.charges.first[:category]
-      end
-
+      c.set_attributes_based_on_charges
       #c.complaint_image = importer.attribute_from_xpath("/nc:DocumentBinary/nc:BinaryBase64Object") do |b64|
         #tiff_filename = "/tmp/#{c.arrest_id}.tiff"
         #pdf_filename = "/tmp/#{c.arrest_id}.pdf"
@@ -92,18 +69,44 @@ class Complaint
     complaints
   end
 
+  def set_attributes_based_on_charges
+    if Complaint.violent_felony_offense?(self.charges.first)
+      self.top_charge_code = "VF"
+    else
+      self.top_charge_code = self.charges.first["category"]
+    end
+
+    self.charges.each do |charge|
+      if charge["agency_code"] =~ /PL (110\/)?220/
+        self.drug_charge = true
+      end
+
+      if charge["agency_code"] =~ /PL (110\/)?120\.00/
+        self.misdemeanor_assault_charge = true
+      end
+
+      if charge["agency_code"] =~ /PL (110\/)?(215.50|215.51|215.52)/
+        self.criminal_contempt_charge = true
+      end
+
+      if charge["agency_code"] =~ /PL (110\/)?130/
+        self.sex_offense_charge = true
+      end
+    end
+  end
+
   def top_charge
     charges.first
   end
 
   def self.violent_felony_offense?(charge)
-    if charge[:attempted] == "true"
+    if charge["attempted"] == "true"
       ATTEMPTED_VFOS.each do |vfo|
-        return true if charge[:agency_code] =~ /PL (110\/)?#{Regexp.quote(vfo)}/i
+        return true if charge["agency_code"] =~ /PL (110\/)?#{Regexp.quote(vfo)}/i
       end
     else
       VFOS.each do |vfo|
-        return true if charge[:agency_code] =~ /PL #{Regexp.quote(vfo)}/i
+        return true if charge["agency_code"] =~ /PL #{Regexp.quote(vfo)}/i
       end
     end
     false
