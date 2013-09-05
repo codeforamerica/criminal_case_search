@@ -47,13 +47,13 @@ html
 
   def double_select(name)
 <<html
-<div class="double-select">
-<input type="radio" name="filter[#{name}]" value="#{name}-disable" id="#{name}-disable">
-<label for="#{name}-disable"><span class="icon-ok">Yes</span></label>
-<input type="radio" name="filter[#{name}]" value="#{name}-enable" id="#{name}-enable">
-<label for="#{name}-enable"><span class="icon-minus">No</span></label>
-<input type="radio" name="filter[#{name}]" value="#{name}-all" id="#{name}-all" checked>
-<label for="#{name}-all"><span class="icon-minus">All</span></label>
+<div class="btn-group double-select">
+<input type="hidden" name="filter[#{name}]" value="#{name}-disable" id="#{name}-disable">
+<label class="btn" for="#{name}-disable"><span>Yes</span></label>
+<input type="hidden" name="filter[#{name}]" value="#{name}-enable" id="#{name}-enable">
+<label class="btn" for="#{name}-enable"><span>No</span></label>
+<input type="hidden" name="filter[#{name}]" value="#{name}-all" id="#{name}-all">
+<label class="btn active" for="#{name}-all"><span>All</span></label>
 html
   end
 
