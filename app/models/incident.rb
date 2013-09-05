@@ -60,6 +60,9 @@ class Incident
   # From CJA Report
   field :recommendations, type: Array
 
+  #From ArresteeTracking
+  field :arraigned, type: Boolean
+
   scope :borough, ->(borough_name) { any_in(borough: borough_name) }
   scope :defendant_sex, ->(sex_code) { where(defendant_sex: sex_code) }
   scope :defendant_age_lte, ->(max_age) { lte(:defendant_age => max_age) }
@@ -73,7 +76,7 @@ class Incident
   scope :has_failed_to_appear, where(has_failed_to_appear: true)
   scope :number_of_prior_criminal_convictions_gte, ->(min) { gte(number_of_prior_criminal_convictions: min) }
   scope :number_of_prior_criminal_convictions_lte, ->(max) { lte(number_of_prior_criminal_convictions: max) }
-  scope :pre_arraignment, where(next_court_date_is_arraignment: true)
+  scope :pre_arraignment, where(next_court_date_is_arraignment: true) # or where arraigned == false
   scope :post_arraignment, ne(next_court_date_is_arraignment: true)
   scope :next_court_date_is, ->(date) { where(next_court_date: date) }
   scope :next_court_date_between, ->(start_date, end_date) { between(next_court_date: start_date...end_date) }
