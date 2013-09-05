@@ -7,34 +7,22 @@ $(function(){
     });
   });
 
-  // $("#select-sex").buttonset();
-  // $(".triple-select, .double-select, .buttonset").buttonset();
-  // $(".spinner").spinner();
+  $(".formify").each(function (_, element) {
+    var value = $(element).find("[data-selected='true']").first().addClass("active").data("value");
+    $(element).append('<input class="formify-value" type="hidden" name="' + $(this).data('name') + '" value="' + value + '" >');
+  });
+
+  $(".formify .btn").click(function () {
+    $(this).addClass("active");
+    var val = $(this).data("value");
+    var input = $(this).parent().find(".formify-value")
+    console.log(val)
+    $(input).val(val)
+  });
 
   $(".incident").click(function() {
     $(this).toggleClass("selected");
   });
-
-  // (function(element) {
-  //   var update_label = function(event, ui) {
-  //     element.find(".slider-display-min").text(ui.values[0]);
-  //     element.find(".slider-data-min").val(ui.values[0]);
-  //     element.find(".slider-display-max").text(ui.values[1]);
-  //     element.find(".slider-data-max").val(ui.values[1]);
-  //   }
-
-  //   var slider_min = element.find(".slider-data-min").val();
-  //   var slider_max = element.find(".slider-data-max").val();
-  //   update_label(null, { values: [ slider_min, slider_max ] });
-
-  //   element.find('.slider-control').slider({
-  //     range: true,
-  //     min: 16,
-  //     max: 100,
-  //     values: [ slider_min, slider_max ],
-  //     slide: update_label
-  //   });
-  // })($(".slider"));
 
   $(".select-all").click(function(event) {
     $(event.target).parent().parent().find("input").prop("checked", true);

@@ -3,24 +3,17 @@
 %html
   %head
     %title Criminal Case Search
-    -# = bootstrap_assets
 
     %script{ src: "/jquery-2.0.3.min.js" }
 
     %script{ src: "/bootstrap/js/bootstrap.min.js" }
     %link{ type: "text/css", rel: "stylesheet", href: "/bootstrap/css/bootstrap.min.css" }
 
-    -# %script{ src: "/jquery-ui-bootstrap/js/jquery-1.9.0.min.js" }
-    -# %script{ src: "/jquery-ui-bootstrap/js/jquery-ui-1.10.0.custom.min.js" }
-    -# %script{ src: "/jquery-ui-bootstrap/js/bootstrap.min.js" }    
-    -# %link{ type: "text/css", rel: "stylesheet", href: "/jquery-ui-bootstrap/css/bootstrap.min.css" }
-    -# %link{ type: "text/css", rel: "stylesheet", href: "/jquery-ui-bootstrap/css/jquery-ui-1.10.0.custom.css" }
-
     %script{ src: "/app.js" }
     %link{ type: "text/css", rel: "stylesheet", href: "/css/app.css" }
 
   %body
-    .navbar.navbar-inverse.navbar-fixed-top
+    .navbar.navbar-inverse.navbar-static-top
       .navbar-inner
         .container-fluid
           %button.btn.btn-navbar{ type: "button", "data-toggle" => "collapse", "data-target" => ".nav-collapse"}
@@ -29,13 +22,6 @@
             %span.icon-bar
           %a.brand{ href: "#"}
             %img{ src: "/images/logo.png", alt: "Criminal Case Search" }
-          -# .nav-collapse.collapse
-            -# %p.navbar-text.pull-
-            -# Logged in as <a href="#" class="navbar-link">Username</a>
-          -# %ul.nav
-            -# %li.active
-            -#   %a{ href: "/"}
-            -#     Home
 
     - container :fluid do
       .row-fluid
@@ -162,37 +148,19 @@
                 %fieldset.tertiary
                   %legend Type
 
-                  .btn-group{ data: { toggle: "buttons-radio" } }
-                    %input{ type: "hidden", name: "appearance-type", id: "appearance-type-pre-arraignment" }
-                    %label.btn{ for: "appearance-type-pre-arraignment" } Pre-Arr.
-
-                    %input{ type: "hidden", name: "appearance-type", id: "appearance-type-post-arraignment" }
-                    %label.btn{ for: "appearance-type-post-arraignment" } Post-Arr.
-
-                    %input{ type: "hidden", name: "appearance-type", id: "appearance-type-any", checked: "" }
-                    %label.btn.active{ for: "appearance-type-any" } Any
+                  .formify.btn-group{ data: { toggle: "buttons-radio", name: "appearance-type" } }
+                    %button.btn{ type: "button", data: { value: "any", selected: "true" } } Any
+                    %button.btn{ type: "button", data: { value: "pre-arr" } } Pre-Arr.
+                    %button.btn{ type: "button", data: { value: "post-arr" } } Post-Arr.
 
                 %fieldset.tertiary
                   %legend Date
                   
-                  #date-select.btn-group.btn-group-vertical{ data: { toggle: "buttons-radio" } }
-                    %button.btn.active{ type: "button" } Any
-                    %button.btn{ type: "button" } Today
-                    %button.btn{ type: "button" } Tomorrow
-                    %button.btn{ type: "button" } Next 7 Days
-
-                  -# .buttonset
-                  -#   %input{ type: "radio", name: "appearance-date", id: "appearance-date-today" }
-                  -#   %label{ for: "appearance-date-today" } Today
-
-                  -#   %input{ type: "radio", name: "appearance-date", id: "appearance-date-tomorrow" }
-                  -#   %label{ for: "appearance-date-tomorrow" } Tomorrow
-
-                  -#   %input{ type: "radio", name: "appearance-date", id: "appearance-date-week" }
-                  -#   %label{ for: "appearance-date-week" } Next 7 Days
-
-                  -#   %input{ type: "radio", name: "appearance-date", id: "appearance-date-any",  checked: "" }
-                  -#   %label{ for: "appearance-date-any" } Any
+                  .formify.btn-group.btn-group-vertical{ data: { toggle: "buttons-radio", name: "date" } }
+                    %button.btn{ type: "button", data: { value: "any", selected: "true" } } Any
+                    %button.btn{ type: "button", data: { value: "today" } } Today
+                    %button.btn{ type: "button", data: { value: "tomorrow" } } Tomorrow
+                    %button.btn{ type: "button", data: { value: "7-day" } } Next 7 Days
 
         .span9
           .row-fluid
