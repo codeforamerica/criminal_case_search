@@ -10,9 +10,9 @@ class SassHandler < Sinatra::Base
 end
 
 class DatashareFilter < Sinatra::Base
-  use SassHandler
   register Sinatra::Twitter::Bootstrap::Assets
   register WillPaginate::Sinatra
+  use SassHandler
 
   WillPaginate.per_page = 15
 

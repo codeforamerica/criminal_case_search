@@ -3,13 +3,20 @@
 %html
   %head
     %title Criminal Case Search
-    =# bootstrap_assets
-    %script{ src: "/jquery-ui-bootstrap/js/jquery-1.9.0.min.js" }
-    %script{ src: "/jquery-ui-bootstrap/js/jquery-ui-1.10.0.custom.min.js" }
-    %script{ src: "/jquery-ui-bootstrap/js/bootstrap.min.js" }
+    -# = bootstrap_assets
+
+    %script{ src: "/jquery-2.0.3.min.js" }
+
+    %script{ src: "/bootstrap/js/bootstrap.min.js" }
+    %link{ type: "text/css", rel: "stylesheet", href: "/bootstrap/css/bootstrap.min.css" }
+
+    -# %script{ src: "/jquery-ui-bootstrap/js/jquery-1.9.0.min.js" }
+    -# %script{ src: "/jquery-ui-bootstrap/js/jquery-ui-1.10.0.custom.min.js" }
+    -# %script{ src: "/jquery-ui-bootstrap/js/bootstrap.min.js" }    
+    -# %link{ type: "text/css", rel: "stylesheet", href: "/jquery-ui-bootstrap/css/bootstrap.min.css" }
+    -# %link{ type: "text/css", rel: "stylesheet", href: "/jquery-ui-bootstrap/css/jquery-ui-1.10.0.custom.css" }
+
     %script{ src: "/app.js" }
-    %link{ type: "text/css", rel: "stylesheet", href: "/jquery-ui-bootstrap/css/bootstrap.min.css" }
-    %link{ type: "text/css", rel: "stylesheet", href: "/jquery-ui-bootstrap/css/jquery-ui-1.10.0.custom.css" }
     %link{ type: "text/css", rel: "stylesheet", href: "/css/app.css" }
 
   %body
@@ -91,13 +98,13 @@
                 %legend.top Sex
                 
                 .text-center
-                  .buttonset
-                    %input{ type: "radio", name: "filter[sex]", value: "m", id: "filter-sex-m" }
-                    %label{ for: "filter-sex-m" } Male
-                    %input{ type: "radio", name: "filter[sex]", value: "f", id: "filter-sex-f" }
-                    %label{ for: "filter-sex-f" } Female
-                    %input{ type: "radio", name: "filter[sex]", value: "f", id: "filter-sex-a", checked: "checked" }
-                    %label{ for: "filter-sex-a" } All
+                  .btn-group
+                    %input{ type: "hidden", name: "filter[sex]", value: "m", id: "filter-sex-m" }
+                    %label.btn{ for: "filter-sex-m" } Male
+                    %input{ type: "hidden", name: "filter[sex]", value: "f", id: "filter-sex-f" }
+                    %label.btn{ for: "filter-sex-f" } Female
+                    %input{ type: "hidden", name: "filter[sex]", value: "f", id: "filter-sex-a", checked: "checked" }
+                    %label.btn.active{ for: "filter-sex-a" } All
 
               %fieldset.secondary
                 %legend.top Criminal History
@@ -138,37 +145,54 @@
                         %li
                           %a or fewer
 
+                  %fieldset.tertiary
+                    %legend CJA Score
+
+                    = build_checkbox_field("cja-score", "x", "x")
+                    = build_checkbox_field("cja-score", "x", "x")
+                    = build_checkbox_field("cja-score", "x", "x")
+
+                  .btn-group
+                    %button.btn.inline.btn-mini.select-all All
+                    %button.btn.inline.btn-mini.clear-all Clear
+
               %fieldset.secondary
                 %legend Next Court Appearance
                 
                 %fieldset.tertiary
                   %legend Type
 
-                  .buttonset
-                    %input{ type: "radio", name: "appearance-type", id: "appearance-type-pre-arraignment" }
-                    %label{ for: "appearance-type-pre-arraignment" } Pre-Arr.
+                  .btn-group{ data: { toggle: "buttons-radio" } }
+                    %input{ type: "hidden", name: "appearance-type", id: "appearance-type-pre-arraignment" }
+                    %label.btn{ for: "appearance-type-pre-arraignment" } Pre-Arr.
 
-                    %input{ type: "radio", name: "appearance-type", id: "appearance-type-post-arraignment" }
-                    %label{ for: "appearance-type-post-arraignment" } Post-Arr.
+                    %input{ type: "hidden", name: "appearance-type", id: "appearance-type-post-arraignment" }
+                    %label.btn{ for: "appearance-type-post-arraignment" } Post-Arr.
 
-                    %input{ type: "radio", name: "appearance-type", id: "appearance-type-any", checked: "" }
-                    %label{ for: "appearance-type-any" } Any
+                    %input{ type: "hidden", name: "appearance-type", id: "appearance-type-any", checked: "" }
+                    %label.btn.active{ for: "appearance-type-any" } Any
 
                 %fieldset.tertiary
                   %legend Date
+                  
+                  #date-select.btn-group.btn-group-vertical{ data: { toggle: "buttons-radio" } }
+                    %button.btn.active{ type: "button" } Any
+                    %button.btn{ type: "button" } Today
+                    %button.btn{ type: "button" } Tomorrow
+                    %button.btn{ type: "button" } Next 7 Days
 
-                  .buttonset
-                    %input{ type: "radio", name: "appearance-date", id: "appearance-date-today" }
-                    %label{ for: "appearance-date-today" } Today
+                  -# .buttonset
+                  -#   %input{ type: "radio", name: "appearance-date", id: "appearance-date-today" }
+                  -#   %label{ for: "appearance-date-today" } Today
 
-                    %input{ type: "radio", name: "appearance-date", id: "appearance-date-tomorrow" }
-                    %label{ for: "appearance-date-tomorrow" } Tomorrow
+                  -#   %input{ type: "radio", name: "appearance-date", id: "appearance-date-tomorrow" }
+                  -#   %label{ for: "appearance-date-tomorrow" } Tomorrow
 
-                    %input{ type: "radio", name: "appearance-date", id: "appearance-date-week" }
-                    %label{ for: "appearance-date-week" } Next 7 Days
+                  -#   %input{ type: "radio", name: "appearance-date", id: "appearance-date-week" }
+                  -#   %label{ for: "appearance-date-week" } Next 7 Days
 
-                    %input{ type: "radio", name: "appearance-date", id: "appearance-date-any",  checked: "" }
-                    %label{ for: "appearance-date-any" } Any
+                  -#   %input{ type: "radio", name: "appearance-date", id: "appearance-date-any",  checked: "" }
+                  -#   %label{ for: "appearance-date-any" } Any
 
         .span9
           .row-fluid
@@ -185,6 +209,9 @@
                     %a Top Charge
                   %li
                     %a Next Court Date
+                  %li
+                    %a Number of Prior Convictions
+
             .span3
               %span.results             
                 Found
