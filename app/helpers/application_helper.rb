@@ -57,13 +57,11 @@ html
 
   def double_select(name)
 <<html
-<div class="btn-group double-select">
-<input type="hidden" name="filter[#{name}]" value="#{name}-disable" id="#{name}-disable">
-<label class="btn" for="#{name}-disable"><span>Yes</span></label>
-<input type="hidden" name="filter[#{name}]" value="#{name}-enable" id="#{name}-enable">
-<label class="btn" for="#{name}-enable"><span>No</span></label>
-<input type="hidden" name="filter[#{name}]" value="#{name}-all" id="#{name}-all">
-<label class="btn active" for="#{name}-all"><span>All</span></label>
+<div class="formify btn-group" data-toggle="buttons-radio" data-name="#{name}">
+<button class="btn" type="button" data-value="Y">Yes</label>
+<button class="btn" type="button" data-value="N">No</label>
+<button class="btn" type="button" data-value="A" data-selected="true">All</label>
+</div>
 html
   end
 
