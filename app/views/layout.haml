@@ -80,17 +80,13 @@
                     %label{ for: "max_age" } Max. Age
                     %input{ type: "number", name: "filter[max_age]", min: "16", max: "100", value: params[:filter][:max_age] || 100 }
 
-              %fieldset.secondary.text-center
+              %fieldset.secondary
                 %legend.top Sex
                 
-                .text-center
-                  .btn-group
-                    %input{ type: "hidden", name: "filter[sex]", value: "M", id: "filter-sex-m" }
-                    %label.btn{ for: "filter-sex-m" } Male
-                    %input{ type: "hidden", name: "filter[sex]", value: "F", id: "filter-sex-f" }
-                    %label.btn{ for: "filter-sex-f" } Female
-                    %input{ type: "hidden", name: "filter[sex]", value: "A", id: "filter-sex-a", checked: "checked" }
-                    %label.btn.active{ for: "filter-sex-a" } All
+                .formify.btn-group{ data: { toggle: "buttons-radio", name: "sex" } }
+                  %button.btn{ type: "button", data: { value: "M" } } Male
+                  %button.btn{ type: "button", data: { value: "F" } } Female
+                  %button.btn{ type: "button", data: { value: "A", selected: "true" } } All
 
               %fieldset.secondary
                 %legend.top Criminal History
