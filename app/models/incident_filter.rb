@@ -8,6 +8,15 @@ class IncidentFilter
       scope = scope.borough(borough_names)
     end
 
+    if params["top-charge"]
+      if params["top-charge"] == "VI"
+        params["top-charge"] = %w(I V)
+      end
+      unless params["top-charge"] == "A"
+        scope = scope.top_charge_in(params["top-charge"])
+      end
+    end
+
     scope
   end
 end
