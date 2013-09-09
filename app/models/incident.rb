@@ -31,6 +31,7 @@ class Incident
   field :misdemeanor_assault_charge, type: Boolean
   field :criminal_contempt_charge, type: Boolean
   field :sex_offense_charge, type: Boolean
+  field :untracked_charge, type: Boolean
   delegate :top_charge, to: :complaint, allow_nil: true
 
   # From OCA Docket
@@ -72,6 +73,7 @@ class Incident
   scope :has_misdemeanor_assault_charge, where(misdemeanor_assault_charge: true)
   scope :has_criminal_contempt_charge, where(criminal_contempt_charge: true)
   scope :has_sex_offense_charge, where(sex_offense_charge: true)
+  scope :has_untracked_charge, where(untracked_charge: true)
   scope :has_other_open_cases, where(has_other_open_cases: true)
   scope :has_failed_to_appear, where(has_failed_to_appear: true)
   scope :number_of_prior_criminal_convictions_gte, ->(min) { gte(number_of_prior_criminal_convictions: min) }
