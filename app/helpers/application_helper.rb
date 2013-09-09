@@ -7,6 +7,16 @@ module ApplicationHelper
     build_field("checkbox", name, value, label, options)
   end
 
+  def build_disc(label, klass, title = label)
+<<html
+<div class="disc #{klass}" title="#{title}">
+  <div class="disc-internal">
+    #{label}
+  </div>
+</div>
+html
+  end
+
   # LOL
   def build_field(type, name, value, label, options = {})
     html = <<html
@@ -59,7 +69,7 @@ html
 
   # Takes in an incident and tries to build a view around the top charge.
   def format_top_charge(incident)
-    return %Q(<span title="#{incident.charges.first[:description]}"><b>#{incident.charges.first[:agency_code]}</b></span>) unless incident.charges.blank?
+    %Q(<span title="#{incident.top_charge["description"]}"><b>#{incident.top_charge["agency_code"]}</b></span>)
   end
 
   def show_ror_recommendations(incident)
