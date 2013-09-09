@@ -42,17 +42,7 @@ class DatashareFilter < Sinatra::Base
 
 
 
-    #if params[:filter]["top-charge"].present?
-      #top_charge = params[:filter]["top-charge"]
-      
-      ## Check the top charge code and make sure it's one we allow.
-      ## TODO: This should probably be in the model.
-      #if %w(I V M F).include?(top_charge)        
-        #incident_scope = incident_scope.top_charge(params[:filter]["top-charge"])
-      #else
-        #puts "Top charge '#{top_charge}' wasn't in the allowed charge list."                                                   
-      #end
-    #end
+
 
     #if params[:filter][:sex]
       #incident_scope = incident_scope.defendant_sex("M") if params[:filter][:sex] == "Male"
