@@ -101,13 +101,13 @@
 
                 %fieldset.tertiary.horizontal
                   %legend Has failed to appear?                  
-                  = double_select("bench_warrants")
+                  = double_select("failed_to_appear")
 
                 %fieldset.tertiary
                   %legend Type of Prior Convictions
 
                   = build_checkbox_field("prior_convictions", "D", "Drug Offense", :selected => true)
-                  = build_checkbox_field("prior_convictions", "S", "Sex Offense", :selected => true)
+                  = build_checkbox_field("prior_convictions", "SO", "Sex Offense", :selected => true)
                   = build_checkbox_field("prior_convictions", "MA", "Misdemeanor Assault", :selected => true)
                   = build_checkbox_field("prior_convictions", "CC", "Criminal Contempt", :selected => true)
                   = build_checkbox_field("prior_convictions", "A", "All Other Offenses", :selected => true)
