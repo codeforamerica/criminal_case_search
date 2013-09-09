@@ -54,20 +54,20 @@
                 %fieldset.tertiary
                   %legend Severity
 
-                  = build_radio_field("top-charge", "A", "Any")
-                  = build_radio_field("top-charge", "VF", "Violent Felony")
-                  = build_radio_field("top-charge", "F", "Non-Violent Felony")
-                  = build_radio_field("top-charge", "M", "Misdemeanor")
-                  = build_radio_field("top-charge", "VI", "Violation/Infraction")
+                  = build_radio_field("top_charge", "A", "Any")
+                  = build_radio_field("top_charge", "VF", "Violent Felony")
+                  = build_radio_field("top_charge", "F", "Non-Violent Felony")
+                  = build_radio_field("top_charge", "M", "Misdemeanor")
+                  = build_radio_field("top_charge", "VI", "Violation/Infraction")
 
                 %fieldset.tertiary
                   %legend Type
 
-                  = build_checkbox_field("include-charge", "D", "Drug Offense")
-                  = build_checkbox_field("include-charge", "MA", "Misdemeanor Assault")
-                  = build_checkbox_field("include-charge", "CC", "Criminal Contempt")
-                  = build_checkbox_field("include-charge", "SO", "Sex Offense")
-                  = build_checkbox_field("include-charge", "A", "All Other Offenses")
+                  = build_checkbox_field("include_charge", "D", "Drug Offense")
+                  = build_checkbox_field("include_charge", "MA", "Misdemeanor Assault")
+                  = build_checkbox_field("include_charge", "CC", "Criminal Contempt")
+                  = build_checkbox_field("include_charge", "SO", "Sex Offense")
+                  = build_checkbox_field("include_charge", "A", "All Other Offenses")
 
               %fieldset.secondary
                 %legend.top Age
@@ -102,11 +102,11 @@
                 %fieldset.tertiary
                   %legend Type of Prior Convictions
 
-                  = build_checkbox_field("prior-convictions", "D", "Drug Offense", :selected => true)
-                  = build_checkbox_field("prior-convictions", "S", "Sex Offense", :selected => true)
-                  = build_checkbox_field("prior-convictions", "MA", "Misdemeanor Assault", :selected => true)
-                  = build_checkbox_field("prior-convictions", "CC", "Criminal Contempt", :selected => true)
-                  = build_checkbox_field("prior-convictions", "A", "All Other Offenses", :selected => true)
+                  = build_checkbox_field("prior_convictions", "D", "Drug Offense", :selected => true)
+                  = build_checkbox_field("prior_convictions", "S", "Sex Offense", :selected => true)
+                  = build_checkbox_field("prior_convictions", "MA", "Misdemeanor Assault", :selected => true)
+                  = build_checkbox_field("prior_convictions", "CC", "Criminal Contempt", :selected => true)
+                  = build_checkbox_field("prior_convictions", "A", "All Other Offenses", :selected => true)
 
                   .btn-group
                     %button.btn.inline.btn-mini.select-all All
@@ -130,9 +130,9 @@
                   %fieldset.tertiary
                     %legend CJA Score
 
-                    = build_checkbox_field("cja-score", "x", "x")
-                    = build_checkbox_field("cja-score", "x", "x")
-                    = build_checkbox_field("cja-score", "x", "x")
+                    = build_checkbox_field("cja_score", "x", "x")
+                    = build_checkbox_field("cja_score", "x", "x")
+                    = build_checkbox_field("cja_score", "x", "x")
 
                   .btn-group
                     %button.btn.inline.btn-mini.select-all All
@@ -144,15 +144,15 @@
                 %fieldset.tertiary
                   %legend Type
 
-                  .formify.btn-group{ data: { toggle: "buttons-radio", name: "appearance-type" } }
+                  .formify.btn-group{ data: { toggle: "buttons-radio", name: "appearance_type" } }
                     %button.btn{ type: "button", data: { value: "any", selected: "true" } } Any
-                    %button.btn{ type: "button", data: { value: "pre-arr" } } Pre-Arr.
+                    %button.btn{ type: "button", data: { value: "arr" } } Arraignment
                     %button.btn{ type: "button", data: { value: "post-arr" } } Post-Arr.
 
                 %fieldset.tertiary
                   %legend Date
                   
-                  .formify.btn-group.btn-group-vertical{ data: { toggle: "buttons-radio", name: "date" } }
+                  #next-appearance-date.formify.btn-group.btn-group-vertical{ data: { toggle: "buttons-radio", name: "next_court_date" } }
                     %button.btn{ type: "button", data: { value: "any", selected: "true" } } Any
                     %button.btn{ type: "button", data: { value: "today" } } Today
                     %button.btn{ type: "button", data: { value: "tomorrow" } } Tomorrow
