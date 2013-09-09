@@ -39,11 +39,6 @@ class DatashareFilter < Sinatra::Base
       haml :index
     end
 
-
-
-
-
-
     #if params[:filter][:sex]
       #incident_scope = incident_scope.defendant_sex("M") if params[:filter][:sex] == "Male"
       #incident_scope = incident_scope.defendant_sex("F") if params[:filter][:sex] == "Female"
