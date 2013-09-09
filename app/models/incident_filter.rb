@@ -35,6 +35,11 @@ class IncidentFilter
       end
     end
 
+    if params["sex"]
+      unless params["sex"] == "A"
+        scope = scope.defendant_sex(params["sex"])
+      end
+    end
     scope
   end
 end
