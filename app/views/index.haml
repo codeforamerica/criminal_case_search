@@ -4,15 +4,17 @@
       .incident
         .row-fluid
           .span5
-            %h3.name= "#{Faker::Name.last_name}, #{Faker::Name.first_name}" #incident.arrest_report.person_name
+            %h3.name= incident.defendant_name
             %p.docket-number= incident.docket_number
           .span3
-            .disc
-              .disc-internal SO
-            .disc
-              .disc-internal VFO
-            .disc
-              .disc-internal N
+            - if incident.serving_parole?
+              = build_disc("PA", "parole", "Serving Parole")
+            - if incident.serving_probation?
+              = build_disc("PR", "probation", "Serving Probation")
+            - if incident.has_outstanding_bench_warrant?
+              = build_disc("W", "warrant", "Has Oustanding Bench Warrant")
+            - if incident.persistent_misdemeanant?
+              = build_disc("PM", "persistent-misdemeanant", "Persistent Misdemeanant")
           .span3
             %span.court-date-note Next Court Date
             %h3.court-date= incident.next_court_date.strftime("%b %-d")
@@ -24,14 +26,12 @@
             %p.severity= incident.top_charge_code_expanded
             %p.charge-code= format_top_charge(incident)              
           .span3
-            %p.open-cases
-              %span.count 1
-              Open Case
             %p.priors
-              %span.count 3
-              Prior Convictions
+              %span.count= incident.number_of_prior_criminal_convictions 
+              Criminal Convictions
           .span3
-            %p.court-part= incident.next_court_part            
+            %p.court-part= incident.next_court_part
+            %p= incident.next_courthouse
     .row-fluid
       = will_paginate @incidents, renderer: BootstrapPagination::Sinatra          
 
