@@ -20,6 +20,7 @@ class Complaint
   field :misdemeanor_assault_charge, type: Boolean
   field :criminal_contempt_charge, type: Boolean
   field :sex_offense_charge, type: Boolean
+  field :untracked_charge, type: Boolean
 
   before_save :update_incident_attributes
 
@@ -92,6 +93,10 @@ class Complaint
       if charge["agency_code"] =~ /PL (110\/)?130/
         self.sex_offense_charge = true
       end
+
+      unless charge["agency_code"] =~ /PL (110\/)?(220|120|215.50|215.51|215.52|130)/
+        self.untracked_charge = true
+      end
     end
   end
 
@@ -118,6 +123,7 @@ class Complaint
                                drug_charge: drug_charge,
                                misdemeanor_assault_charge: misdemeanor_assault_charge,
                                criminal_contempt_charge: criminal_contempt_charge,
-                               sex_offense_charge: sex_offense_charge)
+                               sex_offense_charge: sex_offense_charge,
+                               untracked_charge: untracked_charge)
   end
 end
