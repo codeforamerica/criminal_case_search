@@ -40,6 +40,14 @@ class IncidentFilter
         scope = scope.defendant_sex(params["sex"])
       end
     end
+
+    if params["min_age"].present?
+      scope = scope.defendant_age_gte(params["min_age"])
+    end
+
+    if params["max_age"].present?
+      scope = scope.defendant_age_lte(params["max_age"])
+    end
     scope
   end
 end
