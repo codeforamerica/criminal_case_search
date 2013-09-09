@@ -9,7 +9,7 @@ $(function(){
 
   $(".formify").each(function (_, element) {
     var value = $(element).find("[data-selected='true']").first().addClass("active").data("value");
-    $(element).append('<input class="formify-value" type="hidden" name="' + $(this).data('name') + '" value="' + value + '" >');
+    $(element).append('<input class="formify-value" type="hidden" name="filter[' + $(this).data('name') + ']" value="' + value + '" >');
   });
 
   $(".formify .btn").click(function () {
