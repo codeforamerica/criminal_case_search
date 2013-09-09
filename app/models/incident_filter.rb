@@ -8,29 +8,29 @@ class IncidentFilter
       scope = scope.borough(borough_names)
     end
 
-    if params["top-charge"]
-      if params["top-charge"] == "VI"
-        params["top-charge"] = %w(I V)
+    if params["top_charge"]
+      if params["top_charge"] == "VI"
+        params["top_charge"] = %w(I V)
       end
-      unless params["top-charge"] == "A"
-        scope = scope.top_charge_in(params["top-charge"])
+      unless params["top_charge"] == "A"
+        scope = scope.top_charge_in(params["top_charge"])
       end
     end
 
-    if params["include-charge"]
-      if params["include-charge"].include? "D"
+    if params["include_charge"]
+      if params["include_charge"].include? "D"
         scope = scope.has_drug_charge
       end
-      if params["include-charge"].include? "MA"
+      if params["include_charge"].include? "MA"
         scope = scope.has_misdemeanor_assault_charge
       end
-      if params["include-charge"].include? "CC"
+      if params["include_charge"].include? "CC"
         scope = scope.has_criminal_contempt_charge
       end
-      if params["include-charge"].include? "SO"
+      if params["include_charge"].include? "SO"
         scope = scope.has_sex_offense_charge
       end
-      if params["include-charge"].include? "AA"
+      if params["include_charge"].include? "AA"
         scope = scope.has_untracked_charge
       end
     end
