@@ -108,9 +108,8 @@ class Data < Thor
     sample_charges = JSON.parse(File.read("fixtures/charges.json"))
 
     n.to_i.times do
-      borough_code = %w(M S K B Q).sample
-      borough_code_to_name = {"M" => "Manhattan", "S" => "Staten Island", "K" => "Brooklyn", "B" => "Bronx", "Q" => "Queens"}
-      borough = borough_code_to_name[borough_code]
+      borough_code = DatashareFilter::BOROUGH_CODES.sample
+      borough = DatashareFilter::BOROUGH_CODES_TO_NAMES[borough_code]
 
       arrest_id = borough_code + Random.rand(10000000...30000000).to_s
       while Incident.where(arrest_id: arrest_id).count > 0
