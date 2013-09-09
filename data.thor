@@ -137,7 +137,7 @@ class Data < Thor
         defendant_age: Random.rand(18..65),
         precinct: borough_to_precinct[borough].sample,
         desk_appearance_ticket: dat,
-        desk_appearance_ticket_court_date: dat ? Random.rand(0..10).days.from_today : nil
+        desk_appearance_ticket_court_date: dat ? Random.rand(0..10).days.from_now : nil
       }
       arrest_report = ArrestReport.create!(arrest_report_attributes)
 
@@ -145,6 +145,8 @@ class Data < Thor
       rap_sheet_attributes = {
         incident: incident,
         arrest_id: arrest_id,
+        defendant_sex: incident.defendant_sex,
+        defendant_age: incident.defendant_age,
         number_of_prior_criminal_convictions: number_of_prior_convictions,
         has_prior_felony_conviction: number_of_prior_convictions > 0 ? [true, false].sample : false,
         has_prior_violent_felony_conviction: number_of_prior_convictions > 0 ? [true, false].sample : false,
