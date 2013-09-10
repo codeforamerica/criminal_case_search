@@ -87,9 +87,9 @@
                 %legend.top Sex
                 
                 .formify.btn-group{ data: { toggle: "buttons-radio", name: "sex" } }
-                  %button.btn{ type: "button", data: { value: "M", selected: params[:filter][:sex] == "M" ? "true" : "false"} } Male
-                  %button.btn{ type: "button", data: { value: "F", selected: params[:filter][:sex] == "F" ? "true" : "false"} } Female
-                  %button.btn{ type: "button", data: { value: "A", selected: params[:filter][:sex] == "A" || params[:filter][:sex] == nil ? "true" : "false"} } All
+                  %button.btn{ type: "button", data: { value: "M", selected: true_if(params[:filter][:sex], "M")} } Male
+                  %button.btn{ type: "button", data: { value: "F", selected: true_if(params[:filter][:sex], "F")} } Female
+                  %button.btn{ type: "button", data: { value: "A", selected: true_if(params[:filter][:sex], ["A", nil]) } } All
 
               %fieldset.secondary
                 %legend.top Criminal History
@@ -154,18 +154,18 @@
                   %legend Type
 
                   .formify.btn-group{ data: { toggle: "buttons-radio", name: "appearance_type" } }
-                    %button.btn{ type: "button", data: { value: "any", selected: "true" } } Any
-                    %button.btn{ type: "button", data: { value: "arr" } } Arraignment
-                    %button.btn{ type: "button", data: { value: "post-arr" } } Post-Arr.
+                    %button.btn{ type: "button", data: { value: "any", selected: true_if(params[:filter][:appearance_type], ["any", nil])} } Any
+                    %button.btn{ type: "button", data: { value: "arr", selected: true_if(params[:filter][:appearance_type], "arr") } } Arraignment
+                    %button.btn{ type: "button", data: { value: "post-arr", selected: true_if(params[:filter][:appearance_type], "post-arr") } } Post-Arr.
 
                 %fieldset.tertiary
                   %legend Date
                   
                   #next-appearance-date.formify.btn-group.btn-group-vertical{ data: { toggle: "buttons-radio", name: "next_court_date" } }
-                    %button.btn{ type: "button", data: { value: "any", selected: "true" } } Any
-                    %button.btn{ type: "button", data: { value: "today" } } Today
-                    %button.btn{ type: "button", data: { value: "tomorrow" } } Tomorrow
-                    %button.btn{ type: "button", data: { value: "7-day" } } Next 7 Days
+                    %button.btn{ type: "button", data: { value: "any", selected: true_if(params[:filter][:next_court_date], ["any", nil]) } } Any
+                    %button.btn{ type: "button", data: { value: "today", selected: true_if(params[:filter][:next_court_date], "today") } } Today
+                    %button.btn{ type: "button", data: { value: "tomorrow", selected: true_if(params[:filter][:next_court_date], "tomorrow") } } Tomorrow
+                    %button.btn{ type: "button", data: { value: "7-day", selected: true_if(params[:filter][:next_court_date], "7-day") } } Next 7 Days
 
         .span9
           .row-fluid

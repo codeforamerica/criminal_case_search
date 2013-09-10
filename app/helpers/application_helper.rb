@@ -66,6 +66,15 @@ html
 html
   end
 
+  def true_if(param, values)
+    values = [values].flatten
+    if values.include?(param)
+      "true"
+    else
+      "false"
+    end
+  end
+
   # Takes in an incident and tries to build a view around the top charge.
   def format_top_charge(incident)
     %Q(<span title="#{incident.top_charge["description"]}"><b>#{incident.top_charge["agency_code"]}</b></span>)
