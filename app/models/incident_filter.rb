@@ -30,9 +30,9 @@ class IncidentFilter
       if params["include_charge"].include? "SO"
         scope = scope.has_sex_offense_charge
       end
-      if params["include_charge"].include? "AA"
-        scope = scope.has_untracked_charge
-      end
+      #if params["include_charge"].include? "AA"
+        #scope = scope.has_untracked_charge
+      #end
     end
 
     if params["sex"]
@@ -63,6 +63,24 @@ class IncidentFilter
       elsif params["failed_to_appear"] == "N"
         scope = scope.has_not_failed_to_appear
       end
+    end
+
+   if params["prior_convictions"]
+      if params["prior_convictions"].include? "D"
+        scope = scope.has_prior_drug_conviction
+      end
+      if params["prior_convictions"].include? "MA"
+        scope = scope.has_prior_misdemeanor_assault_conviction
+      end
+      if params["prior_convictions"].include? "CC"
+        scope = scope.has_prior_criminal_contempt_conviction
+      end
+      if params["prior_convictions"].include? "SO"
+        scope = scope.has_prior_sex_offense_conviction
+      end
+      #if params["prior_convictions"].include? "AA"
+        #scope = scope.has_prior_untracked_charge
+      #end
     end
     scope
   end
