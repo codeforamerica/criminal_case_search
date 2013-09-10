@@ -10,6 +10,8 @@ gem "will_paginate", :git => "https://github.com/mislav/will_paginate.git",
 gem "will_paginate-bootstrap"
 gem "erubis"
 gem "nokogiri"
+gem "thor"
+gem "faker"
 
 # Views
 gem "haml"
@@ -17,9 +19,7 @@ gem "sass"
 gem "sinatra-twitter-bootstrap", require: "sinatra/twitter-bootstrap"
 
 group :development do
-  gem "faker"
   gem "pry"
-  gem "thor"
   gem "awesome_print"
   gem "rb-fsevent"
   gem "guard"
