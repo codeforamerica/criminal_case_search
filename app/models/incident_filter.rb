@@ -82,6 +82,13 @@ class IncidentFilter
         #scope = scope.has_prior_untracked_charge
       #end
     end
+    if params["appearance_type"]
+      if params["appearance_type"] == "arr"
+        scope = scope.pre_arraignment
+      elsif params["appearance_type"] == "post-arr"
+        scope = scope.post_arraignment
+      end
+    end
     scope
   end
 end
