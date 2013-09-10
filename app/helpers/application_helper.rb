@@ -56,11 +56,12 @@ html
   end
 
   def double_select(name)
+    selected = params[:filter][name]
 <<html
 <div class="formify btn-group" data-toggle="buttons-radio" data-name="#{name}">
-<button class="btn" type="button" data-value="Y">Yes</label>
-<button class="btn" type="button" data-value="N">No</label>
-<button class="btn" type="button" data-value="A" data-selected="true">All</label>
+<button class="btn" type="button" data-value="Y" #{'data-selected="true"' if selected == "Y"}>Yes</label>
+<button class="btn" type="button" data-value="N" #{'data-selected="true"' if selected == "N"}>No</label>
+<button class="btn" type="button" data-value="A" #{'data-selected="true"' if selected == "A" || selected == nil}>All</label>
 </div>
 html
   end
