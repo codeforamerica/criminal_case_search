@@ -82,6 +82,24 @@ class IncidentFilter
         #scope = scope.has_prior_untracked_charge
       #end
     end
+    if params["appearance_type"]
+      if params["appearance_type"] == "arr"
+        scope = scope.pre_arraignment
+      elsif params["appearance_type"] == "post-arr"
+        scope = scope.post_arraignment
+      end
+    end
+
+    if params["next_court_date"]
+      if params["next_court_date"] == "today"
+        scope = scope.next_court_date_is(Date.today)
+      elsif params["next_court_date"] == "tomorrow"
+        scope = scope.next_court_date_is(Date.tomorrow)
+      elsif params["next_court_date"] == "7-day"
+        scope = scope.next_court_date_between(Date.today, Date.today + 7.days)
+      end
+    end
+
     scope
   end
 end
