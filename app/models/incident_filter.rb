@@ -48,6 +48,22 @@ class IncidentFilter
     if params["max_age"].present?
       scope = scope.defendant_age_lte(params["max_age"])
     end
+
+    if params["open_cases"]
+      if params["open_cases"] == "Y"
+        scope = scope.has_other_open_cases
+      elsif params["open_cases"] == "N"
+        scope = scope.has_no_other_open_cases
+      end
+    end
+
+    if params["failed_to_appear"]
+      if params["failed_to_appear"] == "Y"
+        scope = scope.has_failed_to_appear
+      elsif params["failed_to_appear"] == "N"
+        scope = scope.has_not_failed_to_appear
+      end
+    end
     scope
   end
 end
