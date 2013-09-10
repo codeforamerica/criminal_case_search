@@ -20,6 +20,24 @@ $(function(){
     $(input).val(val)
   });
 
+  $(".dropdown-input").each(function (_, element) {
+    var val = $(element).val()
+    var form = $(element).parent()
+    form.find(".dropdown-opt").each(function (_, opt_element) {
+      var opt_element = $(opt_element)
+      if (opt_element.data("value") === val) {
+        var dropdown_text = form.find(".dropdown-main-text")
+        dropdown_text.text(opt_element.text())
+      }
+    })
+  })
+
+  $(".dropdown-opt").click(function () {
+    var form = $(this).parents(".dropdown-form")
+    form.find(".dropdown-input").val($(this).data("value"))
+    form.find(".dropdown-main-text").text($(this).text())
+  })
+
   $(".incident").click(function() {
     $(this).toggleClass("selected");
   });

@@ -118,16 +118,23 @@
                   %legend Number of Prior Convictions
 
                   .input-append
-                    %input.span3{ type: "number", value: "0", min: "0"  }
-                    .btn-group
+                    %input.span3{ type: "number", value: "0", min: "0", name: "filter[number_of_prior_convictions]"  }
+                    .btn-group.dropdown-form
                       %button.btn.dropdown-toggle{ data: { toggle: "dropdown" } }
-                        or more
+                        %span.dropdown-main-text
+                          or more
                         %span.caret
                       %ul.dropdown-menu
                         %li
-                          %a or more
+                          %a.dropdown-opt{ data: { value: "more" } }
+                            or more
                         %li
-                          %a or fewer
+                          %a.dropdown-opt{ data: { value: "fewer" } }
+                            or fewer
+                      %input{ class: "dropdown-input",
+                              type:  "hidden",
+                              name:  "filter[prior_conviction_bounds]",
+                              value: params[:filter][:prior_conviction_bounds] || "more" }
 
                   -# %fieldset.tertiary
                   -#   %legend CJA Score
