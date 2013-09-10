@@ -88,9 +88,9 @@
                 %legend.top Sex
                 
                 .formify.btn-group{ data: { toggle: "buttons-radio", name: "sex" } }
-                  %button.btn{ type: "button", data: { value: "M" } } Male
-                  %button.btn{ type: "button", data: { value: "F" } } Female
-                  %button.btn{ type: "button", data: { value: "A", selected: "true" } } All
+                  %button.btn{ type: "button", data: { value: "M", selected: params[:filter][:sex] == "M" ? "true" : "false"} } Male
+                  %button.btn{ type: "button", data: { value: "F", selected: params[:filter][:sex] == "F" ? "true" : "false"} } Female
+                  %button.btn{ type: "button", data: { value: "A", selected: params[:filter][:sex] == "A" || params[:filter][:sex] == nil ? "true" : "false"} } All
 
               %fieldset.secondary
                 %legend.top Criminal History
