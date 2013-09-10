@@ -44,20 +44,6 @@ class DatashareFilter < Sinatra::Base
       @incidents = @incidents.paginate(:page => params[:page])
       haml :index
     end
-
-    #if params[:filter][:sex]
-      #incident_scope = incident_scope.defendant_sex("M") if params[:filter][:sex] == "Male"
-      #incident_scope = incident_scope.defendant_sex("F") if params[:filter][:sex] == "Female"
-    #end
-    #if params[:filter][:min_age].present?
-      #incident_scope = incident_scope.defendant_age_gte(params[:filter][:min_age])
-    #end
-    #if params[:filter][:max_age].present?
-      #incident_scope = incident_scope.defendant_age_lte(params[:filter][:max_age])
-    #end
-    #ap incident_scope
-    #@incidents = incident_scope.where(:rap_sheet.exists => true, :docketing_notice.exists => true)
-
   end
 
   helpers ApplicationHelper

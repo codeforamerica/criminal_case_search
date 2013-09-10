@@ -63,11 +63,10 @@
                 %fieldset.tertiary
                   %legend Type
 
-                  = build_checkbox_field("include_charge", "D", "Drug Offense", :selected => true)
-                  = build_checkbox_field("include_charge", "MA", "Misdemeanor Assault", :selected => true)
-                  = build_checkbox_field("include_charge", "CC", "Criminal Contempt", :selected => true)
-                  = build_checkbox_field("include_charge", "SO", "Sex Offense", :selected => true)
-                  = build_checkbox_field("include_charge", "A", "All Other Offenses", :selected => true)
+                  = build_checkbox_field("include_charge", "D", "Drug Offense")
+                  = build_checkbox_field("include_charge", "MA", "Misdemeanor Assault")
+                  = build_checkbox_field("include_charge", "CC", "Criminal Contempt")
+                  = build_checkbox_field("include_charge", "SO", "Sex Offense")
 
                   .btn-group
                     %button.btn.inline.btn-mini.select-all All
@@ -106,11 +105,10 @@
                 %fieldset.tertiary
                   %legend Type of Prior Convictions
 
-                  = build_checkbox_field("prior_convictions", "D", "Drug Offense", :selected => true)
-                  = build_checkbox_field("prior_convictions", "SO", "Sex Offense", :selected => true)
-                  = build_checkbox_field("prior_convictions", "MA", "Misdemeanor Assault", :selected => true)
-                  = build_checkbox_field("prior_convictions", "CC", "Criminal Contempt", :selected => true)
-                  = build_checkbox_field("prior_convictions", "A", "All Other Offenses", :selected => true)
+                  = build_checkbox_field("prior_convictions", "D", "Drug Offense")
+                  = build_checkbox_field("prior_convictions", "SO", "Sex Offense")
+                  = build_checkbox_field("prior_convictions", "MA", "Misdemeanor Assault")
+                  = build_checkbox_field("prior_convictions", "CC", "Criminal Contempt")
 
                   .btn-group
                     %button.btn.inline.btn-mini.select-all All

@@ -17,6 +17,7 @@ class RapSheet
   field :has_prior_felony_conviction, type: Boolean
   field :has_prior_violent_felony_conviction, type: Boolean
   field :has_prior_misdemeanor_conviction, type: Boolean
+  field :has_prior_untracked_charge, type: Boolean
   field :has_other_open_cases, type: Boolean
   field :has_failed_to_appear, type: Boolean
 
@@ -87,6 +88,10 @@ class RapSheet
           if title == "PL" and code_section =~ /130/
             rs.has_prior_sex_offense_conviction = true
           end
+
+          unless title == "PL" && code_section =~ /(220|120\.00|215.50|215.51|215.52|130)/
+            rs.has_prior_untracked_charge = true
+          end
         end
 
         if importer.nodes_from_xpath("/nysRap:NewYorkStateRapSheet/nys:NewYorkStateResponsePrimary/nys:Banner[@s:id='8']").present?
@@ -138,6 +143,7 @@ class RapSheet
                                has_prior_misdemeanor_assault_conviction: has_prior_misdemeanor_assault_conviction,
                                has_prior_criminal_contempt_conviction: has_prior_criminal_contempt_conviction,
                                has_prior_sex_offense_conviction: has_prior_sex_offense_conviction,
+                               has_prior_untracked_charge: has_prior_untracked_charge,
                                has_other_open_cases: has_other_open_cases,
                                has_failed_to_appear: has_failed_to_appear)
   end
