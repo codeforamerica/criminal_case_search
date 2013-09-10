@@ -19,6 +19,12 @@ class DatashareFilter < Sinatra::Base
 
   WillPaginate.per_page = 15
 
+  if ENV["RACK_ENV"] != "development"
+    use Rack::Auth::Basic, "Protected Area" do |username, password|
+      username == ENV["CCS_USERNAME"] && password == ENV["CCS_PASSWORD"]
+    end
+  end
+
   configure do
     set :views, settings.root + '/app/views'
     set :haml, :format => :html5
