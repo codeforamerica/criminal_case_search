@@ -75,7 +75,9 @@ class Incident
   scope :has_sex_offense_charge, where(sex_offense_charge: true)
   scope :has_untracked_charge, where(untracked_charge: true)
   scope :has_other_open_cases, where(has_other_open_cases: true)
+  scope :has_no_other_open_cases, any_in(has_other_open_cases: [false, nil])
   scope :has_failed_to_appear, where(has_failed_to_appear: true)
+  scope :has_not_failed_to_appear, any_in(has_failed_to_appear: [false, nil])
   scope :number_of_prior_criminal_convictions_gte, ->(min) { gte(number_of_prior_criminal_convictions: min) }
   scope :number_of_prior_criminal_convictions_lte, ->(max) { lte(number_of_prior_criminal_convictions: max) }
   scope :pre_arraignment, where(next_court_date_is_arraignment: true) # or where arraigned == false
