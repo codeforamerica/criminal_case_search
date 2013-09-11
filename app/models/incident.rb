@@ -10,9 +10,6 @@ class Incident
   embeds_one :arrestee_tracking
   embeds_one :docketing_notice
 
-  # TODO: Move this to be with the other fields from the same doc.
-  field :number_of_open_cases, type: Integer, default: 0
-
   # Primary key; used to merge all documents. From ArrestReport
   field :arrest_id, type: String
   validates :arrest_id, presence: true, uniqueness: true
@@ -47,6 +44,7 @@ class Incident
 
   # From Rap Sheet
   field :number_of_prior_criminal_convictions, type: Integer
+  field :number_of_other_open_cases, type: Integer
   field :has_prior_felony_conviction, type: Boolean
   field :has_prior_violent_felony_conviction, type: Boolean
   field :has_prior_misdemeanor_conviction, type: Boolean
@@ -55,7 +53,6 @@ class Incident
   field :has_prior_criminal_contempt_conviction, type: Boolean
   field :has_prior_sex_offense_conviction, type: Boolean
   field :has_prior_untracked_charge, type: Boolean
-  field :has_other_open_cases, type: Boolean
   field :has_failed_to_appear, type: Boolean
   delegate :has_outstanding_bench_warrant?, to: :rap_sheet, allow_nil: true
   delegate :persistent_misdemeanant?, to: :rap_sheet, allow_nil: true
@@ -78,8 +75,8 @@ class Incident
   scope :has_criminal_contempt_charge, where(criminal_contempt_charge: true)
   scope :has_sex_offense_charge, where(sex_offense_charge: true)
   scope :has_untracked_charge, where(untracked_charge: true)
-  scope :has_other_open_cases, where(has_other_open_cases: true)
-  scope :has_no_other_open_cases, any_in(has_other_open_cases: [false, nil])
+  scope :has_other_open_cases, gte(has_other_open_cases: 1)
+  scope :has_no_other_open_cases, any_in(has_other_open_cases: [0, nil])
   scope :has_failed_to_appear, where(has_failed_to_appear: true)
   scope :has_not_failed_to_appear, any_in(has_failed_to_appear: [false, nil])
   scope :has_prior_drug_conviction, where(has_prior_drug_conviction: true)
