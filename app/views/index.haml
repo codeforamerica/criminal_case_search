@@ -32,6 +32,9 @@
           .span3
             %p.court-part= incident.next_court_part
             %p= incident.next_courthouse
+        .row-fluid
+          .offset5.span6
+            = incident.recommendations.join(", ")
     .row-fluid
       = will_paginate @incidents, renderer: BootstrapPagination::Sinatra          
 
