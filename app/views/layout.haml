@@ -49,10 +49,10 @@
                     %button.btn.inline.btn-mini.clear-all Clear
 
               %fieldset.secondary
-                %legend.top Top Charge
+                %legend.top Charges
 
                 %fieldset.tertiary
-                  %legend Severity
+                  %legend Top Charge Severity
 
                   = build_radio_field("top_charge", "A", "Any", :selected => true)
                   = build_radio_field("top_charge", "VF", "Violent Felony")
@@ -61,7 +61,7 @@
                   = build_radio_field("top_charge", "VI", "Violation/Infraction")
 
                 %fieldset.tertiary
-                  %legend Type
+                  %legend Charges Include
 
                   = build_checkbox_field("include_charge", "D", "Drug Offense")
                   = build_checkbox_field("include_charge", "MA", "Misdemeanor Assault")
