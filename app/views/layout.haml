@@ -118,7 +118,7 @@
                   %legend Number of Prior Convictions
 
                   .input-append
-                    %input.span3{ type: "number", value: "0", min: "0", name: "filter[number_of_prior_convictions]"  }
+                    %input.span3{ type: "number", value: params[:filter][:number_of_prior_convictions] || "0", min: "0", name: "filter[number_of_prior_convictions]"  }
                     .btn-group.dropdown-form
                       %button.btn.dropdown-toggle{ data: { toggle: "dropdown" } }
                         %span.dropdown-main-text

@@ -82,6 +82,15 @@ class IncidentFilter
         #scope = scope.has_prior_untracked_charge
       #end
     end
+
+    if params["number_of_prior_convictions"]
+      if params["prior_conviction_bounds"] == "more"
+        scope = scope.number_of_prior_criminal_convictions_gte(params["number_of_prior_convictions"])
+      elsif params["prior_conviction_bounds"] == "fewer"
+        scope = scope.number_of_prior_criminal_convictions_lte(params["number_of_prior_convictions"])
+      end
+    end
+
     if params["appearance_type"]
       if params["appearance_type"] == "arr"
         scope = scope.pre_arraignment
