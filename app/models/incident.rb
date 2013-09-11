@@ -69,8 +69,8 @@ class Incident
   scope :defendant_age_gte, ->(min_age) { gte(:defendant_age => min_age) }
   scope :top_charge_in, ->(charge_code) { any_in(:top_charge_code => [charge_code].flatten) }
   scope :charge_types_in, ->(charge_types) { any_in(:charge_types => [charge_types].flatten) }
-  scope :has_other_open_cases, gte(has_other_open_cases: 1)
-  scope :has_no_other_open_cases, any_in(has_other_open_cases: [0, nil])
+  scope :has_other_open_cases, gte(number_of_other_open_cases: 1)
+  scope :has_no_other_open_cases, any_in(number_of_other_open_cases: [0, nil])
   scope :has_failed_to_appear, where(has_failed_to_appear: true)
   scope :has_not_failed_to_appear, any_in(has_failed_to_appear: [false, nil])
   scope :prior_conviction_types_in, ->(conviction_types) { any_in(:prior_conviction_types => [conviction_types, nil].flatten) }
