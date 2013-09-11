@@ -26,8 +26,8 @@ class RapSheet
 
   field :has_outstanding_bench_warrant, type: Boolean #Todo
   field :persistent_misdemeanant, type: Boolean
-  field :serving_probation, type: Boolean
-  field :serving_parole, type: Boolean
+  field :on_probation, type: Boolean
+  field :on_parole, type: Boolean
 
   before_save :update_incident_attributes
 
@@ -105,11 +105,11 @@ class RapSheet
         end
 
         if importer.nodes_from_xpath("/nysRap:NewYorkStateRapSheet/nys:NewYorkStateResponsePrimary/nys:Banner[@s:id='46']").present?
-          rs.serving_parole = true
+          rs.on_parole = true
         end
 
         if importer.nodes_from_xpath("/nysRap:NewYorkStateRapSheet/nys:NewYorkStateResponsePrimary/nys:Banner[@s:id='43']").present?
-          rs.serving_probation = true
+          rs.on_probation = true
         end
         rapsheets << rs
       else

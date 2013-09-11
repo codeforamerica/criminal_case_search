@@ -53,8 +53,8 @@ class Incident
   field :has_failed_to_appear, type: Boolean
   delegate :has_outstanding_bench_warrant?, to: :rap_sheet, allow_nil: true
   delegate :persistent_misdemeanant?, to: :rap_sheet, allow_nil: true
-  delegate :serving_probation?, to: :rap_sheet, allow_nil: true
-  delegate :serving_parole?, to: :rap_sheet, allow_nil: true
+  delegate :on_probation?, to: :rap_sheet, allow_nil: true
+  delegate :on_parole?, to: :rap_sheet, allow_nil: true
 
   # From CJA Report
   field :recommendations, type: Array
