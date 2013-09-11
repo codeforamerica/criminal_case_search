@@ -64,6 +64,7 @@ class Incident
 
   #From ArresteeTracking
   field :arraigned, type: Boolean
+  field :arraignment_outcome, type: String
 
   scope :borough, ->(borough_name) { any_in(borough: borough_name) }
   scope :defendant_sex, ->(sex_code) { where(defendant_sex: sex_code) }

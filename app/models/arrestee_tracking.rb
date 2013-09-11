@@ -21,7 +21,10 @@ class ArresteeTracking
       at = ArresteeTracking.find_or_initialize_by(arrest_id: arrest_id)
       at.arrest_id = arrest_id
       at.incident = Incident.find_or_initialize_by(arrest_id: at.arrest_id)
-      at.arraignment_outcome = importer.attribute_from_xpath("/j:CaseCourtEvent/j:CourtEventAction/nc:ActivityDisposition/nc:DispositionDescriptionText")
+      at.arraignment_outcome = importer.attribute_from_xpath("/j:CaseCourtEvent/j:CourtEventAction/nc:ActivityDisposition/nc:DispositionDescriptionText") do |outcome|
+        outcome.titleize.gsub("Ror","ROR")
+      end
+
       if at.arraignment_outcome
         at.arraigned = true
         at.arraignment_time = DateTime.parse(importer.attribute_from_xpath("/j:CaseCourtEvent/j:CourtEventAction/nc:ActivityDisposition/nc:DispositionDate/nc:DateTime"))
@@ -33,6 +36,7 @@ class ArresteeTracking
 
   private
   def update_incident_attributes
-    incident.update_attributes(arraigned: arraigned)
+    incident.update_attributes(arraigned: arraigned,
+                               arraignment_outcome: arraignment_outcome)
   end
 end
