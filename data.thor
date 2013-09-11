@@ -227,6 +227,20 @@ class Data < Thor
         next_court_part: part
       }
       docketing_notice = DocketingNotice.create!(docketing_notice_attributes)
+
+      arraigned = Random.rand(0..10) <= 2 ? true : false
+      if arraigned
+        arraignment_outcome = ["ROR", "Bail Set", "Pleaded Guilty", "Dismissed"].sample
+      else
+        arraignment_outcome = nil
+      end
+      arrestee_tracking_attributes = {
+        incident: incident,
+        arrest_id: arrest_id,
+        arraigned: arraigned,
+        arraignment_outcome: arraignment_outcome
+      }
+      arrestee_tracking = ArresteeTracking.create!(arrestee_tracking_attributes)
       print "+"
     end
   end
