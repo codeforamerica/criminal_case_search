@@ -154,7 +154,7 @@
                   %legend Type
 
                   .formify.btn-group{ data: { toggle: "buttons-radio", name: "appearance_type" } }
-                    %button.btn{ type: "button", data: { value: "any", selected: true_if(params[:filter][:appearance_type], ["any", nil])} } Any
+                    %button.btn{ type: "button", data: { value: "any", selected: true_if(params[:filter][:appearance_type], ["any", nil])} } All
                     %button.btn{ type: "button", data: { value: "arr", selected: true_if(params[:filter][:appearance_type], "arr") } } Arraignment
                     %button.btn{ type: "button", data: { value: "post-arr", selected: true_if(params[:filter][:appearance_type], "post-arr") } } Post-Arr.
 
