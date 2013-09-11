@@ -10,6 +10,9 @@ class Incident
   embeds_one :arrestee_tracking
   embeds_one :docketing_notice
 
+  # TODO: Move this to be with the other fields from the same doc.
+  field :number_of_open_cases, type: Integer, default: 0
+
   # Primary key; used to merge all documents. From ArrestReport
   field :arrest_id, type: String
   validates :arrest_id, presence: true, uniqueness: true
