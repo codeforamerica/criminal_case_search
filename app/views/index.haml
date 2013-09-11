@@ -12,7 +12,7 @@
             - if incident.on_probation?
               = build_disc("PR", "probation", "On Probation")
             - if incident.has_outstanding_bench_warrant?
-              = build_disc("W", "warrant", "Has Oustanding Bench Warrant")
+              = build_disc("W", "warrant", "Has Outstanding Bench Warrant")
             - if incident.persistent_misdemeanant?
               = build_disc("PM", "persistent-misdemeanant", "Persistent Misdemeanant")
           .span3
