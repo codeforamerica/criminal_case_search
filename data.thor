@@ -161,8 +161,8 @@ class Data < Thor
         prior_conviction_types: prior_conviction_types,
         has_outstanding_bench_warrant: number_of_prior_convictions > 0 ? [true, false].sample : false,
         persistent_misdemeanant: number_of_prior_convictions > 5 ? [true, false].sample : false,
-        serving_probation: number_of_prior_convictions > 0 ? [true, false].sample : false,
-        serving_parole: number_of_prior_convictions > 0 ? [true, false].sample : false
+        on_probation: number_of_prior_convictions > 0 ? [true, false].sample : false,
+        on_parole: number_of_prior_convictions > 0 ? [true, false].sample : false
       }
       rap_sheet = RapSheet.create!(rap_sheet_attributes)
 
