@@ -166,6 +166,12 @@
                     %button.btn{ type: "button", data: { value: "today", selected: true_if(params[:filter][:next_court_date], "today") } } Today
                     %button.btn{ type: "button", data: { value: "tomorrow", selected: true_if(params[:filter][:next_court_date], "tomorrow") } } Tomorrow
                     %button.btn{ type: "button", data: { value: "7-day", selected: true_if(params[:filter][:next_court_date], "7-day") } } Next 7 Days
+              %fieldset
+
+                %fieldset.secondary
+                  .pull-right
+                    %a.btn{href: "/"} Reset
+                    %button.btn.btn-primary{ type: "submit"} Search
 
         .span9
           .row-fluid
