@@ -13,12 +13,13 @@ class RapSheet
   field :defendant_sex, type: String
   validates :defendant_sex, inclusion: { in: %w(M F), allow_nil: true}
 
+
   field :number_of_prior_criminal_convictions, type: Integer
+  field :number_of_other_open_cases, type: Integer
   field :has_prior_felony_conviction, type: Boolean
   field :has_prior_violent_felony_conviction, type: Boolean
   field :has_prior_misdemeanor_conviction, type: Boolean
   field :has_prior_untracked_charge, type: Boolean
-  field :has_other_open_cases, type: Boolean
   field :has_failed_to_appear, type: Boolean
 
   field :has_prior_drug_conviction, type: Boolean
@@ -60,8 +61,14 @@ class RapSheet
         rs.has_prior_misdemeanor_conviction = RapSheet.boolean_from_int(misdemeanor)
         rs.number_of_prior_criminal_convictions = felony + misdemeanor
 
-        other_open_cases = summary_node.xpath("nys:SummaryCounts[@type='OpenCases']/nys:TotalCount", importer.namespaces).first.content.to_i
-        rs.has_other_open_cases = RapSheet.boolean_from_int(other_open_cases)
+        open_felonies = summary_node.xpath("nys:SummaryCounts[@type='OpenCases']/nys:Count[@type='Felony']/nys:Value", importer.namespaces).first.content.to_i
+        open_misdemeanors = summary_node.xpath("nys:SummaryCounts[@type='OpenCases']/nys:Count[@type='Misdemeanor']/nys:Value", importer.namespaces).first.content.to_i
+        # It appears that these summaries do not include the transaction case pre-arraignment.
+        # To identify which CriminalCycle is represented in the count, look at the nys:CycleNumbers attribute in the nys:Count element.
+        # The CycleNumbers appear to be the ordinal number of the cycle (low = old)
+        # If needed, grab the current Criminal Cycle here:
+        # importer.nodes_from_xpath("/nysRap:NewYorkStateRapSheet/nys:NewYorkStateResponsePrimary/nys:CriminalCycle[nys:Arrest/nc:ActivityIdentification/nc:IdentificationID = '#{arrest_id}']")
+        rs.number_of_other_open_cases = open_felonies + open_misdemeanors
 
         fta = summary_node.xpath("nys:SummaryCounts[@type='Warrant']/nys:Count[@type='FailureToAppear']/nys:Value", importer.namespaces).first.content.to_i
         rs.has_failed_to_appear = RapSheet.boolean_from_int(fta)
@@ -136,6 +143,7 @@ class RapSheet
     incident.update_attributes(defendant_age: defendant_age,
                                defendant_sex: defendant_sex,
                                number_of_prior_criminal_convictions: number_of_prior_criminal_convictions,
+                               number_of_other_open_cases: number_of_other_open_cases,
                                has_prior_felony_conviction: has_prior_felony_conviction,
                                has_prior_violent_felony_conviction: has_prior_violent_felony_conviction,
                                has_prior_misdemeanor_conviction: has_prior_misdemeanor_conviction,
@@ -144,7 +152,6 @@ class RapSheet
                                has_prior_criminal_contempt_conviction: has_prior_criminal_contempt_conviction,
                                has_prior_sex_offense_conviction: has_prior_sex_offense_conviction,
                                has_prior_untracked_charge: has_prior_untracked_charge,
-                               has_other_open_cases: has_other_open_cases,
                                has_failed_to_appear: has_failed_to_appear)
   end
 end
