@@ -27,7 +27,7 @@ class Incident
   # From DA's Complaint
   field :top_charge_code, type: String
   validates :top_charge_code, inclusion: { in: %w(I V M F VF), allow_nil: true }
-  field :charge_types, type: Array
+  field :charge_types, type: Array, default: []
   field :drug_charge, type: Boolean
   field :misdemeanor_assault_charge, type: Boolean
   field :criminal_contempt_charge, type: Boolean
@@ -49,11 +49,7 @@ class Incident
   field :has_prior_felony_conviction, type: Boolean
   field :has_prior_violent_felony_conviction, type: Boolean
   field :has_prior_misdemeanor_conviction, type: Boolean
-  field :has_prior_drug_conviction, type: Boolean
-  field :has_prior_misdemeanor_assault_conviction, type: Boolean
-  field :has_prior_criminal_contempt_conviction, type: Boolean
-  field :has_prior_sex_offense_conviction, type: Boolean
-  field :has_prior_untracked_charge, type: Boolean
+  field :prior_conviction_types, type: Array
   field :has_failed_to_appear, type: Boolean
   delegate :has_outstanding_bench_warrant?, to: :rap_sheet, allow_nil: true
   delegate :persistent_misdemeanant?, to: :rap_sheet, allow_nil: true
@@ -77,11 +73,7 @@ class Incident
   scope :has_no_other_open_cases, any_in(has_other_open_cases: [0, nil])
   scope :has_failed_to_appear, where(has_failed_to_appear: true)
   scope :has_not_failed_to_appear, any_in(has_failed_to_appear: [false, nil])
-  scope :has_prior_drug_conviction, where(has_prior_drug_conviction: true)
-  scope :has_prior_misdemeanor_assault_conviction, where(has_prior_misdemeanor_assault_conviction: true)
-  scope :has_prior_criminal_contempt_conviction, where(has_prior_criminal_contempt_conviction: true)
-  scope :has_prior_sex_offense_conviction, where(has_prior_sex_offense_conviction: true)
-  scope :has_prior_untracked_conviction, where(has_prior_untracked_conviction: true)
+  scope :prior_conviction_types_in, ->(conviction_types) { any_in(:prior_conviction_types => [conviction_types, nil].flatten) }
   scope :number_of_prior_criminal_convictions_gte, ->(min) { gte(number_of_prior_criminal_convictions: min) }
   scope :number_of_prior_criminal_convictions_lte, ->(max) { lte(number_of_prior_criminal_convictions: max) }
   scope :pre_arraignment, where(next_court_date_is_arraignment: true) # or where arraigned == false

@@ -141,6 +141,12 @@ class Data < Thor
       arrest_report = ArrestReport.create!(arrest_report_attributes)
 
       number_of_prior_convictions = Random.rand(0..10)
+      prior_conviction_type_options = ["Drug", "Misdemeanor Assault", "Criminal Contempt", "Sex Offense", "Untracked"]
+      if number_of_prior_convictions == 0
+        prior_conviction_types = nil
+      else
+        prior_conviction_types = number_of_prior_convictions.times.map { prior_conviction_type_options.sample }
+      end
       rap_sheet_attributes = {
         incident: incident,
         arrest_id: arrest_id,
@@ -152,10 +158,7 @@ class Data < Thor
         has_prior_violent_felony_conviction: number_of_prior_convictions > 0 ? [true, false].sample : false,
         has_prior_misdemeanor_conviction: number_of_prior_convictions > 0 ? [true, false].sample : false,
         has_failed_to_appear: number_of_prior_convictions > 0 ? [true, false].sample : false,
-        has_prior_drug_conviction: number_of_prior_convictions > 0 ? [true, false].sample : false,
-        has_prior_misdemeanor_assault_conviction: number_of_prior_convictions > 0 ? [true, false].sample : false,
-        has_prior_criminal_contempt_conviction: number_of_prior_convictions > 0 ? [true, false].sample : false,
-        has_prior_sex_offense_conviction: number_of_prior_convictions > 0 ? [true, false].sample : false,
+        prior_conviction_types: prior_conviction_types,
         has_outstanding_bench_warrant: number_of_prior_convictions > 0 ? [true, false].sample : false,
         persistent_misdemeanant: number_of_prior_convictions > 5 ? [true, false].sample : false,
         serving_probation: number_of_prior_convictions > 0 ? [true, false].sample : false,
