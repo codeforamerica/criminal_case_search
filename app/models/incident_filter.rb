@@ -33,6 +33,7 @@ class IncidentFilter
       end
       if params["include_charge"].include? "A"
         charge_types << "Untracked"
+        charge_types << nil
       end
       scope = scope.charge_types_in(charge_types)
     end
@@ -67,22 +68,26 @@ class IncidentFilter
       end
     end
 
-   if params["prior_convictions"]
+    if params["prior_convictions"]
+      conviction_types = []
       if params["prior_convictions"].include? "D"
-        scope = scope.has_prior_drug_conviction
+        conviction_types << "Drug"
       end
       if params["prior_convictions"].include? "MA"
-        scope = scope.has_prior_misdemeanor_assault_conviction
+        conviction_types << "Misdemeanor Assault"
       end
       if params["prior_convictions"].include? "CC"
-        scope = scope.has_prior_criminal_contempt_conviction
+        conviction_types << "Criminal Contempt"
       end
       if params["prior_convictions"].include? "SO"
-        scope = scope.has_prior_sex_offense_conviction
+        conviction_types << "Sex Offense"
       end
-      #if params["prior_convictions"].include? "AA"
-        #scope = scope.has_prior_untracked_charge
-      #end
+      if params["prior_convictions"].include? "A"
+        conviction_types << "Untracked"
+        conviction_types << nil
+      end
+
+      scope = scope.prior_conviction_types_in(conviction_types)
     end
 
     if params["number_of_prior_convictions"]

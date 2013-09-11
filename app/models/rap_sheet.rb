@@ -22,10 +22,7 @@ class RapSheet
   field :has_prior_untracked_charge, type: Boolean
   field :has_failed_to_appear, type: Boolean
 
-  field :has_prior_drug_conviction, type: Boolean
-  field :has_prior_misdemeanor_assault_conviction, type: Boolean
-  field :has_prior_criminal_contempt_conviction, type: Boolean
-  field :has_prior_sex_offense_conviction, type: Boolean
+  field :prior_conviction_types, type: Array
 
   field :has_outstanding_bench_warrant, type: Boolean #Todo
   field :persistent_misdemeanant, type: Boolean
@@ -80,24 +77,26 @@ class RapSheet
           # A = Attempted; C = Completed
           #attempted_code = conviction.xpath("nys:ChargeAttemptedCompletedText", importer.namespaces).first.content
 
+          rs.prior_conviction_types = []
+
           if title == "PL" and code_section =~ /220/
-            rs.has_prior_drug_conviction = true
+            rs.prior_conviction_types << "Drug"
           end
 
           if title == "PL" and code_section =~ /120\.00/
-            rs.has_prior_misdemeanor_assault_conviction = true
+            rs.prior_conviction_types << "Misdemeanor Assault"
           end
 
           if title == "PL" and code_section =~ /215.50|215.51|215.52/
-            rs.has_prior_criminal_contempt_conviction = true
+            rs.prior_conviction_types << "Criminal Contempt"
           end
 
           if title == "PL" and code_section =~ /130/
-            rs.has_prior_sex_offense_conviction = true
+            rs.prior_conviction_types << "Sex Offense"
           end
 
-          unless title == "PL" && code_section =~ /(220|120\.00|215.50|215.51|215.52|130)/
-            rs.has_prior_untracked_charge = true
+          if (title == "PL" && code_section !=~ /(220|120\.00|215.50|215.51|215.52|130)/) || title != "PL"
+            rs.prior_conviction_types << "Untracked"
           end
         end
 
@@ -147,11 +146,7 @@ class RapSheet
                                has_prior_felony_conviction: has_prior_felony_conviction,
                                has_prior_violent_felony_conviction: has_prior_violent_felony_conviction,
                                has_prior_misdemeanor_conviction: has_prior_misdemeanor_conviction,
-                               has_prior_drug_conviction: has_prior_drug_conviction,
-                               has_prior_misdemeanor_assault_conviction: has_prior_misdemeanor_assault_conviction,
-                               has_prior_criminal_contempt_conviction: has_prior_criminal_contempt_conviction,
-                               has_prior_sex_offense_conviction: has_prior_sex_offense_conviction,
-                               has_prior_untracked_charge: has_prior_untracked_charge,
+                               prior_conviction_types: prior_conviction_types,
                                has_failed_to_appear: has_failed_to_appear)
   end
 end
