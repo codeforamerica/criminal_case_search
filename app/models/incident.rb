@@ -27,7 +27,7 @@ class Incident
   # From DA's Complaint
   field :top_charge_code, type: String
   validates :top_charge_code, inclusion: { in: %w(I V M F VF), allow_nil: true }
-  field :charge_types, type: Array, default: []
+  field :top_charge_types, type: Array, default: []
   field :drug_charge, type: Boolean
   field :misdemeanor_assault_charge, type: Boolean
   field :criminal_contempt_charge, type: Boolean
@@ -68,7 +68,7 @@ class Incident
   scope :defendant_age_lte, ->(max_age) { lte(:defendant_age => max_age) }
   scope :defendant_age_gte, ->(min_age) { gte(:defendant_age => min_age) }
   scope :top_charge_in, ->(charge_code) { any_in(:top_charge_code => [charge_code].flatten) }
-  scope :charge_types_in, ->(charge_types) { any_in(:charge_types => [charge_types].flatten) }
+  scope :top_charge_types_in, ->(charge_types) { any_in(:top_charge_types => [charge_types].flatten) }
   scope :has_other_open_cases, gte(number_of_other_open_cases: 1)
   scope :has_no_other_open_cases, any_in(number_of_other_open_cases: [0, nil])
   scope :has_failed_to_appear, where(has_failed_to_appear: true)
