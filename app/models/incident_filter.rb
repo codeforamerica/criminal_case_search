@@ -18,24 +18,24 @@ class IncidentFilter
     end
 
     if params["include_charge"]
-      charge_types = []
+      top_charge_types = []
       if params["include_charge"].include? "D"
-        charge_types << "Drug"
+        top_charge_types << "Drug"
       end
       if params["include_charge"].include? "MA"
-        charge_types << "Misdemeanor Assault"
+        top_charge_types << "Misdemeanor Assault"
       end
       if params["include_charge"].include? "CC"
-        charge_types << "Criminal Contempt"
+        top_charge_types << "Criminal Contempt"
       end
       if params["include_charge"].include? "SO"
-        charge_types << "Sex Offense"
+        top_charge_types << "Sex Offense"
       end
       if params["include_charge"].include? "A"
-        charge_types << "Untracked"
-        charge_types << nil
+        top_charge_types << "Untracked"
+        top_charge_types << nil
       end
-      scope = scope.charge_types_in(charge_types)
+      scope = scope.top_charge_types_in(top_charge_types)
     end
 
     if params["sex"]
