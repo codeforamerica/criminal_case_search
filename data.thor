@@ -142,10 +142,13 @@ class Data < Thor
 
       number_of_prior_convictions = Random.rand(0..10)
       prior_conviction_type_options = ["Drug", "Misdemeanor Assault", "Criminal Contempt", "Sex Offense", "Untracked"]
+      prior_conviction_severity_options = ["Felony", "Violent Felony", "Misdemeanor", "Other"]
       if number_of_prior_convictions == 0
-        prior_conviction_types = nil
+        prior_conviction_types = []
+        prior_conviction_severities = []
       else
         prior_conviction_types = number_of_prior_convictions.times.map { prior_conviction_type_options.sample }
+        prior_conviction_severities = number_of_prior_convictions.times.map { prior_conviction_severity_options.sample }.uniq
       end
       rap_sheet_attributes = {
         incident: incident,
@@ -154,11 +157,9 @@ class Data < Thor
         defendant_age: incident.defendant_age,
         number_of_prior_criminal_convictions: number_of_prior_convictions,
         number_of_other_open_cases: number_of_prior_convictions > 0 ? Random.rand(0..4) : 0,
-        has_prior_felony_conviction: number_of_prior_convictions > 0 ? [true, false].sample : false,
-        has_prior_violent_felony_conviction: number_of_prior_convictions > 0 ? [true, false].sample : false,
-        has_prior_misdemeanor_conviction: number_of_prior_convictions > 0 ? [true, false].sample : false,
         has_failed_to_appear: number_of_prior_convictions > 0 ? [true, false].sample : false,
         prior_conviction_types: prior_conviction_types,
+        prior_conviction_severities: prior_conviction_severities,
         has_outstanding_bench_warrant: number_of_prior_convictions > 0 ? [true, false].sample : false,
         persistent_misdemeanant: number_of_prior_convictions > 5 ? [true, false].sample : false,
         on_probation: number_of_prior_convictions > 0 ? [true, false].sample : false,

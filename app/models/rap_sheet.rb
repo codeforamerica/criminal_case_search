@@ -16,13 +16,11 @@ class RapSheet
 
   field :number_of_prior_criminal_convictions, type: Integer
   field :number_of_other_open_cases, type: Integer
-  field :has_prior_felony_conviction, type: Boolean
-  field :has_prior_violent_felony_conviction, type: Boolean
-  field :has_prior_misdemeanor_conviction, type: Boolean
   field :has_prior_untracked_charge, type: Boolean
   field :has_failed_to_appear, type: Boolean
 
-  field :prior_conviction_types, type: Array
+  field :prior_conviction_types, type: Array, default: []
+  field :prior_conviction_severities, type: Array, default: []
 
   field :has_outstanding_bench_warrant, type: Boolean #Todo
   field :persistent_misdemeanant, type: Boolean
@@ -52,10 +50,12 @@ class RapSheet
         felony = summary_node.xpath("nys:SummaryCounts[@type='Conviction']/nys:Count[@type='Felony']/nys:Value", importer.namespaces).first.content.to_i
         violent_felony = summary_node.xpath("nys:SummaryCounts[@type='Conviction']/nys:Count[@type='ViolentFelony']/nys:Value", importer.namespaces).first.content.to_i
         misdemeanor = summary_node.xpath("nys:SummaryCounts[@type='Conviction']/nys:Count[@type='Misdemeanor']/nys:Value", importer.namespaces).first.content.to_i
+        other = summary_node.xpath("nys:SummaryCounts[@type='Conviction']/nys:Count[@type='Other']/nys:Value", importer.namespaces).first.content.to_i
 
-        rs.has_prior_felony_conviction = RapSheet.boolean_from_int(felony)
-        rs.has_prior_violent_felony_conviction = RapSheet.boolean_from_int(violent_felony)
-        rs.has_prior_misdemeanor_conviction = RapSheet.boolean_from_int(misdemeanor)
+        rs.prior_conviction_severities = { "Felony" => felony,
+                                           "Violent Felony" => violent_felony,
+                                           "Misdemeanor" => misdemeanor,
+                                           "Other" => other}.map { |k, v| k if v > 0 }.uniq.compact
         rs.number_of_prior_criminal_convictions = felony + misdemeanor
 
         open_felonies = summary_node.xpath("nys:SummaryCounts[@type='OpenCases']/nys:Count[@type='Felony']/nys:Value", importer.namespaces).first.content.to_i
@@ -76,8 +76,6 @@ class RapSheet
           code_section = conviction.xpath("nys:CodedStatute/j:StatuteCodeSectionIdentification/nc:IdentificationID", importer.namespaces).first.try(:content)
           # A = Attempted; C = Completed
           #attempted_code = conviction.xpath("nys:ChargeAttemptedCompletedText", importer.namespaces).first.content
-
-          rs.prior_conviction_types = []
 
           if title == "PL" and code_section =~ /220/
             rs.prior_conviction_types << "Drug"
@@ -143,10 +141,8 @@ class RapSheet
                                defendant_sex: defendant_sex,
                                number_of_prior_criminal_convictions: number_of_prior_criminal_convictions,
                                number_of_other_open_cases: number_of_other_open_cases,
-                               has_prior_felony_conviction: has_prior_felony_conviction,
-                               has_prior_violent_felony_conviction: has_prior_violent_felony_conviction,
-                               has_prior_misdemeanor_conviction: has_prior_misdemeanor_conviction,
                                prior_conviction_types: prior_conviction_types,
+                               prior_conviction_severities: prior_conviction_severities,
                                has_failed_to_appear: has_failed_to_appear)
   end
 end
