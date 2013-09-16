@@ -33,7 +33,7 @@ class IncidentFilter
       end
       if params["include_charge"].include? "A"
         top_charge_types << "Untracked"
-        top_charge_types << nil
+        top_charge_types << []
       end
       scope = scope.top_charge_types_in(top_charge_types)
     end
@@ -84,10 +84,29 @@ class IncidentFilter
       end
       if params["prior_convictions"].include? "A"
         conviction_types << "Untracked"
-        conviction_types << nil
+        conviction_types << []
       end
 
       scope = scope.prior_conviction_types_in(conviction_types)
+    end
+
+    if params["prior_conviction_severity"]
+      conviction_severities = []
+      if params["prior_conviction_severity"].include? "VF"
+        conviction_severities << "Violent Felony"
+      end
+      if params["prior_conviction_severity"].include? "F"
+        conviction_severities << "Felony"
+      end
+      if params["prior_conviction_severity"].include? "M"
+        conviction_severities << "Misdemeanor"
+      end
+      if params["prior_conviction_severity"].include? "A"
+        conviction_severities << "Other"
+        conviction_severities << []
+      end
+
+      scope = scope.prior_conviction_severities_in(conviction_severities)
     end
 
     if params["number_of_prior_convictions"]
