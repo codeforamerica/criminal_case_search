@@ -141,25 +141,29 @@ class Data < Thor
       arrest_report = ArrestReport.create!(arrest_report_attributes)
 
       number_of_prior_convictions = Random.rand(0..10)
+      prior_conviction_type_options = ["Drug", "Misdemeanor Assault", "Criminal Contempt", "Sex Offense", "Untracked"]
+      prior_conviction_severity_options = ["Felony", "Violent Felony", "Misdemeanor", "Other"]
+      if number_of_prior_convictions == 0
+        prior_conviction_types = []
+        prior_conviction_severities = []
+      else
+        prior_conviction_types = number_of_prior_convictions.times.map { prior_conviction_type_options.sample }
+        prior_conviction_severities = number_of_prior_convictions.times.map { prior_conviction_severity_options.sample }.uniq
+      end
       rap_sheet_attributes = {
         incident: incident,
         arrest_id: arrest_id,
         defendant_sex: incident.defendant_sex,
         defendant_age: incident.defendant_age,
         number_of_prior_criminal_convictions: number_of_prior_convictions,
-        has_prior_felony_conviction: number_of_prior_convictions > 0 ? [true, false].sample : false,
-        has_prior_violent_felony_conviction: number_of_prior_convictions > 0 ? [true, false].sample : false,
-        has_prior_misdemeanor_conviction: number_of_prior_convictions > 0 ? [true, false].sample : false,
-        has_other_open_cases: number_of_prior_convictions > 0 ? [true, false].sample : false,
+        number_of_other_open_cases: number_of_prior_convictions > 0 ? Random.rand(0..4) : 0,
         has_failed_to_appear: number_of_prior_convictions > 0 ? [true, false].sample : false,
-        has_prior_drug_conviction: number_of_prior_convictions > 0 ? [true, false].sample : false,
-        has_prior_misdemeanor_assault_conviction: number_of_prior_convictions > 0 ? [true, false].sample : false,
-        has_prior_criminal_contempt_conviction: number_of_prior_convictions > 0 ? [true, false].sample : false,
-        has_prior_sex_offense_conviction: number_of_prior_convictions > 0 ? [true, false].sample : false,
+        prior_conviction_types: prior_conviction_types,
+        prior_conviction_severities: prior_conviction_severities,
         has_outstanding_bench_warrant: number_of_prior_convictions > 0 ? [true, false].sample : false,
         persistent_misdemeanant: number_of_prior_convictions > 5 ? [true, false].sample : false,
-        serving_probation: number_of_prior_convictions > 0 ? [true, false].sample : false,
-        serving_parole: number_of_prior_convictions > 0 ? [true, false].sample : false
+        on_probation: number_of_prior_convictions > 0 ? [true, false].sample : false,
+        on_parole: number_of_prior_convictions > 0 ? [true, false].sample : false
       }
       rap_sheet = RapSheet.create!(rap_sheet_attributes)
 
@@ -227,6 +231,20 @@ class Data < Thor
         next_court_part: part
       }
       docketing_notice = DocketingNotice.create!(docketing_notice_attributes)
+
+      arraigned = Random.rand(0..10) <= 2 ? true : false
+      if arraigned
+        arraignment_outcome = ["ROR", "Bail Set", "Pleaded Guilty", "Dismissed"].sample
+      else
+        arraignment_outcome = nil
+      end
+      arrestee_tracking_attributes = {
+        incident: incident,
+        arrest_id: arrest_id,
+        arraigned: arraigned,
+        arraignment_outcome: arraignment_outcome
+      }
+      arrestee_tracking = ArresteeTracking.create!(arrestee_tracking_attributes)
       print "+"
     end
   end

@@ -15,12 +15,8 @@ class Complaint
   validates :top_charge_code, inclusion: { in: %w(I V M F VF), allow_nil: true }
 
   field :charges, type: Array
+  field :top_charge_types, type: Array, default: []
   field :complaint_image, type: Moped::BSON::Binary
-  field :drug_charge, type: Boolean
-  field :misdemeanor_assault_charge, type: Boolean
-  field :criminal_contempt_charge, type: Boolean
-  field :sex_offense_charge, type: Boolean
-  field :untracked_charge, type: Boolean
 
   before_save :update_incident_attributes
 
@@ -77,26 +73,24 @@ class Complaint
       self.top_charge_code = self.charges.first["category"]
     end
 
-    self.charges.each do |charge|
-      if charge["agency_code"] =~ /PL (110\/)?220/
-        self.drug_charge = true
-      end
+    if top_charge["agency_code"] =~ /PL (110\/)?220/
+      self.top_charge_types << "Drug"
+    end
 
-      if charge["agency_code"] =~ /PL (110\/)?120\.00/
-        self.misdemeanor_assault_charge = true
-      end
+    if top_charge["agency_code"] =~ /PL (110\/)?120\.00/
+      self.top_charge_types << "Misdemeanor Assault"
+    end
 
-      if charge["agency_code"] =~ /PL (110\/)?(215.50|215.51|215.52)/
-        self.criminal_contempt_charge = true
-      end
+    if top_charge["agency_code"] =~ /PL (110\/)?(215.50|215.51|215.52)/
+      self.top_charge_types << "Criminal Contempt"
+    end
 
-      if charge["agency_code"] =~ /PL (110\/)?130/
-        self.sex_offense_charge = true
-      end
+    if top_charge["agency_code"] =~ /PL (110\/)?130/
+      self.top_charge_types << "Sex Offense"
+    end
 
-      unless charge["agency_code"] =~ /PL (110\/)?(220|120|215.50|215.51|215.52|130)/
-        self.untracked_charge = true
-      end
+    unless top_charge["agency_code"] =~ /PL (110\/)?(220|120|215.50|215.51|215.52|130)/
+      self.top_charge_types << "Untracked"
     end
   end
 
@@ -120,10 +114,6 @@ class Complaint
   private
   def update_incident_attributes
     incident.update_attributes(top_charge_code: top_charge_code,
-                               drug_charge: drug_charge,
-                               misdemeanor_assault_charge: misdemeanor_assault_charge,
-                               criminal_contempt_charge: criminal_contempt_charge,
-                               sex_offense_charge: sex_offense_charge,
-                               untracked_charge: untracked_charge)
+                               top_charge_types: top_charge_types)
   end
 end

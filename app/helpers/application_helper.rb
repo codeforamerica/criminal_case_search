@@ -28,7 +28,7 @@ html
 html
 
     if params[:filter][name].present?
-      if params[:filter][name].include?(value)
+      if params[:filter][name].to_a.include?(value)
         html += " checked "
       end
     elsif !!options[:selected] == true

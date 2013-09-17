@@ -13,23 +13,19 @@ class RapSheet
   field :defendant_sex, type: String
   validates :defendant_sex, inclusion: { in: %w(M F), allow_nil: true}
 
+
   field :number_of_prior_criminal_convictions, type: Integer
-  field :has_prior_felony_conviction, type: Boolean
-  field :has_prior_violent_felony_conviction, type: Boolean
-  field :has_prior_misdemeanor_conviction, type: Boolean
+  field :number_of_other_open_cases, type: Integer
   field :has_prior_untracked_charge, type: Boolean
-  field :has_other_open_cases, type: Boolean
   field :has_failed_to_appear, type: Boolean
 
-  field :has_prior_drug_conviction, type: Boolean
-  field :has_prior_misdemeanor_assault_conviction, type: Boolean
-  field :has_prior_criminal_contempt_conviction, type: Boolean
-  field :has_prior_sex_offense_conviction, type: Boolean
+  field :prior_conviction_types, type: Array, default: []
+  field :prior_conviction_severities, type: Array, default: []
 
   field :has_outstanding_bench_warrant, type: Boolean #Todo
   field :persistent_misdemeanant, type: Boolean
-  field :serving_probation, type: Boolean
-  field :serving_parole, type: Boolean
+  field :on_probation, type: Boolean
+  field :on_parole, type: Boolean
 
   before_save :update_incident_attributes
 
@@ -54,14 +50,22 @@ class RapSheet
         felony = summary_node.xpath("nys:SummaryCounts[@type='Conviction']/nys:Count[@type='Felony']/nys:Value", importer.namespaces).first.content.to_i
         violent_felony = summary_node.xpath("nys:SummaryCounts[@type='Conviction']/nys:Count[@type='ViolentFelony']/nys:Value", importer.namespaces).first.content.to_i
         misdemeanor = summary_node.xpath("nys:SummaryCounts[@type='Conviction']/nys:Count[@type='Misdemeanor']/nys:Value", importer.namespaces).first.content.to_i
+        other = summary_node.xpath("nys:SummaryCounts[@type='Conviction']/nys:Count[@type='Other']/nys:Value", importer.namespaces).first.content.to_i
 
-        rs.has_prior_felony_conviction = RapSheet.boolean_from_int(felony)
-        rs.has_prior_violent_felony_conviction = RapSheet.boolean_from_int(violent_felony)
-        rs.has_prior_misdemeanor_conviction = RapSheet.boolean_from_int(misdemeanor)
+        rs.prior_conviction_severities = { "Felony" => felony,
+                                           "Violent Felony" => violent_felony,
+                                           "Misdemeanor" => misdemeanor,
+                                           "Other" => other}.map { |k, v| k if v > 0 }.uniq.compact
         rs.number_of_prior_criminal_convictions = felony + misdemeanor
 
-        other_open_cases = summary_node.xpath("nys:SummaryCounts[@type='OpenCases']/nys:TotalCount", importer.namespaces).first.content.to_i
-        rs.has_other_open_cases = RapSheet.boolean_from_int(other_open_cases)
+        open_felonies = summary_node.xpath("nys:SummaryCounts[@type='OpenCases']/nys:Count[@type='Felony']/nys:Value", importer.namespaces).first.content.to_i
+        open_misdemeanors = summary_node.xpath("nys:SummaryCounts[@type='OpenCases']/nys:Count[@type='Misdemeanor']/nys:Value", importer.namespaces).first.content.to_i
+        # It appears that these summaries do not include the transaction case pre-arraignment.
+        # To identify which CriminalCycle is represented in the count, look at the nys:CycleNumbers attribute in the nys:Count element.
+        # The CycleNumbers appear to be the ordinal number of the cycle (low = old)
+        # If needed, grab the current Criminal Cycle here:
+        # importer.nodes_from_xpath("/nysRap:NewYorkStateRapSheet/nys:NewYorkStateResponsePrimary/nys:CriminalCycle[nys:Arrest/nc:ActivityIdentification/nc:IdentificationID = '#{arrest_id}']")
+        rs.number_of_other_open_cases = open_felonies + open_misdemeanors
 
         fta = summary_node.xpath("nys:SummaryCounts[@type='Warrant']/nys:Count[@type='FailureToAppear']/nys:Value", importer.namespaces).first.content.to_i
         rs.has_failed_to_appear = RapSheet.boolean_from_int(fta)
@@ -74,23 +78,23 @@ class RapSheet
           #attempted_code = conviction.xpath("nys:ChargeAttemptedCompletedText", importer.namespaces).first.content
 
           if title == "PL" and code_section =~ /220/
-            rs.has_prior_drug_conviction = true
+            rs.prior_conviction_types << "Drug"
           end
 
           if title == "PL" and code_section =~ /120\.00/
-            rs.has_prior_misdemeanor_assault_conviction = true
+            rs.prior_conviction_types << "Misdemeanor Assault"
           end
 
           if title == "PL" and code_section =~ /215.50|215.51|215.52/
-            rs.has_prior_criminal_contempt_conviction = true
+            rs.prior_conviction_types << "Criminal Contempt"
           end
 
           if title == "PL" and code_section =~ /130/
-            rs.has_prior_sex_offense_conviction = true
+            rs.prior_conviction_types << "Sex Offense"
           end
 
-          unless title == "PL" && code_section =~ /(220|120\.00|215.50|215.51|215.52|130)/
-            rs.has_prior_untracked_charge = true
+          if (title == "PL" && code_section !=~ /(220|120\.00|215.50|215.51|215.52|130)/) || title != "PL"
+            rs.prior_conviction_types << "Untracked"
           end
         end
 
@@ -99,11 +103,11 @@ class RapSheet
         end
 
         if importer.nodes_from_xpath("/nysRap:NewYorkStateRapSheet/nys:NewYorkStateResponsePrimary/nys:Banner[@s:id='46']").present?
-          rs.serving_parole = true
+          rs.on_parole = true
         end
 
         if importer.nodes_from_xpath("/nysRap:NewYorkStateRapSheet/nys:NewYorkStateResponsePrimary/nys:Banner[@s:id='43']").present?
-          rs.serving_probation = true
+          rs.on_probation = true
         end
         rapsheets << rs
       else
@@ -136,15 +140,9 @@ class RapSheet
     incident.update_attributes(defendant_age: defendant_age,
                                defendant_sex: defendant_sex,
                                number_of_prior_criminal_convictions: number_of_prior_criminal_convictions,
-                               has_prior_felony_conviction: has_prior_felony_conviction,
-                               has_prior_violent_felony_conviction: has_prior_violent_felony_conviction,
-                               has_prior_misdemeanor_conviction: has_prior_misdemeanor_conviction,
-                               has_prior_drug_conviction: has_prior_drug_conviction,
-                               has_prior_misdemeanor_assault_conviction: has_prior_misdemeanor_assault_conviction,
-                               has_prior_criminal_contempt_conviction: has_prior_criminal_contempt_conviction,
-                               has_prior_sex_offense_conviction: has_prior_sex_offense_conviction,
-                               has_prior_untracked_charge: has_prior_untracked_charge,
-                               has_other_open_cases: has_other_open_cases,
+                               number_of_other_open_cases: number_of_other_open_cases,
+                               prior_conviction_types: prior_conviction_types,
+                               prior_conviction_severities: prior_conviction_severities,
                                has_failed_to_appear: has_failed_to_appear)
   end
 end
