@@ -7,12 +7,12 @@
             %h3.name= incident.defendant_name
             %p.docket-number= incident.docket_number
           .span3
-            - if incident.serving_parole?
-              = build_disc("PA", "parole", "Serving Parole")
-            - if incident.serving_probation?
-              = build_disc("PR", "probation", "Serving Probation")
+            - if incident.on_parole?
+              = build_disc("PA", "parole", "On Parole")
+            - if incident.on_probation?
+              = build_disc("PR", "probation", "On Probation")
             - if incident.has_outstanding_bench_warrant?
-              = build_disc("W", "warrant", "Has Oustanding Bench Warrant")
+              = build_disc("W", "warrant", "Has Outstanding Bench Warrant")
             - if incident.persistent_misdemeanant?
               = build_disc("PM", "persistent-misdemeanant", "Persistent Misdemeanant")
           .span3
@@ -30,8 +30,8 @@
               %span.count= incident.number_of_prior_criminal_convictions 
               Criminal Convictions
             %p.priors
-              %span.count= incident.number_of_open_cases
-              Open Cases
+              %span.count= incident.number_of_other_open_cases
+              Other Open Cases
           .span3
             %p.court-part= incident.next_court_part
             %p= incident.next_courthouse

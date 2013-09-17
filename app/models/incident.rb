@@ -10,9 +10,6 @@ class Incident
   embeds_one :arrestee_tracking
   embeds_one :docketing_notice
 
-  # TODO: Move this to be with the other fields from the same doc.
-  field :number_of_open_cases, type: Integer, default: 0
-
   # Primary key; used to merge all documents. From ArrestReport
   field :arrest_id, type: String
   validates :arrest_id, presence: true, uniqueness: true
@@ -30,11 +27,7 @@ class Incident
   # From DA's Complaint
   field :top_charge_code, type: String
   validates :top_charge_code, inclusion: { in: %w(I V M F VF), allow_nil: true }
-  field :drug_charge, type: Boolean
-  field :misdemeanor_assault_charge, type: Boolean
-  field :criminal_contempt_charge, type: Boolean
-  field :sex_offense_charge, type: Boolean
-  field :untracked_charge, type: Boolean
+  field :top_charge_types, type: Array, default: []
   delegate :top_charge, to: :complaint, allow_nil: true
 
   # From OCA Docket
@@ -47,46 +40,34 @@ class Incident
 
   # From Rap Sheet
   field :number_of_prior_criminal_convictions, type: Integer
-  field :has_prior_felony_conviction, type: Boolean
-  field :has_prior_violent_felony_conviction, type: Boolean
-  field :has_prior_misdemeanor_conviction, type: Boolean
-  field :has_prior_drug_conviction, type: Boolean
-  field :has_prior_misdemeanor_assault_conviction, type: Boolean
-  field :has_prior_criminal_contempt_conviction, type: Boolean
-  field :has_prior_sex_offense_conviction, type: Boolean
-  field :has_prior_untracked_charge, type: Boolean
-  field :has_other_open_cases, type: Boolean
+  field :number_of_other_open_cases, type: Integer
+  field :prior_conviction_types, type: Array, default: []
+  field :prior_conviction_severities, type: Array, default: []
   field :has_failed_to_appear, type: Boolean
   delegate :has_outstanding_bench_warrant?, to: :rap_sheet, allow_nil: true
   delegate :persistent_misdemeanant?, to: :rap_sheet, allow_nil: true
-  delegate :serving_probation?, to: :rap_sheet, allow_nil: true
-  delegate :serving_parole?, to: :rap_sheet, allow_nil: true
+  delegate :on_probation?, to: :rap_sheet, allow_nil: true
+  delegate :on_parole?, to: :rap_sheet, allow_nil: true
 
   # From CJA Report
   field :recommendations, type: Array
 
   #From ArresteeTracking
   field :arraigned, type: Boolean
+  field :arraignment_outcome, type: String
 
   scope :borough, ->(borough_name) { any_in(borough: borough_name) }
   scope :defendant_sex, ->(sex_code) { where(defendant_sex: sex_code) }
   scope :defendant_age_lte, ->(max_age) { lte(:defendant_age => max_age) }
   scope :defendant_age_gte, ->(min_age) { gte(:defendant_age => min_age) }
-  scope :top_charge_in, ->(charge_code) { any_in(:top_charge_code => [charge_code].flatten) }
-  scope :has_drug_charge, where(drug_charge: true)
-  scope :has_misdemeanor_assault_charge, where(misdemeanor_assault_charge: true)
-  scope :has_criminal_contempt_charge, where(criminal_contempt_charge: true)
-  scope :has_sex_offense_charge, where(sex_offense_charge: true)
-  scope :has_untracked_charge, where(untracked_charge: true)
-  scope :has_other_open_cases, where(has_other_open_cases: true)
-  scope :has_no_other_open_cases, any_in(has_other_open_cases: [false, nil])
+  scope :top_charge_in, ->(charge_code) { any_in(:top_charge_code => charge_code) }
+  scope :top_charge_types_in, ->(charge_types) { any_in(:top_charge_types => charge_types) }
+  scope :has_other_open_cases, gte(number_of_other_open_cases: 1)
+  scope :has_no_other_open_cases, any_in(number_of_other_open_cases: [0, nil])
   scope :has_failed_to_appear, where(has_failed_to_appear: true)
   scope :has_not_failed_to_appear, any_in(has_failed_to_appear: [false, nil])
-  scope :has_prior_drug_conviction, where(has_prior_drug_conviction: true)
-  scope :has_prior_misdemeanor_assault_conviction, where(has_prior_misdemeanor_assault_conviction: true)
-  scope :has_prior_criminal_contempt_conviction, where(has_prior_criminal_contempt_conviction: true)
-  scope :has_prior_sex_offense_conviction, where(has_prior_sex_offense_conviction: true)
-  scope :has_prior_untracked_conviction, where(has_prior_untracked_conviction: true)
+  scope :prior_conviction_types_in, ->(conviction_types) { any_in(:prior_conviction_types => conviction_types.to_a.uniq) }
+  scope :prior_conviction_severities_in, ->(severities) { any_in(:prior_conviction_severities => severities.to_a.uniq) }
   scope :number_of_prior_criminal_convictions_gte, ->(min) { gte(number_of_prior_criminal_convictions: min) }
   scope :number_of_prior_criminal_convictions_lte, ->(max) { lte(number_of_prior_criminal_convictions: max) }
   scope :pre_arraignment, where(next_court_date_is_arraignment: true) # or where arraigned == false

@@ -18,21 +18,24 @@ class IncidentFilter
     end
 
     if params["include_charge"]
+      top_charge_types = []
       if params["include_charge"].include? "D"
-        scope = scope.has_drug_charge
+        top_charge_types << "Drug"
       end
       if params["include_charge"].include? "MA"
-        scope = scope.has_misdemeanor_assault_charge
+        top_charge_types << "Misdemeanor Assault"
       end
       if params["include_charge"].include? "CC"
-        scope = scope.has_criminal_contempt_charge
+        top_charge_types << "Criminal Contempt"
       end
       if params["include_charge"].include? "SO"
-        scope = scope.has_sex_offense_charge
+        top_charge_types << "Sex Offense"
       end
-      #if params["include_charge"].include? "AA"
-        #scope = scope.has_untracked_charge
-      #end
+      if params["include_charge"].include? "A"
+        top_charge_types << "Untracked"
+        top_charge_types << []
+      end
+      scope = scope.top_charge_types_in(top_charge_types)
     end
 
     if params["sex"]
@@ -65,23 +68,55 @@ class IncidentFilter
       end
     end
 
-   if params["prior_convictions"]
+    if params["prior_convictions"]
+      conviction_types = []
       if params["prior_convictions"].include? "D"
-        scope = scope.has_prior_drug_conviction
+        conviction_types << "Drug"
       end
       if params["prior_convictions"].include? "MA"
-        scope = scope.has_prior_misdemeanor_assault_conviction
+        conviction_types << "Misdemeanor Assault"
       end
       if params["prior_convictions"].include? "CC"
-        scope = scope.has_prior_criminal_contempt_conviction
+        conviction_types << "Criminal Contempt"
       end
       if params["prior_convictions"].include? "SO"
-        scope = scope.has_prior_sex_offense_conviction
+        conviction_types << "Sex Offense"
       end
-      #if params["prior_convictions"].include? "AA"
-        #scope = scope.has_prior_untracked_charge
-      #end
+      if params["prior_convictions"].include? "A"
+        conviction_types << "Untracked"
+        conviction_types << []
+      end
+
+      scope = scope.prior_conviction_types_in(conviction_types)
     end
+
+    if params["prior_conviction_severity"]
+      conviction_severities = []
+      if params["prior_conviction_severity"].include? "VF"
+        conviction_severities << "Violent Felony"
+      end
+      if params["prior_conviction_severity"].include? "F"
+        conviction_severities << "Felony"
+      end
+      if params["prior_conviction_severity"].include? "M"
+        conviction_severities << "Misdemeanor"
+      end
+      if params["prior_conviction_severity"].include? "A"
+        conviction_severities << "Other"
+        conviction_severities << []
+      end
+
+      scope = scope.prior_conviction_severities_in(conviction_severities)
+    end
+
+    if params["number_of_prior_convictions"]
+      if params["prior_conviction_bounds"] == "more"
+        scope = scope.number_of_prior_criminal_convictions_gte(params["number_of_prior_convictions"])
+      elsif params["prior_conviction_bounds"] == "fewer"
+        scope = scope.number_of_prior_criminal_convictions_lte(params["number_of_prior_convictions"])
+      end
+    end
+
     if params["appearance_type"]
       if params["appearance_type"] == "arr"
         scope = scope.pre_arraignment

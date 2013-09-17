@@ -63,10 +63,11 @@
                 %fieldset.tertiary
                   %legend Type
 
-                  = build_checkbox_field("include_charge", "D", "Drug Offense")
-                  = build_checkbox_field("include_charge", "MA", "Misdemeanor Assault")
-                  = build_checkbox_field("include_charge", "CC", "Criminal Contempt")
-                  = build_checkbox_field("include_charge", "SO", "Sex Offense")
+                  = build_checkbox_field("include_charge", "D", "Drug Offense", :selected => true)
+                  = build_checkbox_field("include_charge", "MA", "Misdemeanor Assault", :selected => true)
+                  = build_checkbox_field("include_charge", "CC", "Criminal Contempt", :selected => true)
+                  = build_checkbox_field("include_charge", "SO", "Sex Offense", :selected => true)
+                  = build_checkbox_field("include_charge", "A", "All Other Offenses", :selected => true)
 
                   .btn-group
                     %button.btn.inline.btn-mini.select-all All
@@ -103,12 +104,21 @@
                   = double_select("failed_to_appear")
 
                 %fieldset.tertiary
+                  %legend Severity of Prior Convictions
+
+                  = build_checkbox_field("prior_conviction_severity", "VF", "Violent Felony", :selected => true)
+                  = build_checkbox_field("prior_conviction_severity", "F", "Felony", :selected => true)
+                  = build_checkbox_field("prior_conviction_severity", "M", "Misdemeanor", :selected => true)
+                  = build_checkbox_field("prior_conviction_severity", "A", "All Other", :selected => true)
+
+                %fieldset.tertiary
                   %legend Type of Prior Convictions
 
-                  = build_checkbox_field("prior_convictions", "D", "Drug Offense")
-                  = build_checkbox_field("prior_convictions", "SO", "Sex Offense")
-                  = build_checkbox_field("prior_convictions", "MA", "Misdemeanor Assault")
-                  = build_checkbox_field("prior_convictions", "CC", "Criminal Contempt")
+                  = build_checkbox_field("prior_convictions", "D", "Drug Offense", :selected => true)
+                  = build_checkbox_field("prior_convictions", "MA", "Misdemeanor Assault", :selected => true)
+                  = build_checkbox_field("prior_convictions", "CC", "Criminal Contempt", :selected => true)
+                  = build_checkbox_field("prior_convictions", "SO", "Sex Offense", :selected => true)
+                  = build_checkbox_field("prior_convictions", "A", "All Other Offenses", :selected => true)
 
                   .btn-group
                     %button.btn.inline.btn-mini.select-all All
@@ -118,7 +128,7 @@
                   %legend Number of Prior Convictions
 
                   .input-append
-                    %input.span3{ type: "number", value: "0", min: "0", name: "filter[number_of_prior_convictions]"  }
+                    %input.span3{ type: "number", value: params[:filter][:number_of_prior_convictions] || "0", min: "0", name: "filter[number_of_prior_convictions]"  }
                     .btn-group.dropdown-form
                       %button.btn.dropdown-toggle{ data: { toggle: "dropdown" } }
                         %span.dropdown-main-text
@@ -166,6 +176,12 @@
                     %button.btn{ type: "button", data: { value: "today", selected: true_if(params[:filter][:next_court_date], "today") } } Today
                     %button.btn{ type: "button", data: { value: "tomorrow", selected: true_if(params[:filter][:next_court_date], "tomorrow") } } Tomorrow
                     %button.btn{ type: "button", data: { value: "7-day", selected: true_if(params[:filter][:next_court_date], "7-day") } } Next 7 Days
+              %fieldset
+
+                %fieldset.secondary
+                  .pull-right
+                    %a.btn{href: "/"} Reset
+                    %button.btn.btn-primary{ type: "submit"} Search
 
         .span9
           .row-fluid
@@ -182,6 +198,8 @@
                     %a Top Charge
                   %li
                     %a Next Court Date
+                  %li
+                    %a Next Court Part
                   %li
                     %a Number of Prior Convictions
 
