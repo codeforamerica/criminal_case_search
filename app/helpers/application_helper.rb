@@ -59,9 +59,9 @@ html
     selected = params[:filter][name]
 <<html
 <div class="formify btn-group" data-toggle="buttons-radio" data-name="#{name}">
-<button class="btn" type="button" data-value="A" #{'data-selected="true"' if selected == "A" || selected == nil}>All</label>
-<button class="btn" type="button" data-value="Y" #{'data-selected="true"' if selected == "Y"}>Yes</label>
-<button class="btn" type="button" data-value="N" #{'data-selected="true"' if selected == "N"}>No</label>
+<button class="btn" type="button" data-value="A" #{'data-selected="true"' if selected == "A" || selected == nil}>All</button>
+<button class="btn" type="button" data-value="Y" #{'data-selected="true"' if selected == "Y"}>Yes</button>
+<button class="btn" type="button" data-value="N" #{'data-selected="true"' if selected == "N"}>No</button>
 </div>
 html
   end
