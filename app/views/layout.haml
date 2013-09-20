@@ -100,19 +100,31 @@
 
                 %fieldset.tertiary.horizontal
                   %legend Has other open cases?
-                  = double_select("open_cases")
+                  = triple_select("open_cases")
 
                 %fieldset.tertiary.horizontal
                   %legend Has failed to appear on a previous case?                  
-                  = double_select("failed_to_appear")
+                  = triple_select("failed_to_appear")
 
                 %fieldset.tertiary
                   %legend Severity of Prior Convictions
+                  
+                  .double-up
+                    %span.title Violent Felony
+                    = triple_select "violent_felony"
+                  
+                  .double-up
+                    %span.title Felony
+                    = triple_select "felony"
 
-                  = build_checkbox_field("prior_conviction_severity", "VF", "Violent Felony", :selected => true)
-                  = build_checkbox_field("prior_conviction_severity", "F", "Felony", :selected => true)
-                  = build_checkbox_field("prior_conviction_severity", "M", "Misdemeanor", :selected => true)
-                  = build_checkbox_field("prior_conviction_severity", "A", "All Other", :selected => true)
+                  .double-up
+                    %span.title Misdemeanor
+                    = triple_select "misdemeanor"
+
+                  -# = build_checkbox_field("prior_conviction_severity", "VF", "Violent Felony", :selected => true)
+                  -# = build_checkbox_field("prior_conviction_severity", "F", "Felony", :selected => true)
+                  -# = build_checkbox_field("prior_conviction_severity", "M", "Misdemeanor", :selected => true)
+                  -# = build_checkbox_field("prior_conviction_severity", "A", "All Other", :selected => true)
 
                 %fieldset.tertiary
                   %legend Type of Prior Convictions
