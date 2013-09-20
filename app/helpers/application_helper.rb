@@ -44,18 +44,6 @@ html
   end
 
   def triple_select(name)
-<<html
-<div class="triple-select">
-<input type="radio" name="filter[#{name}]" value="#{name}-disable" id="#{name}-disable">
-<label for="#{name}-disable"><span class="icon-ok">I</span></label>
-<input type="radio" name="filter[#{name}]" value="#{name}-neutral" id="#{name}-neutral">
-<label for="#{name}-neutral"><span class="icon-minus">N</span></label>
-<input type="radio" name="filter[#{name}]" value="#{name}-enable" id="#{name}-enable">
-<label for="#{name}-enable"><span class="icon-remove">R</span></label>
-html
-  end
-
-  def double_select(name)
     selected = params[:filter][name]
 <<html
 <div class="formify btn-group" data-toggle="buttons-radio" data-name="#{name}">
