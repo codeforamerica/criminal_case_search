@@ -67,7 +67,8 @@ class Incident
   scope :has_failed_to_appear, where(has_failed_to_appear: true)
   scope :has_not_failed_to_appear, any_in(has_failed_to_appear: [false, nil])
   scope :prior_conviction_types_in, ->(conviction_types) { any_in(:prior_conviction_types => conviction_types.to_a.uniq) }
-  scope :prior_conviction_severities_in, ->(severities) { any_in(:prior_conviction_severities => severities.to_a.uniq) }
+  scope :prior_conviction_severities_include, ->(severities) { any_in(:prior_conviction_severities => severities.to_a.uniq) }
+  scope :prior_conviction_severities_exclude, ->(severities) { nin(:prior_conviction_severities => severities.to_a.uniq) }
   scope :number_of_prior_criminal_convictions_gte, ->(min) { gte(number_of_prior_criminal_convictions: min) }
   scope :number_of_prior_criminal_convictions_lte, ->(max) { lte(number_of_prior_criminal_convictions: max) }
   scope :pre_arraignment, where(next_court_date_is_arraignment: true) # or where arraigned == false

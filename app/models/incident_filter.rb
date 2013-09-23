@@ -90,23 +90,42 @@ class IncidentFilter
       scope = scope.prior_conviction_types_in(conviction_types)
     end
 
-    if params["prior_conviction_severity"]
-      conviction_severities = []
-      if params["prior_conviction_severity"].include? "VF"
-        conviction_severities << "Violent Felony"
+    if params["severity"]
+      include_severities = []
+      exclude_severities = []
+      
+      case params["severity"]["violent_felony"]
+      when "Y"
+        include_severities << "Violent Felony"
+      when "N"
+        exclude_severities << "Violent Felony"
       end
-      if params["prior_conviction_severity"].include? "F"
-        conviction_severities << "Felony"
-      end
-      if params["prior_conviction_severity"].include? "M"
-        conviction_severities << "Misdemeanor"
-      end
-      if params["prior_conviction_severity"].include? "A"
-        conviction_severities << "Other"
-        conviction_severities << []
+ 
+      case params["severity"]["felony"]
+      when "Y"
+        include_severities << "Felony"
+      when "N"
+        exclude_severities << "Felony"
       end
 
-      scope = scope.prior_conviction_severities_in(conviction_severities)
+      case params["severity"]["misdemeanor"]
+      when "Y"
+        include_severities << "Misdemeanor"
+      when "N"
+        exclude_severities << "Misdemanor"
+      end
+
+      case params["severity"]["other"]
+      when "Y"
+        include_severities << "Other"
+      when "N"
+        exclude_severities << "Other"
+      end
+
+      puts include_severities.inspect + "\t" + exclude_severities.inspect
+
+      scope = scope.prior_conviction_severities_include(include_severities)
+      scope = scope.prior_conviction_severities_exclude(exclude_severities)
     end
 
     if params["number_of_prior_convictions"]
