@@ -111,15 +111,19 @@
                   
                   .double-up
                     %span.title Violent Felony
-                    = triple_select "violent_felony"
+                    = triple_select :severity, :violent_felony
                   
                   .double-up
                     %span.title Felony
-                    = triple_select "felony"
+                    = triple_select :severity, :felony
 
                   .double-up
                     %span.title Misdemeanor
-                    = triple_select "misdemeanor"
+                    = triple_select :severity, :misdemeanor
+
+                  .double-up
+                    %span.title All Other
+                    = triple_select :severity, :other
 
                 %fieldset.tertiary
                   %legend Type of Prior Convictions

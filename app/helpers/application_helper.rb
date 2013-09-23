@@ -43,10 +43,17 @@ html
     html
   end
 
-  def triple_select(name)
-    selected = params[:filter][name]
+  def triple_select(primary, secondary = nil)
+    unless secondary
+      selected = params[:filter][primary]
+      form_name = primary
+    else
+      selected = params[:filter][primary].try { |x| x[secondary] }
+      form_name = "\[#{primary}\]\[#{secondary}\]"
+    end
+       
 <<html
-<div class="formify btn-group" data-toggle="buttons-radio" data-name="#{name}">
+<div class="formify btn-group" data-toggle="buttons-radio" data-name="#{form_name}">
 <button class="btn" type="button" data-value="A" #{'data-selected="true"' if selected == "A" || selected == nil}>All</button>
 <button class="btn" type="button" data-value="Y" #{'data-selected="true"' if selected == "Y"}>Yes</button>
 <button class="btn" type="button" data-value="N" #{'data-selected="true"' if selected == "N"}>No</button>
