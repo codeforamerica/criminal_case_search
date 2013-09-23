@@ -3,6 +3,8 @@ body
 
 .datashare-filter
   padding: 9px
+  form
+    margin-bottom: 0
   fieldset
     display: block
   legend
@@ -67,15 +69,23 @@ body
 #next-appearance-date button
   min-width: 125px
   
+#results-header
+  margin-top: 9px
+  margin-bottom: 9px
+  .control-text
+    display: inline-block
+    margin-top: 3px
+    
 .incident
   border-bottom: 1px solid #000
   margin-bottom: 5px
-  padding-left: 10px
-  padding-bottom: 5px
+  /* padding-left: 10px
+  /* padding-bottom: 5px
   &.selected
     color: #fff
     background-color: #999
   h3
+    font-size: 22px
     margin: 0
     padding: 0
     &.name
@@ -92,14 +102,16 @@ body
   color: #999
 
 .disc
+  font-size: 14px
+  height: 25px
+  width: 25px
+  margin-top: 16px
   display: inline-block
   text-align: center
   padding: 2px
   border-radius: 50%
   color: #fff
-  background: #000
+  background: #888
   text-align: center
-  height: 30px
-  width: 30px
   .disc-internal
-    margin-top: 5px
+    margin-top: 3px
