@@ -198,9 +198,10 @@
                     %button.btn.btn-primary{ type: "submit"} Search
 
         .span9
-          .row-fluid
+          #results-header.row-fluid
             .span3
-              Sort by:
+              .control-text
+                Sort by:
               .btn-group
                 %button.btn.dropdown-toggle{ data: { toggle: "dropdown" } }
                   Defendant Name
@@ -216,13 +217,15 @@
                     %a Next Court Part
                   %li
                     %a Number of Prior Convictions
+            .span3
+              .control-text
+                %span.results             
+                  Found
+                  %span.total-results= @incidents.total_entries
+                  matching incidents.
+            .span3
+              .control-text
+                %a{href: "/?format=csv&" + request.env['rack.request.query_string']} Export CSV
 
-            .span3
-              %span.results             
-                Found
-                %span.total-results= @incidents.total_entries
-                matching incidents.
-            .span3
-              %a{href: "/?format=csv&" + request.env['rack.request.query_string']} Export CSV
           .row-fluid
             = yield
