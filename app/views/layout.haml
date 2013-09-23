@@ -98,6 +98,28 @@
               %fieldset.secondary
                 %legend.top Criminal History
 
+                %fieldset.tertiary
+                  %legend Number of Prior Convictions
+
+                  .input-append
+                    %input.span3{ type: "number", value: params[:filter][:number_of_prior_convictions] || "0", min: "0", name: "filter[number_of_prior_convictions]"  }
+                    .btn-group.dropdown-form
+                      %button.btn.dropdown-toggle{ data: { toggle: "dropdown" } }
+                        %span.dropdown-main-text
+                          or more
+                        %span.caret
+                      %ul.dropdown-menu
+                        %li
+                          %a.dropdown-opt{ data: { value: "more" } }
+                            or more
+                        %li
+                          %a.dropdown-opt{ data: { value: "fewer" } }
+                            or fewer
+                      %input{ class: "dropdown-input",
+                              type:  "hidden",
+                              name:  "filter[prior_conviction_bounds]",
+                              value: params[:filter][:prior_conviction_bounds] || "more" }
+
                 %fieldset.tertiary.horizontal
                   %legend Has other open cases?
                   = triple_select("open_cases")
@@ -136,29 +158,7 @@
 
                   .btn-group
                     %button.btn.inline.btn-mini.select-all All
-                    %button.btn.inline.btn-mini.clear-all Clear
-
-                %fieldset.tertiary
-                  %legend Number of Prior Convictions
-
-                  .input-append
-                    %input.span3{ type: "number", value: params[:filter][:number_of_prior_convictions] || "0", min: "0", name: "filter[number_of_prior_convictions]"  }
-                    .btn-group.dropdown-form
-                      %button.btn.dropdown-toggle{ data: { toggle: "dropdown" } }
-                        %span.dropdown-main-text
-                          or more
-                        %span.caret
-                      %ul.dropdown-menu
-                        %li
-                          %a.dropdown-opt{ data: { value: "more" } }
-                            or more
-                        %li
-                          %a.dropdown-opt{ data: { value: "fewer" } }
-                            or fewer
-                      %input{ class: "dropdown-input",
-                              type:  "hidden",
-                              name:  "filter[prior_conviction_bounds]",
-                              value: params[:filter][:prior_conviction_bounds] || "more" }
+                    %button.btn.inline.btn-mini.clear-all Clear                
 
                   -# %fieldset.tertiary
                   -#   %legend CJA Score
