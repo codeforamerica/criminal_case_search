@@ -71,6 +71,8 @@ class Incident
   scope :prior_conviction_severities_exclude, ->(severities) { nin(:prior_conviction_severities => severities.to_a.uniq) }
   scope :number_of_prior_criminal_convictions_gte, ->(min) { gte(number_of_prior_criminal_convictions: min) }
   scope :number_of_prior_criminal_convictions_lte, ->(max) { lte(number_of_prior_criminal_convictions: max) }
+  scope :bail_set_on_defendant, where(arraignment_outcome: "Bail Set")
+  scope :bail_not_set_on_defendant, ne(arraignment_outcome: "Bail Set")
   scope :pre_arraignment, where(next_court_date_is_arraignment: true) # or where arraigned == false
   scope :post_arraignment, ne(next_court_date_is_arraignment: true)
   scope :next_court_date_is, ->(date) { where(next_court_date: date) }

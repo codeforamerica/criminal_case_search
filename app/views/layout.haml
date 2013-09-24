@@ -172,10 +172,15 @@
                   -#   %button.btn.inline.btn-mini.clear-all Clear
 
               %fieldset.secondary
-                %legend Next Court Appearance
+                %legend Case Status
                 
                 %fieldset.tertiary
-                  %legend Type
+                  %legend Was bail set on defendant?
+
+                  = triple_select("bail_set")
+
+                %fieldset.tertiary
+                  %legend Next Court Appearance
 
                   .formify.btn-group{ data: { toggle: "buttons-radio", name: "appearance_type" } }
                     %button.btn{ type: "button", data: { value: "any", selected: true_if(params[:filter][:appearance_type], ["any", nil])} } All
@@ -183,7 +188,7 @@
                     %button.btn{ type: "button", data: { value: "post-arr", selected: true_if(params[:filter][:appearance_type], "post-arr") } } Post-Arr.
 
                 %fieldset.tertiary
-                  %legend Date
+                  %legend Next Court Appearance Date
                   
                   #next-appearance-date.formify.btn-group.btn-group-vertical{ data: { toggle: "buttons-radio", name: "next_court_date" } }
                     %button.btn{ type: "button", data: { value: "any", selected: true_if(params[:filter][:next_court_date], ["any", nil]) } } All
