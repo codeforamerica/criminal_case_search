@@ -10,10 +10,12 @@ class IncidentFilter
 
     if params["top_charge"]
       if params["top_charge"] == "VI"
-        params["top_charge"] = %w(I V)
+        top_charge = %w(I V)
+      else
+        top_charge = params["top_charge"]
       end
-      unless params["top_charge"] == "A"
-        scope = scope.top_charge_in(params["top_charge"])
+      unless top_charge == "A"
+        scope = scope.top_charge_in(top_charge)
       end
     end
 
