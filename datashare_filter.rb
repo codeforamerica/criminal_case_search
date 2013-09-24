@@ -1,10 +1,29 @@
 require_relative "config/environment"
 
+class SassHandler < Sinatra::Base   
+  set :views, File.dirname(__FILE__) + '/app/assets/stylesheets'
+    
+  get '/css/*.css' do
+    filename = params[:splat].first
+    sass filename.to_sym
+  end    
+end
+
 class DatashareFilter < Sinatra::Base
+  BOROUGH_CODES_TO_NAMES = {"M" => "Manhattan", "S" => "Staten Island", "K" => "Brooklyn", "B" => "Bronx", "Q" => "Queens"}
+  BOROUGH_CODES = %w(M S K B Q)
+
   register Sinatra::Twitter::Bootstrap::Assets
   register WillPaginate::Sinatra
+  use SassHandler
 
   WillPaginate.per_page = 15
+
+  if ENV["RACK_ENV"] != "development"
+    use Rack::Auth::Basic, "Protected Area" do |username, password|
+      username == ENV["CCS_USERNAME"] && password == ENV["CCS_PASSWORD"]
+    end
+  end
 
   configure do
     set :views, settings.root + '/app/views'
@@ -13,28 +32,9 @@ class DatashareFilter < Sinatra::Base
 
   get '/' do
     puts params.inspect
-    incident_scope = Incident.scoped
     params[:filter] = {} unless params[:filter]
-    if params[:filter][:borough] && params[:filter][:borough] != "A"
-      incident_scope = incident_scope.borough(params[:filter][:borough])
-    end
-    if params[:filter][:topcharge]
-      incident_scope = incident_scope.top_charge(%w(I V)) if params[:filter][:topcharge] == "Non-Criminal"
-      incident_scope = incident_scope.top_charge("M") if params[:filter][:topcharge] == "Misdemeanor"
-      incident_scope = incident_scope.top_charge("F") if params[:filter][:topcharge] == "Felony"
-    end
-    if params[:filter][:sex]
-      incident_scope = incident_scope.defendant_sex("M") if params[:filter][:sex] == "Male"
-      incident_scope = incident_scope.defendant_sex("F") if params[:filter][:sex] == "Female"
-    end
-    if params[:filter][:min_age].present?
-      incident_scope = incident_scope.defendant_age_gte(params[:filter][:min_age])
-    end
-    if params[:filter][:max_age].present?
-      incident_scope = incident_scope.defendant_age_lte(params[:filter][:max_age])
-    end
-    ap incident_scope
-    @incidents = incident_scope.where(:rap_sheet.exists => true, :docketing_notice.exists => true)
+    
+    @incidents = IncidentFilter.scope(params[:filter])
 
     if params[:format] == "csv"
       response.headers["Content-Type"]        = "text/csv; charset=UTF-8; header=present"
