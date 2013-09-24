@@ -136,6 +136,14 @@ class IncidentFilter
       end
     end
 
+    if params["bail_set"]
+      if params["bail_set"] == "Y"
+        scope = scope.bail_set_on_defendant
+      elsif params["bail_set"] == "N"
+        scope = scope.bail_not_set_on_defendant
+      end
+    end
+
     if params["appearance_type"]
       if params["appearance_type"] == "arr"
         scope = scope.pre_arraignment
