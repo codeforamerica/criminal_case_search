@@ -124,10 +124,8 @@ class IncidentFilter
         exclude_severities << "Other"
       end
 
-      puts include_severities.inspect + "\t" + exclude_severities.inspect
-
-      scope = scope.prior_conviction_severities_include(include_severities)
-      scope = scope.prior_conviction_severities_exclude(exclude_severities)
+      scope = scope.prior_conviction_severities_exclude(exclude_severities) if exclude_severities.present?
+      scope = scope.prior_conviction_severities_include(include_severities) if include_severities.present?
     end
 
     if params["number_of_prior_convictions"]
