@@ -78,4 +78,8 @@ html
   def show_ror_recommendations(incident)
     incident.ror_report.try { |r| r.recommendations.map { |x| x.capitalize }.join(", ") }
   end
+
+  def current_uri_with_query_params(new_params)
+    "/?" + params.with_indifferent_access.merge(new_params).to_query
+  end
 end

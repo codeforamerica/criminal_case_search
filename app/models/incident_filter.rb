@@ -162,6 +162,21 @@ class IncidentFilter
       end
     end
 
-    scope.order_by(next_court_date: :asc)
+    if params["sort"]
+      if params["sort"] == "Next Court Date"
+        scope = scope.order_by(next_court_date: :asc)
+      elsif params["sort"] == "Next Court Part"
+        scope = scope.order_by(next_court_part: :asc)
+      elsif params["sort"] == "Defendant Name"
+        scope = scope.order_by(defendant_name: :asc)
+      elsif params["sort"] == "Top Charge"
+        scope = scope.order_by(top_charge_sort: :asc)
+      elsif params["sort"] == "Number of Prior Convictions"
+        scope = scope.order_by(number_of_prior_criminal_convictions: :asc)
+      end
+    else
+      scope = scope.order_by(next_court_date: :asc)
+    end
+
   end
 end

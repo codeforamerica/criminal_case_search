@@ -51,7 +51,7 @@ class ArrestReport
 
   private
   def update_incident_attributes
-    incident.update_attributes(defendant_sex: defendant_sex, borough: borough, defendant_age: defendant_age)
+    incident.update_attributes(defendant_sex: defendant_sex, borough: borough, defendant_age: defendant_age, defendant_name: defendant_name)
     if desk_appearance_ticket?
       #Todo: which court part?
       incident.update_attributes(next_court_date: desk_appearance_ticket_court_date, next_court_date_is_arraignment: true)
