@@ -204,33 +204,33 @@
 
         .span9
           #results-header.row-fluid
-            .span3
+            .span4
               .control-text
                 Sort by:
               .btn-group
                 %button.btn.dropdown-toggle{ data: { toggle: "dropdown" } }
-                  Next Court Date
+                  = params[:filter][:sort] || "Next Court Date"
                   %span.caret
                 %ul.dropdown-menu
                   %li
-                    %a Defendant Name
+                    %a{href: current_uri_with_query_params(filter: {sort: "Next Court Date"})} Next Court Date
                   %li
-                    %a Top Charge
+                    %a{href: current_uri_with_query_params(filter: {sort: "Next Court Part"})} Next Court Part
                   %li
-                    %a Next Court Date
+                    %a{href: current_uri_with_query_params(filter: {sort: "Defendant Name"})} Defendant Name
                   %li
-                    %a Next Court Part
+                    %a{href: current_uri_with_query_params(filter: {sort: "Top Charge"})} Top Charge
                   %li
-                    %a Number of Prior Convictions
+                    %a{href: current_uri_with_query_params(filter: {sort: "Number of Prior Convictions"})} Number of Prior Convictions
             .span3
               .control-text
                 %span.results             
                   Found
                   %span.total-results= @incidents.total_entries
                   matching incidents.
-            .span3
+            .span2
               .control-text
-                %a{href: "/?format=csv&" + request.env['rack.request.query_string']} Export CSV
+                %a{href: current_uri_with_query_params(format: :csv)} Export CSV
 
           .row-fluid
             = yield

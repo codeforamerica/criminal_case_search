@@ -21,13 +21,14 @@ class Incident
   validates :defendant_sex, inclusion: { in: %w(M F), allow_nil: true}
   field :defendant_age, type: Integer
   validates :defendant_age, numericality: { greater_than_or_equal_to: 0, allow_nil: true}
+  field :defendant_name, type: String
   delegate :desk_appearance_ticket?, to: :arrest_report, allow_nil: true
-  delegate :defendant_name, to: :arrest_report, allow_nil: true
 
   # From DA's Complaint
   field :top_charge_code, type: String
   validates :top_charge_code, inclusion: { in: %w(I V M F VF), allow_nil: true }
   field :top_charge_types, type: Array, default: []
+  field :top_charge_sort, type: String
   delegate :top_charge, to: :complaint, allow_nil: true
 
   # From OCA Docket
