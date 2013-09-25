@@ -162,6 +162,6 @@ class IncidentFilter
       end
     end
 
-    scope
+    scope.order_by(next_court_date: :asc)
   end
 end
