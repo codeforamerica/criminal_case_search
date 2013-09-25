@@ -38,10 +38,6 @@ $(function(){
     form.find(".dropdown-main-text").text($(this).text())
   })
 
-  $(".incident").click(function() {
-    $(this).toggleClass("selected");
-  });
-
   $(".select-all").click(function(event) {
     $(event.target).parent().parent().find("input").prop("checked", true);
     event.preventDefault();
