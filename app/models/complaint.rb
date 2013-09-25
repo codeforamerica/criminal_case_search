@@ -99,7 +99,8 @@ class Complaint
   end
 
   def top_charge_sort
-    top_charge["agency_code"]
+    sorted_severities = {"VF" => "A", "F" => "B", "M" => "C", "V" => "D", "I" => "E"}
+    "#{sorted_severities[top_charge_code]}#{top_charge["agency_code"]}"
   end
 
   def self.violent_felony_offense?(charge)
