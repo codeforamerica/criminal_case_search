@@ -80,6 +80,6 @@ html
   end
 
   def current_uri_with_query_params(new_params)
-    "/?" + params.with_indifferent_access.merge(new_params).to_query
+    "/?" + params.with_indifferent_access.deep_merge(new_params).to_query
   end
 end
