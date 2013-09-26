@@ -138,17 +138,17 @@ class IncidentFilter
 
     if params["bail_set"]
       if params["bail_set"] == "Y"
-        scope = scope.bail_set_on_defendant
+        scope = scope.bail_or_remand_set_on_defendant
       elsif params["bail_set"] == "N"
-        scope = scope.bail_not_set_on_defendant
+        scope = scope.bail_or_remand_not_set_on_defendant
       end
     end
 
-    if params["appearance_type"]
-      if params["appearance_type"] == "arr"
-        scope = scope.pre_arraignment
-      elsif params["appearance_type"] == "post-arr"
+    if params["arraigned"]
+      if params["arraigned"] == "Y"
         scope = scope.post_arraignment
+      elsif params["arraigned"] == "no"
+        scope = scope.pre_arraignment
       end
     end
 
@@ -162,6 +162,21 @@ class IncidentFilter
       end
     end
 
-    scope
+    if params["sort"]
+      if params["sort"] == "Next Court Date"
+        scope = scope.order_by(next_court_date: :asc)
+      elsif params["sort"] == "Next Court Part"
+        scope = scope.order_by(next_court_part: :asc)
+      elsif params["sort"] == "Defendant Name"
+        scope = scope.order_by(defendant_name: :asc)
+      elsif params["sort"] == "Top Charge"
+        scope = scope.order_by(top_charge_sort: :asc)
+      elsif params["sort"] == "Number of Prior Convictions"
+        scope = scope.order_by(number_of_prior_criminal_convictions: :asc)
+      end
+    else
+      scope = scope.order_by(next_court_date: :asc)
+    end
+
   end
 end
