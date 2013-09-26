@@ -1,6 +1,6 @@
 $(function(){
   $('.more-or-less').each(function(i, el) {
-  console.log(el);
+    // console.log(el);
     $(el).find("li a").click(function() {
     $(el).find("button").html($(this).text() + ' <span class="caret"></span>');
     $(el).find("input.more-or-less-type").val($(this).text());
@@ -16,7 +16,7 @@ $(function(){
     $(this).addClass("active");
     var val = $(this).data("value");
     var input = $(this).parent().find(".formify-value")
-    console.log(val)
+    // console.log(val)
     $(input).val(val)
   });
 
