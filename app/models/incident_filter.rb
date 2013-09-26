@@ -144,11 +144,11 @@ class IncidentFilter
       end
     end
 
-    if params["appearance_type"]
-      if params["appearance_type"] == "arr"
-        scope = scope.pre_arraignment
-      elsif params["appearance_type"] == "post-arr"
+    if params["arraigned"]
+      if params["arraigned"] == "Y"
         scope = scope.post_arraignment
+      elsif params["arraigned"] == "no"
+        scope = scope.pre_arraignment
       end
     end
 
