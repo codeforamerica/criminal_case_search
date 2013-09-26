@@ -74,8 +74,8 @@ class Incident
   scope :number_of_prior_criminal_convictions_lte, ->(max) { lte(number_of_prior_criminal_convictions: max) }
   scope :bail_or_remand_set_on_defendant, any_in(arraignment_outcome: ["Bail Set", "Remand"])
   scope :bail_or_remand_not_set_on_defendant, nin(arraignment_outcome: ["Bail Set", "Remand"])
-  scope :pre_arraignment, where(next_court_date_is_arraignment: true) # or where arraigned == false
-  scope :post_arraignment, ne(next_court_date_is_arraignment: true)
+  scope :pre_arraignment, where(arraigned: false)
+  scope :post_arraignment, where(arraigned: true)
   scope :next_court_date_is, ->(date) { where(next_court_date: date) }
   scope :next_court_date_between, ->(start_date, end_date) { between(next_court_date: start_date...end_date) }
 

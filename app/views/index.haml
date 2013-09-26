@@ -36,6 +36,7 @@
           .span3
             %p.court-part= incident.next_court_part
             %p= incident.next_courthouse
+            %p= incident.arraignment_outcome
     .row-fluid
       = will_paginate @incidents, renderer: BootstrapPagination::Sinatra          
 
