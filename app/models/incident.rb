@@ -21,13 +21,14 @@ class Incident
   validates :defendant_sex, inclusion: { in: %w(M F), allow_nil: true}
   field :defendant_age, type: Integer
   validates :defendant_age, numericality: { greater_than_or_equal_to: 0, allow_nil: true}
+  field :defendant_name, type: String
   delegate :desk_appearance_ticket?, to: :arrest_report, allow_nil: true
-  delegate :defendant_name, to: :arrest_report, allow_nil: true
 
   # From DA's Complaint
   field :top_charge_code, type: String
   validates :top_charge_code, inclusion: { in: %w(I V M F VF), allow_nil: true }
   field :top_charge_types, type: Array, default: []
+  field :top_charge_sort, type: String
   delegate :top_charge, to: :complaint, allow_nil: true
 
   # From OCA Docket
@@ -71,10 +72,10 @@ class Incident
   scope :prior_conviction_severities_exclude, ->(severities) { nin(:prior_conviction_severities => severities.to_a.uniq) }
   scope :number_of_prior_criminal_convictions_gte, ->(min) { gte(number_of_prior_criminal_convictions: min) }
   scope :number_of_prior_criminal_convictions_lte, ->(max) { lte(number_of_prior_criminal_convictions: max) }
-  scope :bail_set_on_defendant, where(arraignment_outcome: "Bail Set")
-  scope :bail_not_set_on_defendant, ne(arraignment_outcome: "Bail Set")
-  scope :pre_arraignment, where(next_court_date_is_arraignment: true) # or where arraigned == false
-  scope :post_arraignment, ne(next_court_date_is_arraignment: true)
+  scope :bail_or_remand_set_on_defendant, any_in(arraignment_outcome: ["Bail Set", "Remand"])
+  scope :bail_or_remand_not_set_on_defendant, nin(arraignment_outcome: ["Bail Set", "Remand"])
+  scope :pre_arraignment, where(arraigned: false)
+  scope :post_arraignment, where(arraigned: true)
   scope :next_court_date_is, ->(date) { where(next_court_date: date) }
   scope :next_court_date_between, ->(start_date, end_date) { between(next_court_date: start_date...end_date) }
 

@@ -15,6 +15,8 @@
               = build_disc("W", "warrant", "Has Outstanding Bench Warrant")
             - if incident.persistent_misdemeanant?
               = build_disc("PM", "persistent-misdemeanant", "Persistent Misdemeanant")
+            - if incident.has_failed_to_appear?
+              = build_disc("FTA", "failure-to-appear", "Has failed to appear in court")
           .span3
             %span.court-date-note Next Court Date
             %h3.court-date= incident.next_court_date.strftime("%b %-d")
@@ -25,6 +27,7 @@
           .span3.offset1
             %p.severity= incident.top_charge_code_expanded
             %p.charge-code= format_top_charge(incident)              
+            %p.ror-recommendation= incident.recommendations.join(", ")
           .span3
             %p.priors
               %span.count= incident.number_of_prior_criminal_convictions 
@@ -35,9 +38,7 @@
           .span3
             %p.court-part= incident.next_court_part
             %p= incident.next_courthouse
-        .row-fluid
-          .offset5.span6
-            = incident.recommendations.join(", ")
+            %p= incident.arraignment_outcome
     .row-fluid
       = will_paginate @incidents, renderer: BootstrapPagination::Sinatra          
 

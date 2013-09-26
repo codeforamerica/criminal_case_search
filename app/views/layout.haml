@@ -59,7 +59,7 @@
 
                   = build_radio_field("top_charge", "A", "All", :selected => true)
                   = build_radio_field("top_charge", "VF", "Violent Felony")
-                  = build_radio_field("top_charge", "F", "Non-Violent Felony")
+                  = build_radio_field("top_charge", "F", "Nonviolent Felony")
                   = build_radio_field("top_charge", "M", "Misdemeanor")
                   = build_radio_field("top_charge", "VI", "Violation/Infraction")
 
@@ -120,14 +120,6 @@
                               name:  "filter[prior_conviction_bounds]",
                               value: params[:filter][:prior_conviction_bounds] || "more" }
 
-                %fieldset.tertiary.horizontal
-                  %legend Has other open cases?
-                  = triple_select("open_cases")
-
-                %fieldset.tertiary.horizontal
-                  %legend Has failed to appear on a previous case?                  
-                  = triple_select("failed_to_appear")
-
                 %fieldset.tertiary
                   %legend Severity of Prior Convictions
                   
@@ -136,7 +128,7 @@
                     = triple_select :severity, :violent_felony
                   
                   .double-up
-                    %span.title Felony
+                    %span.title Nonviolent Felony
                     = triple_select :severity, :felony
 
                   .double-up
@@ -160,6 +152,13 @@
                     %button.btn.inline.btn-mini.select-all All
                     %button.btn.inline.btn-mini.clear-all Clear                
 
+                %fieldset.tertiary.horizontal
+                  %legend Has other open cases?
+                  = triple_select("open_cases")
+
+                %fieldset.tertiary.horizontal
+                  %legend Has failed to appear on a previous case?
+                  = triple_select("failed_to_appear")
                   -# %fieldset.tertiary
                   -#   %legend CJA Score
 
@@ -173,23 +172,20 @@
 
               %fieldset.secondary
                 %legend Case Status
-                
+
                 %fieldset.tertiary
-                  %legend Was bail set on defendant?
+                  %legend Has case been arraigned?
+
+                  = triple_select("arraigned")
+
+                %fieldset.tertiary
+                  %legend Was bail/remand set on defendant?
 
                   = triple_select("bail_set")
 
                 %fieldset.tertiary
-                  %legend Next Court Appearance
-
-                  .formify.btn-group{ data: { toggle: "buttons-radio", name: "appearance_type" } }
-                    %button.btn{ type: "button", data: { value: "any", selected: true_if(params[:filter][:appearance_type], ["any", nil])} } All
-                    %button.btn{ type: "button", data: { value: "arr", selected: true_if(params[:filter][:appearance_type], "arr") } } Arraignment
-                    %button.btn{ type: "button", data: { value: "post-arr", selected: true_if(params[:filter][:appearance_type], "post-arr") } } Post-Arr.
-
-                %fieldset.tertiary
                   %legend Next Court Appearance Date
-                  
+
                   #next-appearance-date.formify.btn-group.btn-group-vertical{ data: { toggle: "buttons-radio", name: "next_court_date" } }
                     %button.btn{ type: "button", data: { value: "any", selected: true_if(params[:filter][:next_court_date], ["any", nil]) } } All
                     %button.btn{ type: "button", data: { value: "today", selected: true_if(params[:filter][:next_court_date], "today") } } Today
@@ -204,33 +200,33 @@
 
         .span9
           #results-header.row-fluid
-            .span3
+            .span4
               .control-text
                 Sort by:
               .btn-group
                 %button.btn.dropdown-toggle{ data: { toggle: "dropdown" } }
-                  Defendant Name
+                  = params[:filter][:sort] || "Next Court Date"
                   %span.caret
                 %ul.dropdown-menu
                   %li
-                    %a Defendant Name
+                    %a{href: current_uri_with_query_params(filter: {sort: "Next Court Date"})} Next Court Date
                   %li
-                    %a Top Charge
+                    %a{href: current_uri_with_query_params(filter: {sort: "Next Court Part"})} Next Court Part
                   %li
-                    %a Next Court Date
+                    %a{href: current_uri_with_query_params(filter: {sort: "Defendant Name"})} Defendant Name
                   %li
-                    %a Next Court Part
+                    %a{href: current_uri_with_query_params(filter: {sort: "Top Charge"})} Top Charge
                   %li
-                    %a Number of Prior Convictions
+                    %a{href: current_uri_with_query_params(filter: {sort: "Number of Prior Convictions"})} Number of Prior Convictions
             .span3
               .control-text
                 %span.results             
                   Found
                   %span.total-results= @incidents.total_entries
                   matching incidents.
-            .span3
+            .span2
               .control-text
-                %a{href: "/?format=csv&" + request.env['rack.request.query_string']} Export CSV
+                %a{href: current_uri_with_query_params(format: :csv)} Export CSV
 
           .row-fluid
             = yield
