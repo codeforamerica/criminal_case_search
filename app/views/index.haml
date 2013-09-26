@@ -26,8 +26,7 @@
             %p.age= incident.defendant_age
           .span3.offset1
             %p.severity= incident.top_charge_code_expanded
-            %p.charge-code= format_top_charge(incident)              
-            %p.ror-recommendation= incident.recommendations.join(", ")
+            %p.charge-code= format_top_charge(incident)                          
           .span3
             %p.priors
               %span.count= incident.number_of_prior_criminal_convictions 
@@ -38,6 +37,10 @@
           .span3
             %p.court-part= incident.next_court_part
             %p= incident.next_courthouse
+        .row-fluid
+          .span5
+            %p.ror-recommendation= incident.recommendations.join(", ")
+          .span3
             %p= incident.arraignment_outcome
     .row-fluid
       = will_paginate @incidents, renderer: BootstrapPagination::Sinatra          
