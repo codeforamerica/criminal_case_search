@@ -172,11 +172,6 @@
 
               %fieldset.secondary
                 %legend Case Status
-                
-                %fieldset.tertiary
-                  %legend Was bail/remand set on defendant?
-
-                  = triple_select("bail_set")
 
                 %fieldset.tertiary
                   %legend Has case been arraigned?
@@ -184,8 +179,13 @@
                   = triple_select("arraigned")
 
                 %fieldset.tertiary
+                  %legend Was bail/remand set on defendant?
+
+                  = triple_select("bail_set")
+
+                %fieldset.tertiary
                   %legend Next Court Appearance Date
-                  
+
                   #next-appearance-date.formify.btn-group.btn-group-vertical{ data: { toggle: "buttons-radio", name: "next_court_date" } }
                     %button.btn{ type: "button", data: { value: "any", selected: true_if(params[:filter][:next_court_date], ["any", nil]) } } All
                     %button.btn{ type: "button", data: { value: "today", selected: true_if(params[:filter][:next_court_date], "today") } } Today
