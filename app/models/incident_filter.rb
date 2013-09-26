@@ -138,9 +138,9 @@ class IncidentFilter
 
     if params["bail_set"]
       if params["bail_set"] == "Y"
-        scope = scope.bail_set_on_defendant
+        scope = scope.bail_or_remand_set_on_defendant
       elsif params["bail_set"] == "N"
-        scope = scope.bail_not_set_on_defendant
+        scope = scope.bail_or_remand_not_set_on_defendant
       end
     end
 
