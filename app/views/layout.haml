@@ -120,14 +120,6 @@
                               name:  "filter[prior_conviction_bounds]",
                               value: params[:filter][:prior_conviction_bounds] || "more" }
 
-                %fieldset.tertiary.horizontal
-                  %legend Has other open cases?
-                  = triple_select("open_cases")
-
-                %fieldset.tertiary.horizontal
-                  %legend Has failed to appear on a previous case?                  
-                  = triple_select("failed_to_appear")
-
                 %fieldset.tertiary
                   %legend Severity of Prior Convictions
                   
@@ -160,6 +152,13 @@
                     %button.btn.inline.btn-mini.select-all All
                     %button.btn.inline.btn-mini.clear-all Clear                
 
+                %fieldset.tertiary.horizontal
+                  %legend Has other open cases?
+                  = triple_select("open_cases")
+
+                %fieldset.tertiary.horizontal
+                  %legend Has failed to appear on a previous case?
+                  = triple_select("failed_to_appear")
                   -# %fieldset.tertiary
                   -#   %legend CJA Score
 
