@@ -166,7 +166,7 @@ class IncidentFilter
       if params["sort"] == "Next Court Date"
         scope = scope.order_by(next_court_date: :asc)
       elsif params["sort"] == "Next Court Part"
-        scope = scope.order_by(next_court_part: :asc)
+        scope = scope.order_by(next_courthouse: :asc, next_court_part: :asc)
       elsif params["sort"] == "Defendant Name"
         scope = scope.order_by(defendant_name: :asc)
       elsif params["sort"] == "Top Charge"
