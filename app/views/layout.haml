@@ -197,36 +197,5 @@
                   .pull-right
                     %a.btn{href: "/"} Reset
                     %button.btn.btn-primary{ type: "submit"} Search
-
         .span9
-          #results-header.row-fluid
-            .span4
-              .control-text
-                Sort by:
-              .btn-group
-                %button.btn.dropdown-toggle{ data: { toggle: "dropdown" } }
-                  = params[:filter][:sort] || "Next Court Date"
-                  %span.caret
-                %ul.dropdown-menu
-                  %li
-                    %a{href: current_uri_with_query_params(filter: {sort: "Next Court Date"})} Next Court Date
-                  %li
-                    %a{href: current_uri_with_query_params(filter: {sort: "Next Court Part"})} Next Court Part
-                  %li
-                    %a{href: current_uri_with_query_params(filter: {sort: "Defendant Name"})} Defendant Name
-                  %li
-                    %a{href: current_uri_with_query_params(filter: {sort: "Top Charge"})} Top Charge
-                  %li
-                    %a{href: current_uri_with_query_params(filter: {sort: "Number of Prior Convictions"})} Number of Prior Convictions
-            .span3
-              .control-text
-                %span.results             
-                  Found
-                  %span.total-results= @incidents.total_entries
-                  matching incidents.
-            .span2
-              .control-text
-                %a{href: current_uri_with_query_params(format: :csv)} Export CSV
-
-          .row-fluid
-            = yield
+          = yield
