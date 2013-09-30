@@ -1,0 +1,42 @@
+.incident
+  .row-fluid
+    .span4
+      %h3.name= incident.defendant_name
+      %p.docket-number= incident.docket_number
+    .span3.offset2
+      - if incident.on_parole?
+        = build_disc("PA", "parole", "On Parole")
+      - if incident.on_probation?
+        = build_disc("PR", "probation", "On Probation")
+      - if incident.has_outstanding_bench_warrant?
+        = build_disc("W", "warrant", "Has Outstanding Bench Warrant")
+      - if incident.persistent_misdemeanant?
+        = build_disc("PM", "persistent-misdemeanant", "Persistent Misdemeanant")
+      - if incident.has_failed_to_appear?
+        = build_disc("FTA", "failure-to-appear", "Has failed to appear in court")
+    .span3
+      %span.court-date-note Next Court Date
+      %h3.court-date= incident.next_court_date.strftime("%b %-d")
+  .row-fluid
+    .span3
+      %p.sex= incident.defendant_sex
+      %p.age= incident.defendant_age
+    .span3
+      %p.severity= incident.top_charge_code_expanded
+      %p.charge-code= format_top_charge(incident)                          
+    .span3
+      %p.priors
+        %span.count= incident.number_of_prior_criminal_convictions 
+        Criminal Convictions
+      %p.priors
+        %span.count= incident.number_of_other_open_cases
+        Other Open Cases
+    .span3
+      %p.court-part= incident.next_court_part
+      %p= incident.next_courthouse
+  .row-fluid
+    .span3
+      %p.ror-recommendation= incident.recommendations.join(", ")
+    .span3
+      %p= incident.arraignment_outcome
+    

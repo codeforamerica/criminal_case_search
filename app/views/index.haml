@@ -1,49 +1,42 @@
-- if @incidents.present?
-  #incidents.span9
-    - @incidents.each do |incident|
-      .incident
-        .row-fluid
-          .span5
-            %h3.name= incident.defendant_name
-            %p.docket-number= incident.docket_number
-          .span3
-            - if incident.on_parole?
-              = build_disc("PA", "parole", "On Parole")
-            - if incident.on_probation?
-              = build_disc("PR", "probation", "On Probation")
-            - if incident.has_outstanding_bench_warrant?
-              = build_disc("W", "warrant", "Has Outstanding Bench Warrant")
-            - if incident.persistent_misdemeanant?
-              = build_disc("PM", "persistent-misdemeanant", "Persistent Misdemeanant")
-            - if incident.has_failed_to_appear?
-              = build_disc("FTA", "failure-to-appear", "Has failed to appear in court")
-          .span3
-            %span.court-date-note Next Court Date
-            %h3.court-date= incident.next_court_date.strftime("%b %-d")
-        .row-fluid
-          .span1
-            %p.sex= incident.defendant_sex
-            %p.age= incident.defendant_age
-          .span3.offset1
-            %p.severity= incident.top_charge_code_expanded
-            %p.charge-code= format_top_charge(incident)                          
-          .span3
-            %p.priors
-              %span.count= incident.number_of_prior_criminal_convictions 
-              Criminal Convictions
-            %p.priors
-              %span.count= incident.number_of_other_open_cases
-              Other Open Cases
-          .span3
-            %p.court-part= incident.next_court_part
-            %p= incident.next_courthouse
-        .row-fluid
-          .span5
-            %p.ror-recommendation= incident.recommendations.join(", ")
-          .span3
-            %p= incident.arraignment_outcome
-    .row-fluid
-      = will_paginate @incidents, renderer: BootstrapPagination::Sinatra          
+#incidents-header.row-fluid
+  .span3
+    .control-text
+      Sort by:
+    .btn-group
+      %button.btn.dropdown-toggle{ data: { toggle: "dropdown" } }
+        = params[:filter][:sort] || "Next Court Date"
+        %span.caret
+      %ul.dropdown-menu
+        %li
+          %a{href: current_uri_with_query_params(filter: {sort: "Next Court Date"})} Next Court Date
+        %li
+          %a{href: current_uri_with_query_params(filter: {sort: "Next Court Part"})} Next Court Part
+        %li
+          %a{href: current_uri_with_query_params(filter: {sort: "Defendant Name"})} Defendant Name
+        %li
+          %a{href: current_uri_with_query_params(filter: {sort: "Top Charge"})} Top Charge
+        %li
+          %a{href: current_uri_with_query_params(filter: {sort: "Number of Prior Convictions"})} Number of Prior Convictions
 
-- else
-  No cases found.
+  .span4
+    .control-text
+      %span.results             
+        Found
+        %span.total-results= @incidents.total_entries
+        matching incidents.
+
+  .span2.offset2
+    .control-text
+      %a{href: current_uri_with_query_params(format: :csv)} Export CSV
+
+#incidents.row-fluid
+  .span12
+    - if @incidents.present?
+      - @incidents.each do |incident|
+        = haml :incident, locals: { incident: incident }
+    - else
+      No cases found.
+
+#incidents-footer.row-fluid
+  .span12
+    = will_paginate @incidents, renderer: BootstrapPagination::Sinatra 
