@@ -9,14 +9,8 @@ class IncidentFilter
     end
 
     if params["top_charge"]
-      if params["top_charge"] == "VI"
-        top_charge = %w(I V)
-      else
-        top_charge = params["top_charge"]
-      end
-      unless top_charge == "A"
-        scope = scope.top_charge_in(top_charge)
-      end
+      top_charge = params["top_charge"].map { |el| el == "VI" ? ["V", "I"] : el}.flatten
+      scope = scope.top_charge_in(top_charge.flatten)
     end
 
     if params["include_charge"]
