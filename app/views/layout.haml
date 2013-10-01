@@ -77,8 +77,16 @@
                     %button.btn.inline.btn-mini.clear-all Clear
 
               %fieldset.secondary
+                %legend.top Sex
+
+                .formify.btn-group{ data: { toggle: "buttons-radio", name: "sex" } }
+                  %button.btn{ type: "button", data: { value: "A", selected: true_if(params[:filter][:sex], ["A", nil]) } } All
+                  %button.btn{ type: "button", data: { value: "M", selected: true_if(params[:filter][:sex], "M")} } Male
+                  %button.btn{ type: "button", data: { value: "F", selected: true_if(params[:filter][:sex], "F")} } Female
+
+              %fieldset.secondary
                 %legend.top Age
-                
+
                 .age-selector
                   .horiz-box
                     %label{ for: "min_age" } Min. Age
@@ -87,13 +95,6 @@
                     %label{ for: "max_age" } Max. Age
                     %input{ type: "number", name: "filter[max_age]", min: "16", max: "100", value: params[:filter][:max_age] || 100 }
 
-              %fieldset.secondary
-                %legend.top Sex
-                
-                .formify.btn-group{ data: { toggle: "buttons-radio", name: "sex" } }
-                  %button.btn{ type: "button", data: { value: "A", selected: true_if(params[:filter][:sex], ["A", nil]) } } All
-                  %button.btn{ type: "button", data: { value: "M", selected: true_if(params[:filter][:sex], "M")} } Male
-                  %button.btn{ type: "button", data: { value: "F", selected: true_if(params[:filter][:sex], "F")} } Female
 
               %fieldset.secondary
                 %legend.top Criminal History
