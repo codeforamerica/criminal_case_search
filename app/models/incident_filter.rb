@@ -171,7 +171,7 @@ class IncidentFilter
         scope = scope.order_by(defendant_name: :asc)
       elsif params["sort"] == "Top Charge"
         scope = scope.order_by(top_charge_sort: :asc)
-      elsif params["sort"] == "Number of Prior Convictions"
+      elsif params["sort"] == "Number of Prior Criminal Convictions"
         scope = scope.order_by(number_of_prior_criminal_convictions: :asc)
       end
     else
