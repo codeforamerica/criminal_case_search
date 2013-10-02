@@ -46,5 +46,21 @@ class DatashareFilter < Sinatra::Base
     end
   end
 
+  get '/api/status' do
+    status = "ok"
+    begin
+      Incident.first
+    rescue
+      status = "down"
+    end
+
+    {
+      status: status,
+      updated: Time.now.to_i,
+      dependencies: [],
+      resources: {}
+    }.to_json
+  end
+
   helpers ApplicationHelper
 end
