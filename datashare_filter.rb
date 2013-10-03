@@ -21,7 +21,7 @@ class DatashareFilter < Sinatra::Base
   WillPaginate.per_page = 15
 
   if ENV["RACK_ENV"] != "development"
-    use Authentication, "Protected Area", ['/api/status'] do |username, password|
+    use Authentication, "Protected Area", ['/.well-known/status'] do |username, password|
       username == ENV["CCS_USERNAME"] && password == ENV["CCS_PASSWORD"]
     end
   end
@@ -47,7 +47,7 @@ class DatashareFilter < Sinatra::Base
     end
   end
 
-  get '/api/status' do
+  get '/.well-known/status' do
     status = "ok"
     begin
       Incident.first
