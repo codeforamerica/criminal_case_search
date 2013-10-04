@@ -1,4 +1,5 @@
 require_relative "config/environment"
+require_relative "authentication"
 
 class SassHandler < Sinatra::Base   
   set :views, File.dirname(__FILE__) + '/app/assets/stylesheets'
@@ -20,7 +21,7 @@ class DatashareFilter < Sinatra::Base
   WillPaginate.per_page = 15
 
   if ENV["RACK_ENV"] != "development"
-    use Rack::Auth::Basic, "Protected Area" do |username, password|
+    use Authentication, "Protected Area", ['/.well-known/status'] do |username, password|
       username == ENV["CCS_USERNAME"] && password == ENV["CCS_PASSWORD"]
     end
   end
@@ -44,6 +45,22 @@ class DatashareFilter < Sinatra::Base
       @incidents = @incidents.paginate(:page => params[:page])
       haml :index
     end
+  end
+
+  get '/.well-known/status' do
+    status = "ok"
+    begin
+      Incident.first
+    rescue
+      status = "down"
+    end
+
+    {
+      status: status,
+      updated: Time.now.to_i,
+      dependencies: [],
+      resources: {}
+    }.to_json
   end
 
   helpers ApplicationHelper
