@@ -82,4 +82,15 @@ html
   def current_uri_with_query_params(new_params)
     "/?" + params.with_indifferent_access.deep_merge(new_params).to_query
   end
+
+  # based on ActionView::Helpers::TextHelper.pluralize, Rails 4.0.0
+  def pluralize_without_count(count, singular, plural = nil)
+    word = if (count == 1 || count =~ /^1(\.0+)?$/)
+      singular
+    else
+      plural || singular.pluralize
+    end
+
+    "#{word}"
+  end
 end
