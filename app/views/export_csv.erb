@@ -15,6 +15,7 @@
     "On Probation",
     "On Parole",
     "CJA Release Recommendation",
+    "Arraignment Outcome",
     "Next Court Date",
     "Next Court Part"
   ].join(",") %>
@@ -36,6 +37,7 @@
   incident.on_probation? ? "Yes" : "No",
   incident.on_parole? ? "Yes" : "No",
   incident.ror_report.try { |r| r.recommendations.map { |x| x.capitalize }.join(", ") },
+  incident.arraignment_outcome,
   incident.next_court_date,
   incident.next_court_part,
 ], {:col_sep => ",", :row_sep => "\r\n"}).chomp %>

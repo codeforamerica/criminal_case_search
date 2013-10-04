@@ -57,18 +57,21 @@
                 %fieldset.tertiary
                   %legend Severity
 
-                  = build_radio_field("top_charge", "A", "All", :selected => true)
-                  = build_radio_field("top_charge", "VF", "Violent Felony")
-                  = build_radio_field("top_charge", "F", "Nonviolent Felony")
-                  = build_radio_field("top_charge", "M", "Misdemeanor")
-                  = build_radio_field("top_charge", "VI", "Violation/Infraction")
+                  = build_checkbox_field("top_charge", "VF", "Violent Felony", :selected => true)
+                  = build_checkbox_field("top_charge", "F", "Nonviolent Felony", :selected => true)
+                  = build_checkbox_field("top_charge", "M", "Misdemeanor", :selected => true)
+                  = build_checkbox_field("top_charge", "VI", "Violation/Infraction", :selected => true)
+
+                  .btn-group
+                    %button.btn.inline.btn-mini.select-all All
+                    %button.btn.inline.btn-mini.clear-all Clear
 
                 %fieldset.tertiary
                   %legend Type
 
+                  = build_checkbox_field("include_charge", "CC", "Criminal Contempt", :selected => true)
                   = build_checkbox_field("include_charge", "D", "Drug Offense", :selected => true)
                   = build_checkbox_field("include_charge", "MA", "Misdemeanor Assault", :selected => true)
-                  = build_checkbox_field("include_charge", "CC", "Criminal Contempt", :selected => true)
                   = build_checkbox_field("include_charge", "SO", "Sex Offense", :selected => true)
                   = build_checkbox_field("include_charge", "A", "All Other Offenses", :selected => true)
 
@@ -77,8 +80,16 @@
                     %button.btn.inline.btn-mini.clear-all Clear
 
               %fieldset.secondary
+                %legend.top Sex
+
+                .formify.btn-group{ data: { toggle: "buttons-radio", name: "sex" } }
+                  %button.btn{ type: "button", data: { value: "A", selected: true_if(params[:filter][:sex], ["A", nil]) } } All
+                  %button.btn{ type: "button", data: { value: "M", selected: true_if(params[:filter][:sex], "M")} } Male
+                  %button.btn{ type: "button", data: { value: "F", selected: true_if(params[:filter][:sex], "F")} } Female
+
+              %fieldset.secondary
                 %legend.top Age
-                
+
                 .age-selector
                   .horiz-box
                     %label{ for: "min_age" } Min. Age
@@ -87,19 +98,12 @@
                     %label{ for: "max_age" } Max. Age
                     %input{ type: "number", name: "filter[max_age]", min: "16", max: "100", value: params[:filter][:max_age] || 100 }
 
-              %fieldset.secondary
-                %legend.top Sex
-                
-                .formify.btn-group{ data: { toggle: "buttons-radio", name: "sex" } }
-                  %button.btn{ type: "button", data: { value: "A", selected: true_if(params[:filter][:sex], ["A", nil]) } } All
-                  %button.btn{ type: "button", data: { value: "M", selected: true_if(params[:filter][:sex], "M")} } Male
-                  %button.btn{ type: "button", data: { value: "F", selected: true_if(params[:filter][:sex], "F")} } Female
 
               %fieldset.secondary
                 %legend.top Criminal History
 
                 %fieldset.tertiary
-                  %legend Number of Prior Convictions
+                  %legend Number of Prior Criminal Convictions
 
                   .input-append
                     %input.span3{ type: "number", value: params[:filter][:number_of_prior_convictions] || "0", min: "0", name: "filter[number_of_prior_convictions]"  }
@@ -142,9 +146,9 @@
                 %fieldset.tertiary
                   %legend Type of Prior Convictions
 
+                  = build_checkbox_field("prior_convictions", "CC", "Criminal Contempt", :selected => true)
                   = build_checkbox_field("prior_convictions", "D", "Drug Offense", :selected => true)
                   = build_checkbox_field("prior_convictions", "MA", "Misdemeanor Assault", :selected => true)
-                  = build_checkbox_field("prior_convictions", "CC", "Criminal Contempt", :selected => true)
                   = build_checkbox_field("prior_convictions", "SO", "Sex Offense", :selected => true)
                   = build_checkbox_field("prior_convictions", "A", "All Other Offenses", :selected => true)
 
