@@ -1,7 +1,31 @@
 $blue: #0077EE
+$headerBlue: #2037a0
 
 body
   padding-bottom: 40px
+
+.navbar-ccs
+  .navbar-inner
+    background-color: $headerBlue
+    background-image: none
+    position: relative
+    border: none
+  .nav
+    position: absolute
+    bottom: 0
+    left: 280px
+  .nav>li
+    a
+      font-weight: bold
+      font-size: 18px
+      color: #fff
+  .nav
+    .active>a
+      color: $headerBlue
+      background-color: #fff
+    .active>a:hover
+      color: $headerBlue
+      background-color: #fff
 
 .btn.btn-primary
   background-color: $blue

@@ -16,15 +16,19 @@
       <meta http-equiv="X-UA-Compatible" content="IE=edge" >
 
   %body
-    .navbar.navbar-inverse.navbar-static-top
+    .navbar.navbar-inverse.navbar-static-top.navbar-ccs
       .navbar-inner
-        .container-fluid
-          %button.btn.btn-navbar{ type: "button", "data-toggle" => "collapse", "data-target" => ".nav-collapse"}
-            %span.icon-bar
-            %span.icon-bar
-            %span.icon-bar
-          %a.brand{ href: "#"}
-            %img{ src: "/images/logo.png", alt: "Criminal Case Search" }
+        %a.brand{ href: "#"}
+          %img{ src: "/images/logo.png", alt: "Criminal Case Search" }
+        %ul.nav
+          %li.active
+            %a{ href: "/"} Search
+          %li
+            %a{ href: "/"} How To
+          %li
+            %a{ href: "/"} About
+          %li
+            %a{ href: "/"} Feedback
 
     - container :fluid do
       .row-fluid
