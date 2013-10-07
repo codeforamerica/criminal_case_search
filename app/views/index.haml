@@ -39,4 +39,5 @@
 
 #incidents-footer.row-fluid
   .span12
-    = will_paginate @incidents, renderer: BootstrapPagination::Sinatra 
+    - if @incidents.present?
+      = will_paginate @incidents, renderer: BootstrapPagination::Sinatra 
