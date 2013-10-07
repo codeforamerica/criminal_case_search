@@ -65,7 +65,7 @@
                 %legend.top Sex
 
                 .formify.btn-group{ data: { toggle: "buttons-radio", name: "sex" } }
-                  %button.btn{ type: "button", data: { value: "A", selected: true_if(params[:filter][:sex], ["A", nil]) } } All
+                  %button.btn{ type: "button", data: { value: "A", selected: true_if(params[:filter][:sex], ["A", nil]) } } Either
                   %button.btn{ type: "button", data: { value: "M", selected: true_if(params[:filter][:sex], "M")} } Male
                   %button.btn{ type: "button", data: { value: "F", selected: true_if(params[:filter][:sex], "F")} } Female
 
