@@ -29,20 +29,19 @@
     - container :fluid do
       .row-fluid
         %span.span3
-          .well.datashare-filter
+          .datashare-filter
             %form{action: "/"}
-              %fieldset
-                %fieldset.secondary
-                  %legend.top Borough
+              %fieldset.secondary
+                .legend.top Borough
 
-                  = build_checkbox_field("borough", "B", "Bronx", :selected => true)
-                  = build_checkbox_field("borough", "K", "Brooklyn", :selected => true)
-                  = build_checkbox_field("borough", "M", "Manhattan", :selected => true)
-                  = build_checkbox_field("borough", "Q", "Queens", :selected => true)
-                  = build_checkbox_field("borough", "S", "Staten Island", :selected => true)
+                = build_checkbox_field("borough", "B", "Bronx", :selected => true)
+                = build_checkbox_field("borough", "K", "Brooklyn", :selected => true)
+                = build_checkbox_field("borough", "M", "Manhattan", :selected => true)
+                = build_checkbox_field("borough", "Q", "Queens", :selected => true)
+                = build_checkbox_field("borough", "S", "Staten Island", :selected => true)
 
               %fieldset.secondary
-                %legend.top Top Charge
+                .legend.top Top Charge
 
                 %fieldset.tertiary
                   %legend Severity
@@ -62,7 +61,7 @@
                   = build_checkbox_field("include_charge", "A", "All Other Offenses", :selected => true)
 
               %fieldset.secondary
-                %legend.top Sex
+                .legend.top Sex
 
                 .formify.btn-group{ data: { toggle: "buttons-radio", name: "sex" } }
                   %button.btn{ type: "button", data: { value: "A", selected: true_if(params[:filter][:sex], ["A", nil]) } } Either
@@ -70,9 +69,9 @@
                   %button.btn{ type: "button", data: { value: "F", selected: true_if(params[:filter][:sex], "F")} } Female
 
               %fieldset.secondary
-                %legend.top Age
+                .legend.top Age
 
-                .age-selector
+                .formify.age-selector
                   .horiz-box
                     %label{ for: "min_age" } Min. Age
                     %input{ type: "number", name: "filter[min_age]", min: "16", max: "100", value: params[:filter][:min_age] || 16, id: "min_age" }
@@ -82,12 +81,12 @@
 
 
               %fieldset.secondary
-                %legend.top Criminal History
+                .legend.top Criminal History
 
                 %fieldset.tertiary
                   %legend Number of Prior Criminal Convictions
 
-                  .input-append
+                  .formify.input-append
                     %input.span3{ type: "number", value: params[:filter][:number_of_prior_convictions] || "0", min: "0", name: "filter[number_of_prior_convictions]"  }
                     .btn-group.dropdown-form
                       %button.btn.dropdown-toggle{ data: { toggle: "dropdown" } }
@@ -132,7 +131,7 @@
                   = triple_select("failed_to_appear")
 
               %fieldset.secondary
-                %legend Case Status
+                .legend.top Case Status
 
                 %fieldset.tertiary
                   %legend Has case been arraigned?
@@ -154,7 +153,7 @@
                     %button.btn{ type: "button", data: { value: "7-day", selected: true_if(params[:filter][:next_court_date], "7-day") } } Next 7 Days
               %fieldset
 
-                %fieldset.secondary
+                %fieldset
                   .pull-right.span5
                     %button.btn.btn-primary.btn-block{ type: "submit"} Search
                   .pull-right.restore-link

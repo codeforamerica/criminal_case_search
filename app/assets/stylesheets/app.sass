@@ -21,10 +21,26 @@ body
     margin-bottom: 0
   fieldset
     display: block
+    &.secondary
+      border: 1px solid #dedede
+      margin-bottom: 10px
+      padding-bottom: 10px
   legend
     display: block
     margin-bottom: 3px
     height: auto
+    padding-left: 10px
+  div.legend.top
+    font-weight: 400
+    line-height: 40px
+    font-size: 18px
+    margin-bottom: 3px
+    padding-left: 10px
+    background-color: #c9daf0
+    border-bottom: none
+    -webkit-box-sizing: border-box
+    -moz-box-sizing: border-box
+    box-sizing: border-box
   fieldset
     &.secondary legend.top
       font-weight: 400
@@ -36,6 +52,7 @@ body
   .field
     display: block
     padding-top: 2px
+    padding-left: 10px
     input
       padding: 0
       display: inline
@@ -44,6 +61,8 @@ body
       padding: 0
       display: inline-block
       margin-left: 2px
+  .formify
+    padding-left: 10px
   .double-up
     padding-top: 10px
     display: block
