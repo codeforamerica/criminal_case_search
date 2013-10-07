@@ -32,12 +32,6 @@
           .well.datashare-filter
             %form{action: "/"}
               %fieldset
-
-                %fieldset.secondary
-                  .pull-right
-                    %a.btn{href: "/"} Reset
-                    %button.btn.btn-primary{ type: "submit"} Search
-
                 %fieldset.secondary
                   %legend.top Borough
 
@@ -172,8 +166,9 @@
               %fieldset
 
                 %fieldset.secondary
-                  .pull-right
-                    %a.btn{href: "/"} Reset
-                    %button.btn.btn-primary{ type: "submit"} Search
+                  .pull-right.span5
+                    %button.btn.btn-primary.btn-block{ type: "submit"} Search
+                  .pull-right.restore-link
+                    %a{href: "/"} Restore Default Settings
         .span9
           = yield
