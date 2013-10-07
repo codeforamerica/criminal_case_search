@@ -31,8 +31,8 @@
         %span.span3
           .datashare-filter
             %form{action: "/"}
-              .legend.top{"data-toggle" => "collapse", "data-target" => ".borough" } Borough
-              %fieldset.secondary.collapse.in.borough
+              .legend.top{"data-toggle" => "collapse", "data-target" => ".borough-collapse" } Borough
+              %fieldset.secondary.collapse.in.borough-collapse
 
                 = build_checkbox_field("borough", "B", "Bronx", :selected => true)
                 = build_checkbox_field("borough", "K", "Brooklyn", :selected => true)
@@ -40,8 +40,8 @@
                 = build_checkbox_field("borough", "Q", "Queens", :selected => true)
                 = build_checkbox_field("borough", "S", "Staten Island", :selected => true)
 
-              .legend.top{"data-toggle" => "collapse", "data-target" => ".top-charge" } Top Charge
-              %fieldset.secondary.collapse.in.top-charge
+              .legend.top{"data-toggle" => "collapse", "data-target" => ".top-charge-collapse" } Top Charge
+              %fieldset.secondary.collapse.in.top-charge-collapse
 
                 %fieldset.tertiary
                   %legend Severity
@@ -60,16 +60,16 @@
                   = build_checkbox_field("include_charge", "SO", "Sex Offense", :selected => true)
                   = build_checkbox_field("include_charge", "A", "All Other Offenses", :selected => true)
 
-              .legend.top{"data-toggle" => "collapse", "data-target" => ".sex" } Sex
-              %fieldset.secondary.collapse.in.sex
+              .legend.top{"data-toggle" => "collapse", "data-target" => ".sex-collapse" } Sex
+              %fieldset.secondary.collapse.in.sex-collapse
 
                 .formify.btn-group{ data: { toggle: "buttons-radio", name: "sex" } }
                   %button.btn{ type: "button", data: { value: "M", selected: true_if(params[:filter][:sex], "M")} } Male
                   %button.btn{ type: "button", data: { value: "F", selected: true_if(params[:filter][:sex], "F")} } Female
                   %button.btn{ type: "button", data: { value: "A", selected: true_if(params[:filter][:sex], ["A", nil]) } } Either
 
-              .legend.top{"data-toggle" => "collapse", "data-target" => ".age" } Age
-              %fieldset.secondary.collapse.in.age
+              .legend.top{"data-toggle" => "collapse", "data-target" => ".age-collapse" } Age
+              %fieldset.secondary.collapse.in.age-collapse
 
                 .formify.age-selector
                   .horiz-box
@@ -80,8 +80,8 @@
                     %input{ type: "number", name: "filter[max_age]", min: "16", max: "100", value: params[:filter][:max_age] || 100 }
 
 
-              .legend.top{"data-toggle" => "collapse", "data-target" => ".criminal-history" } Criminal History
-              %fieldset.secondary.collapse.in.criminal-history
+              .legend.top{"data-toggle" => "collapse", "data-target" => ".criminal-history-collapse" } Criminal History
+              %fieldset.secondary.collapse.in.criminal-history-collapse
 
                 %fieldset.tertiary
                   %legend Number of Prior Criminal Convictions
@@ -130,8 +130,8 @@
                   %legend Has failed to appear on a previous case?
                   = triple_select("failed_to_appear")
 
-              .legend.top{"data-toggle" => "collapse", "data-target" => ".case-status" } Case Status
-              %fieldset.secondary.collapse.in.case-status
+              .legend.top{"data-toggle" => "collapse", "data-target" => ".case-status-collapse" } Case Status
+              %fieldset.secondary.collapse.in.case-status-collapse
 
                 %fieldset.tertiary
                   %legend Has case been arraigned?
