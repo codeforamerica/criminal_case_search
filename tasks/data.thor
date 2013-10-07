@@ -234,7 +234,7 @@ class Data < Thor
 
       arraigned = Random.rand(0..10) <= 2 ? true : false
       if arraigned
-        arraignment_outcome = ["ROR", "Bail Set", "Pleaded Guilty", "Dismissed"].sample
+        arraignment_outcome = ["ROR", "Bail Set", "Pleaded Guilty"].sample # "Dismissed" is an expected option, but shouldn't show in the list.
       else
         arraignment_outcome = nil
       end
