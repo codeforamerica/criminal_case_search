@@ -68,8 +68,8 @@
                   %button.btn{ type: "button", data: { value: "M", selected: true_if(params[:filter][:sex], "M")} } Male
                   %button.btn{ type: "button", data: { value: "F", selected: true_if(params[:filter][:sex], "F")} } Female
 
-              %fieldset.secondary
-                .legend.top Age
+              .legend.top{"data-toggle" => "collapse", "data-target" => ".age" } Age
+              %fieldset.secondary.collapse.in.age
 
                 .formify.age-selector
                   .horiz-box
@@ -80,8 +80,8 @@
                     %input{ type: "number", name: "filter[max_age]", min: "16", max: "100", value: params[:filter][:max_age] || 100 }
 
 
-              %fieldset.secondary
-                .legend.top Criminal History
+              .legend.top{"data-toggle" => "collapse", "data-target" => ".criminal-history" } Criminal History
+              %fieldset.secondary.collapse.in.criminal-history
 
                 %fieldset.tertiary
                   %legend Number of Prior Criminal Convictions
@@ -130,8 +130,8 @@
                   %legend Has failed to appear on a previous case?
                   = triple_select("failed_to_appear")
 
-              %fieldset.secondary
-                .legend.top Case Status
+              .legend.top{"data-toggle" => "collapse", "data-target" => ".case-status" } Case Status
+              %fieldset.secondary.collapse.in.case-status
 
                 %fieldset.tertiary
                   %legend Has case been arraigned?
