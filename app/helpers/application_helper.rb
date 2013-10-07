@@ -54,7 +54,7 @@ html
        
 <<html
 <div class="formify btn-group" data-toggle="buttons-radio" data-name="#{form_name}">
-<button class="btn" type="button" data-value="A" #{'data-selected="true"' if selected == "A" || selected == nil}>All</button>
+<button class="btn" type="button" data-value="A" #{'data-selected="true"' if selected == "A" || selected == nil}>Either</button>
 <button class="btn" type="button" data-value="Y" #{'data-selected="true"' if selected == "Y"}>Yes</button>
 <button class="btn" type="button" data-value="N" #{'data-selected="true"' if selected == "N"}>No</button>
 </div>
