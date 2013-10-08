@@ -35,132 +35,151 @@
         %span.span3
           .datashare-filter
             %form{action: "/"}
-              .legend.top{"data-toggle" => "collapse", "data-target" => ".borough-collapse" } Borough
-              %fieldset.secondary.collapse.in.borough-collapse
+              .filter-section
+                .legend.top.clearfix{"data-toggle" => "collapse", "data-target" => ".borough-collapse" }
+                  .text.pull-left Borough
+                  .collapse-indicator.open.pull-right
 
-                = build_checkbox_field("borough", "B", "Bronx", :selected => true)
-                = build_checkbox_field("borough", "K", "Brooklyn", :selected => true)
-                = build_checkbox_field("borough", "M", "Manhattan", :selected => true)
-                = build_checkbox_field("borough", "Q", "Queens", :selected => true)
-                = build_checkbox_field("borough", "S", "Staten Island", :selected => true)
+                %fieldset.secondary.collapse.in.borough-collapse
 
-              .legend.top{"data-toggle" => "collapse", "data-target" => ".top-charge-collapse" } Top Charge
-              %fieldset.secondary.collapse.in.top-charge-collapse
+                  = build_checkbox_field("borough", "B", "Bronx", :selected => true)
+                  = build_checkbox_field("borough", "K", "Brooklyn", :selected => true)
+                  = build_checkbox_field("borough", "M", "Manhattan", :selected => true)
+                  = build_checkbox_field("borough", "Q", "Queens", :selected => true)
+                  = build_checkbox_field("borough", "S", "Staten Island", :selected => true)
 
-                %fieldset.tertiary
-                  %legend Severity
+              .filter-section
+                .legend.top.clearfix{"data-toggle" => "collapse", "data-target" => ".top-charge-collapse" }
+                  .text.pull-left Top Charge
+                  .collapse-indicator.open.pull-right
 
-                  = build_checkbox_field("top_charge", "VF", "Violent Felony", :selected => true)
-                  = build_checkbox_field("top_charge", "F", "Nonviolent Felony", :selected => true)
-                  = build_checkbox_field("top_charge", "M", "Misdemeanor", :selected => true)
-                  = build_checkbox_field("top_charge", "VI", "Violation/Infraction", :selected => true)
+                %fieldset.secondary.collapse.in.top-charge-collapse
 
-                %fieldset.tertiary
-                  %legend Type
+                  %fieldset.tertiary
+                    %legend Severity
 
-                  = build_checkbox_field("include_charge", "CC", "Criminal Contempt", :selected => true)
-                  = build_checkbox_field("include_charge", "D", "Drug Offense", :selected => true)
-                  = build_checkbox_field("include_charge", "MA", "Misdemeanor Assault", :selected => true)
-                  = build_checkbox_field("include_charge", "SO", "Sex Offense", :selected => true)
-                  = build_checkbox_field("include_charge", "A", "All Other Offenses", :selected => true)
+                    = build_checkbox_field("top_charge", "VF", "Violent Felony", :selected => true)
+                    = build_checkbox_field("top_charge", "F", "Nonviolent Felony", :selected => true)
+                    = build_checkbox_field("top_charge", "M", "Misdemeanor", :selected => true)
+                    = build_checkbox_field("top_charge", "VI", "Violation/Infraction", :selected => true)
 
-              .legend.top{"data-toggle" => "collapse", "data-target" => ".sex-collapse" } Sex
-              %fieldset.secondary.collapse.in.sex-collapse
+                  %fieldset.tertiary
+                    %legend Type
 
-                .formify.btn-group{ data: { toggle: "buttons-radio", name: "sex" } }
-                  %button.btn{ type: "button", data: { value: "M", selected: true_if(params[:filter][:sex], "M")} } Male
-                  %button.btn{ type: "button", data: { value: "F", selected: true_if(params[:filter][:sex], "F")} } Female
-                  %button.btn{ type: "button", data: { value: "A", selected: true_if(params[:filter][:sex], ["A", nil]) } } Either
+                    = build_checkbox_field("include_charge", "CC", "Criminal Contempt", :selected => true)
+                    = build_checkbox_field("include_charge", "D", "Drug Offense", :selected => true)
+                    = build_checkbox_field("include_charge", "MA", "Misdemeanor Assault", :selected => true)
+                    = build_checkbox_field("include_charge", "SO", "Sex Offense", :selected => true)
+                    = build_checkbox_field("include_charge", "A", "All Other Offenses", :selected => true)
 
-              .legend.top{"data-toggle" => "collapse", "data-target" => ".age-collapse" } Age
-              %fieldset.secondary.collapse.in.age-collapse
+              .filter-section
+                .legend.top.clearfix{"data-toggle" => "collapse", "data-target" => ".sex-collapse" }
+                  .text.pull-left Sex
+                  .collapse-indicator.open.pull-right
+                %fieldset.secondary.collapse.in.sex-collapse
 
-                .formify.age-selector
-                  .horiz-box
-                    %label{ for: "min_age" } Min. Age
-                    %input{ type: "number", name: "filter[min_age]", min: "16", max: "100", value: params[:filter][:min_age] || 16, id: "min_age" }
-                  .horiz-box
-                    %label{ for: "max_age" } Max. Age
-                    %input{ type: "number", name: "filter[max_age]", min: "16", max: "100", value: params[:filter][:max_age] || 100 }
+                  .formify.btn-group{ data: { toggle: "buttons-radio", name: "sex" } }
+                    %button.btn{ type: "button", data: { value: "M", selected: true_if(params[:filter][:sex], "M")} } Male
+                    %button.btn{ type: "button", data: { value: "F", selected: true_if(params[:filter][:sex], "F")} } Female
+                    %button.btn{ type: "button", data: { value: "A", selected: true_if(params[:filter][:sex], ["A", nil]) } } Either
+
+              .filter-section
+                .legend.top.clearfix{"data-toggle" => "collapse", "data-target" => ".age-collapse" }
+                  .text.pull-left Age
+                  .collapse-indicator.open.pull-right
+                %fieldset.secondary.collapse.in.age-collapse
+
+                  .formify.age-selector
+                    .horiz-box
+                      %label{ for: "min_age" } Min. Age
+                      %input{ type: "number", name: "filter[min_age]", min: "16", max: "100", value: params[:filter][:min_age] || 16, id: "min_age" }
+                    .horiz-box
+                      %label{ for: "max_age" } Max. Age
+                      %input{ type: "number", name: "filter[max_age]", min: "16", max: "100", value: params[:filter][:max_age] || 100 }
 
 
-              .legend.top{"data-toggle" => "collapse", "data-target" => ".criminal-history-collapse" } Criminal History
-              %fieldset.secondary.collapse.in.criminal-history-collapse
+              .filter-section
+                .legend.top.clearfix{"data-toggle" => "collapse", "data-target" => ".criminal-history-collapse" }
+                  .text.pull-left Criminal History
+                  .collapse-indicator.open.pull-right
+                %fieldset.secondary.collapse.in.criminal-history-collapse
 
-                %fieldset.tertiary
-                  %legend Number of Prior Criminal Convictions
+                  %fieldset.tertiary
+                    %legend Number of Prior Criminal Convictions
 
-                  .formify.input-append
-                    %input.span3{ type: "number", value: params[:filter][:number_of_prior_convictions] || "0", min: "0", name: "filter[number_of_prior_convictions]"  }
-                    .btn-group.dropdown-form
-                      %button.btn.dropdown-toggle{ data: { toggle: "dropdown" } }
-                        %span.dropdown-main-text
-                          or more
-                        %span.caret
-                      %ul.dropdown-menu
-                        %li
-                          %a.dropdown-opt{ data: { value: "more" } }
+                    .formify.input-append
+                      %input.span3{ type: "number", value: params[:filter][:number_of_prior_convictions] || "0", min: "0", name: "filter[number_of_prior_convictions]"  }
+                      .btn-group.dropdown-form
+                        %button.btn.dropdown-toggle{ data: { toggle: "dropdown" } }
+                          %span.dropdown-main-text
                             or more
-                        %li
-                          %a.dropdown-opt{ data: { value: "fewer" } }
-                            or fewer
-                      %input{ class: "dropdown-input",
-                              type:  "hidden",
-                              name:  "filter[prior_conviction_bounds]",
-                              value: params[:filter][:prior_conviction_bounds] || "more" }
+                          %span.caret
+                        %ul.dropdown-menu
+                          %li
+                            %a.dropdown-opt{ data: { value: "more" } }
+                              or more
+                          %li
+                            %a.dropdown-opt{ data: { value: "fewer" } }
+                              or fewer
+                        %input{ class: "dropdown-input",
+                                type:  "hidden",
+                                name:  "filter[prior_conviction_bounds]",
+                                value: params[:filter][:prior_conviction_bounds] || "more" }
 
-                %fieldset.tertiary
-                  %legend Severity of Prior Convictions
+                  %fieldset.tertiary
+                    %legend Severity of Prior Convictions
 
-                  = build_checkbox_field("prior_convicion_severity", "VF", "Violent Felony", :selected => true)
-                  = build_checkbox_field("prior_convicion_severity", "F", "Nonviolent Felony", :selected => true)
-                  = build_checkbox_field("prior_convicion_severity", "M", "Misdemeanor", :selected => true)
-                  = build_checkbox_field("prior_convicion_severity", "VI", "Violation/Infraction", :selected => true)
+                    = build_checkbox_field("prior_convicion_severity", "VF", "Violent Felony", :selected => true)
+                    = build_checkbox_field("prior_convicion_severity", "F", "Nonviolent Felony", :selected => true)
+                    = build_checkbox_field("prior_convicion_severity", "M", "Misdemeanor", :selected => true)
+                    = build_checkbox_field("prior_convicion_severity", "VI", "Violation/Infraction", :selected => true)
 
-                %fieldset.tertiary
-                  %legend Type of Prior Convictions
+                  %fieldset.tertiary
+                    %legend Type of Prior Convictions
 
-                  = build_checkbox_field("prior_convictions", "CC", "Criminal Contempt", :selected => true)
-                  = build_checkbox_field("prior_convictions", "D", "Drug Offense", :selected => true)
-                  = build_checkbox_field("prior_convictions", "MA", "Misdemeanor Assault", :selected => true)
-                  = build_checkbox_field("prior_convictions", "SO", "Sex Offense", :selected => true)
-                  = build_checkbox_field("prior_convictions", "A", "All Other Offenses", :selected => true)
+                    = build_checkbox_field("prior_convictions", "CC", "Criminal Contempt", :selected => true)
+                    = build_checkbox_field("prior_convictions", "D", "Drug Offense", :selected => true)
+                    = build_checkbox_field("prior_convictions", "MA", "Misdemeanor Assault", :selected => true)
+                    = build_checkbox_field("prior_convictions", "SO", "Sex Offense", :selected => true)
+                    = build_checkbox_field("prior_convictions", "A", "All Other Offenses", :selected => true)
 
-                %fieldset.tertiary.horizontal
-                  %legend Has other open cases?
-                  = triple_select("open_cases")
+                  %fieldset.tertiary.horizontal
+                    %legend Has other open cases?
+                    = triple_select("open_cases")
 
-                %fieldset.tertiary.horizontal
-                  %legend Has failed to appear on a previous case?
-                  = triple_select("failed_to_appear")
+                  %fieldset.tertiary.horizontal
+                    %legend Has failed to appear on a previous case?
+                    = triple_select("failed_to_appear")
 
-              .legend.top{"data-toggle" => "collapse", "data-target" => ".case-status-collapse" } Case Status
-              %fieldset.secondary.collapse.in.case-status-collapse
+              .filter-section
+                .legend.top.clearfix{"data-toggle" => "collapse", "data-target" => ".case-status-collapse" }
+                  .text.pull-left Case Status
+                  .collapse-indicator.open.pull-right
+                %fieldset.secondary.collapse.in.case-status-collapse
 
-                %fieldset.tertiary
-                  %legend Has case been arraigned?
+                  %fieldset.tertiary
+                    %legend Has case been arraigned?
 
-                  = triple_select("arraigned")
+                    = triple_select("arraigned")
 
-                %fieldset.tertiary
-                  %legend Was bail/remand set on defendant?
+                  %fieldset.tertiary
+                    %legend Was bail/remand set on defendant?
 
-                  = triple_select("bail_set")
+                    = triple_select("bail_set")
 
-                %fieldset.tertiary
-                  %legend Next Court Appearance Date
+                  %fieldset.tertiary
+                    %legend Next Court Appearance Date
 
-                  #next-appearance-date.formify.btn-group.btn-group-vertical{ data: { toggle: "buttons-radio", name: "next_court_date" } }
-                    %button.btn{ type: "button", data: { value: "any", selected: true_if(params[:filter][:next_court_date], ["any", nil]) } } All
-                    %button.btn{ type: "button", data: { value: "today", selected: true_if(params[:filter][:next_court_date], "today") } } Today
-                    %button.btn{ type: "button", data: { value: "tomorrow", selected: true_if(params[:filter][:next_court_date], "tomorrow") } } Tomorrow
-                    %button.btn{ type: "button", data: { value: "7-day", selected: true_if(params[:filter][:next_court_date], "7-day") } } Next 7 Days
+                    #next-appearance-date.formify.btn-group.btn-group-vertical{ data: { toggle: "buttons-radio", name: "next_court_date" } }
+                      %button.btn{ type: "button", data: { value: "any", selected: true_if(params[:filter][:next_court_date], ["any", nil]) } } All
+                      %button.btn{ type: "button", data: { value: "today", selected: true_if(params[:filter][:next_court_date], "today") } } Today
+                      %button.btn{ type: "button", data: { value: "tomorrow", selected: true_if(params[:filter][:next_court_date], "tomorrow") } } Tomorrow
+                      %button.btn{ type: "button", data: { value: "7-day", selected: true_if(params[:filter][:next_court_date], "7-day") } } Next 7 Days
+
               %fieldset
-
-                %fieldset
-                  .pull-right.span5
-                    %button.btn.btn-primary.btn-block{ type: "submit"} Search
-                  .pull-right.restore-link
-                    %a{href: "/"} Restore Default Settings
+                .pull-right.span5
+                  %button.btn.btn-primary.btn-block{ type: "submit"} Search
+                .pull-right.restore-link
+                  %a{href: "/"} Restore Default Settings
         .span9
           = yield
