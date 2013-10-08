@@ -18,17 +18,7 @@
       %p.priors
         %span.count= incident.number_of_other_open_cases
         Other Open Cases   
-      %p
-        - if incident.on_parole?
-          = build_disc("PA", "parole", "On Parole")
-        - if incident.on_probation?
-          = build_disc("PR", "probation", "On Probation")
-        - if incident.has_outstanding_bench_warrant?
-          = build_disc("W", "warrant", "Has Outstanding Bench Warrant")
-        - if incident.persistent_misdemeanant?
-          = build_disc("PM", "persistent-misdemeanant", "Persistent Misdemeanant")
-        - if incident.has_failed_to_appear?
-          = build_disc("FTA", "failure-to-appear", "Has failed to appear in court")
+      %p= format_badges(incident)
 
     .span3
       %span.court-date-note Next Court Date
