@@ -42,7 +42,7 @@ class DatashareFilter < Sinatra::Base
       response.headers["Content-Disposition"] = "attachment; filename=cases.csv"
       erb :export_csv
     else
-      @incidents = @incidents.paginate(:page => params[:page])
+      @incidents = @incidents.paginate(:page => (params[:page] || 1), :per_page => 15)
       haml :index
     end
   end
