@@ -3,6 +3,7 @@
     .span4
       %h3.name= incident.defendant_name
       %p.docket-number= incident.docket_number
+
     .span3.offset2
       - if incident.on_parole?
         = build_disc("PA", "parole", "On Parole")
@@ -17,10 +18,12 @@
     .span3
       %span.court-date-note Next Court Date
       %h3.court-date= incident.next_court_date.strftime("%b %-d")
+
   .row-fluid
     .span3
-      %p.sex= incident.defendant_sex
-      %p.age= incident.defendant_age
+      %p
+        %span.sex= format_sex(incident.defendant_sex) + ", "
+        %span.age= incident.defendant_age
     .span3
       %p.severity= incident.top_charge_code_expanded
       %p.charge-code= format_top_charge(incident)                          
@@ -36,7 +39,7 @@
       %p= incident.next_courthouse
 
   .row-fluid
-    .span3
+    .span3.offset3
       %p.ror-recommendation= incident.recommendations.join(", ")
     .span3
       %p= incident.arraignment_outcome

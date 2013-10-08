@@ -93,4 +93,14 @@ html
 
     "#{word}"
   end
+
+  def format_sex(sex)
+    if sex == "M"
+      "Male"
+    elsif sex == "F"
+      "Female"
+    else
+      ""
+    end
+  end
 end
