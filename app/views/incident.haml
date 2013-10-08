@@ -14,10 +14,10 @@
         %span.charge-code= format_top_charge(incident)
       %p.priors
         %span.count= incident.number_of_prior_criminal_convictions 
-        Criminal Convictions
+        = pluralize_without_count(incident.number_of_prior_criminal_convictions, "Criminal Conviction")
       %p.priors
         %span.count= incident.number_of_other_open_cases
-        Other Open Cases   
+        = pluralize_without_count(incident.number_of_other_open_cases, "Other Open Case")
       %p= format_badges(incident)
 
     .span3
