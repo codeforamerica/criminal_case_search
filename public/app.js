@@ -47,4 +47,14 @@ $(function(){
     $(event.target).parent().parent().find("input").prop("checked", false);
     event.preventDefault();
   });
-})
+
+  $(".collapse").on('hide', function(event){
+    var collapsingEl = $(event.target);
+    collapsingEl.parent().find(".collapse-indicator").removeClass("open").addClass("closed");
+  });
+
+  $(".collapse").on('show', function(event){
+    var collapsingEl = $(event.target);
+    collapsingEl.parent().find(".collapse-indicator").removeClass("closed").addClass("open");
+  });
+});
