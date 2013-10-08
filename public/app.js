@@ -50,11 +50,32 @@ $(function(){
 
   $(".collapse").on('hide', function(event){
     var collapsingEl = $(event.target);
-    collapsingEl.parent().find(".collapse-indicator").removeClass("open").addClass("closed");
+    var indicator = collapsingEl.parent().find(".collapse-indicator");
+    indicator.animateRotate(90, 400, undefined, function(){
+      indicator.css("-webkit-transform", "");
+      indicator.removeClass("open").addClass("closed");
+    });
   });
 
   $(".collapse").on('show', function(event){
     var collapsingEl = $(event.target);
-    collapsingEl.parent().find(".collapse-indicator").removeClass("closed").addClass("open");
+    var indicator = collapsingEl.parent().find(".collapse-indicator");
+    indicator.animateRotate(-90, 400, undefined, function(){
+      indicator.css("-webkit-transform", "");
+      indicator.removeClass("closed").addClass("open");
+    });
   });
+
+  $.fn.animateRotate = function(angle, duration, easing, complete) {
+    var args = $.speed(duration, easing, complete);
+    var step = args.step;
+    return this.each(function(i, e) {
+      args.step = function(now) {
+        $.style(e, 'transform', 'rotate(' + now + 'deg)');
+          if (step) return step.apply(this, arguments);
+        };
+
+        $({deg: 0}).animate({deg: angle}, args);
+    });
+};
 });
