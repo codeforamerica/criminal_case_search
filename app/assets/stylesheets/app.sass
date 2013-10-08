@@ -187,6 +187,7 @@ body
 .last-updated
   color: #999
 
+$light-grey: lighten(#999, 15)
 .disc
   font-size: 14px
   height: 25px
@@ -195,9 +196,16 @@ body
   display: inline-block
   text-align: center
   padding: 2px
+  border-width: 1px
+  border-style: solid
+  border-color: $light-grey
   border-radius: 50%
-  color: #fff
-  background: #888
+  color: $light-grey
   text-align: center
   .disc-internal
     margin-top: 3px
+  &.highlight
+    $dark-grey: darken($light-grey, 25)
+    background: $dark-grey
+    border-color: $dark-grey
+    color: #fff

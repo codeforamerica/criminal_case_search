@@ -7,9 +7,19 @@ module ApplicationHelper
     build_field("checkbox", name, value, label, options)
   end
 
-  def build_disc(label, klass, title = label)
+  def format_badges(incident)
+    html = ""
+    html += build_disc("PA", "parole", "On Parole", incident.on_parole?)
+    html += build_disc("PR", "probation", "On Probation", incident.on_probation?)
+    html += build_disc("W", "warrant", "Has Outstanding Bench Warrant", incident.has_outstanding_bench_warrant?)
+    html += build_disc("S", "persistent-misdemeanant", "Operation Spotlight (Persistent Misdemeanant)", incident.persistent_misdemeanant?)
+    html += build_disc("F", "failure-to-appear", "Has failed to appear in court", incident.has_failed_to_appear?)
+    html
+  end
+
+  def build_disc(label, klass, title = label, highlight = false)
 <<html
-<div class="disc #{klass}" title="#{title}">
+<div class="disc #{klass} #{highlight ? 'highlight' : ''}" title="#{title}">
   <div class="disc-internal">
     #{label}
   </div>
