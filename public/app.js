@@ -54,6 +54,9 @@ $(function(){
     indicator.animateRotate(90, 400, undefined, function(){
       indicator.css("-webkit-transform", "");
       indicator.removeClass("open").addClass("closed");
+    }, function(now) {
+      if (now > 83)
+        collapsingEl.addClass("closed");
     });
   });
 
@@ -63,14 +66,19 @@ $(function(){
     indicator.animateRotate(-90, 400, undefined, function(){
       indicator.css("-webkit-transform", "");
       indicator.removeClass("closed").addClass("open");
+    }, function(now) {
+      if (now < -1)
+        collapsingEl.removeClass("closed");
     });
   });
 
-  $.fn.animateRotate = function(angle, duration, easing, complete) {
+  $.fn.animateRotate = function(angle, duration, easing, complete, customStep) {
     var args = $.speed(duration, easing, complete);
     var step = args.step;
     return this.each(function(i, e) {
       args.step = function(now) {
+        if (customStep !== undefined)
+          customStep(now);
         $.style(e, 'transform', 'rotate(' + now + 'deg)');
           if (step) return step.apply(this, arguments);
         };
