@@ -151,6 +151,9 @@
                     %legend Has failed to appear on a previous case?
                     = triple_select("failed_to_appear")
 
+                  %fieldset.tertiary.horizontal
+                    %legend Is the defendant on parole or probation?
+                    = triple_select("parole_or_probation")
               .filter-section
                 .legend.top.clearfix{"data-toggle" => "collapse", "data-target" => ".case-status-collapse" }
                   .text.pull-left Case Status

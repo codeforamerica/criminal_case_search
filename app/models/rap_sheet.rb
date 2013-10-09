@@ -13,7 +13,6 @@ class RapSheet
   field :defendant_sex, type: String
   validates :defendant_sex, inclusion: { in: %w(M F), allow_nil: true}
 
-
   field :number_of_prior_criminal_convictions, type: Integer
   field :number_of_other_open_cases, type: Integer
   field :has_prior_untracked_charge, type: Boolean
@@ -109,6 +108,8 @@ class RapSheet
         if importer.nodes_from_xpath("/nysRap:NewYorkStateRapSheet/nys:NewYorkStateResponsePrimary/nys:Banner[@s:id='43']").present?
           rs.on_probation = true
         end
+
+
         rapsheets << rs
       else
         # Ignoring rap sheets without summaries.
@@ -124,6 +125,14 @@ class RapSheet
     end
 
     rapsheets
+  end
+
+  def on_parole_or_probation
+    if on_parole || on_probation
+      true
+    else
+      false
+    end
   end
 
   private
@@ -143,6 +152,7 @@ class RapSheet
                                number_of_other_open_cases: number_of_other_open_cases,
                                prior_conviction_types: prior_conviction_types,
                                prior_conviction_severities: prior_conviction_severities,
-                               has_failed_to_appear: has_failed_to_appear)
+                               has_failed_to_appear: has_failed_to_appear,
+                               on_parole_or_probation: on_parole_or_probation)
   end
 end
