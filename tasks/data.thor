@@ -152,6 +152,7 @@ class Data < Thor
       end
       on_probation = number_of_prior_convictions > 0 ? [true, false].sample : false
       on_parole = !on_probation && number_of_prior_convictions > 0 ? [true, false].sample : false
+      has_outstanding_bench_warrant = number_of_prior_convictions > 0 ? [true, false].sample : false
       rap_sheet_attributes = {
         incident: incident,
         arrest_id: arrest_id,
@@ -162,7 +163,7 @@ class Data < Thor
         has_failed_to_appear: number_of_prior_convictions > 0 ? [true, false].sample : false,
         prior_conviction_types: prior_conviction_types,
         prior_conviction_severities: prior_conviction_severities,
-        has_outstanding_bench_warrant: number_of_prior_convictions > 0 ? [true, false].sample : false,
+        has_outstanding_bench_warrant: has_outstanding_bench_warrant,
         persistent_misdemeanant: number_of_prior_convictions > 5 ? [true, false].sample : false,
         on_probation: on_probation,
         on_parole: on_parole
@@ -187,10 +188,15 @@ class Data < Thor
         "Interview incomplete",
         "Defendant declined interview"
       ]
+      if has_outstanding_bench_warrant
+        recommendations = ["High risk for FTA"]
+      else
+        recommendations = [ror_recommendations.sample]
+      end
       ror_report_attributes = {
         incident: incident,
         arrest_id: arrest_id,
-        recommendations: [ror_recommendations.sample]
+        recommendations: recommendations
       }
       ror_report = RorReport.create!(ror_report_attributes)
 
