@@ -13,7 +13,7 @@ module ApplicationHelper
     html += build_disc("PR", "probation", "On Probation", incident.on_probation?)
     html += build_disc("W", "warrant", "Has Outstanding Bench Warrant", incident.has_outstanding_bench_warrant?)
     html += build_disc("S", "persistent-misdemeanant", "Operation Spotlight (Persistent Misdemeanant)", incident.persistent_misdemeanant?)
-    html += build_disc("F", "failure-to-appear", "Has failed to appear in court", incident.has_failed_to_appear?)
+    html += build_disc("FTA", "failure-to-appear", "Has failed to appear in court", incident.has_failed_to_appear?)
     html
   end
 
