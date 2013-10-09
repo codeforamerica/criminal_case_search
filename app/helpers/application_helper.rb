@@ -113,4 +113,9 @@ html
       ""
     end
   end
+
+  def format_outcome(outcome)
+    outcome ||= "Pre-Arraignment"
+    "<span class=\"case-status #{outcome.downcase.gsub(" ", "-")}\">#{outcome}</span>"
+  end
 end

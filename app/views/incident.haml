@@ -21,8 +21,13 @@
       %p= format_badges(incident)
 
     .span3
-      %p= incident.arraignment_outcome
-      %p.ror-recommendation= incident.recommendations.join(", ")
+      %p
+        = format_outcome(incident.arraignment_outcome)
+      %p.ror-recommendation
+        - if incident.recommendations.present?
+          = incident.recommendations.join(", ")
+        - else
+          = "No Recommendation"
 
     .span3
       %h3.court-date= incident.next_court_date.strftime("%B %-d")
