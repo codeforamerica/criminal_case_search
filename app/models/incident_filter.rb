@@ -64,6 +64,14 @@ class IncidentFilter
       end
     end
 
+    if params["parole_or_probation"]
+      if params["parole_or_probation"] == "Y"
+        scope = scope.is_on_parole_or_probation
+      elsif params["parole_or_probation"] == "N"
+        scope = scope.is_not_on_parole_or_probation
+      end
+    end
+
     if params["prior_convictions"]
       conviction_types = []
       if params["prior_convictions"].include? "D"
