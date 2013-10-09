@@ -1,5 +1,5 @@
 #incidents-header.row-fluid
-  .span5
+  .span3
     .control-text
       Sort by:
     .btn-group
@@ -18,7 +18,10 @@
         %li
           %a{href: current_uri_with_query_params(filter: {sort: "Number of Prior Criminal Convictions"})} Number of Prior Criminal Convictions
 
-  .span2.offset6
+  .span3
+    = "Found #{@incidents.total_entries} #{pluralize_without_count(@incidents.total_entries, "incident")}."
+
+  .span2
     .control-text
       %a{href: current_uri_with_query_params(format: :csv)} Export CSV
 
