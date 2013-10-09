@@ -1,35 +1,47 @@
 .incident
   .row-fluid
     .span3
-      %h3.name= incident.defendant_name
-      %p.docket-number= incident.docket_number
-      %p
-        %span.sex= format_sex(incident.defendant_sex) + ", "
-        %span.age= incident.defendant_age
-
-    .span3     
+      %p.name= incident.defendant_name
+    .span3
       %p
         %span.severity= incident.top_charge_code_expanded
         &mdash;
         %span.charge-code= format_top_charge(incident)
+    .span3
+      %p.outcome= format_outcome(incident.arraignment_outcome)
+    .span3
+      %p.court-date= incident.next_court_date.strftime("%B %-d")
+
+  .row-fluid
+    .span3
+      %p.docket-number= incident.docket_number
+    .span3
       %p.priors
         %span.count= incident.number_of_prior_criminal_convictions 
         = pluralize_without_count(incident.number_of_prior_criminal_convictions, "Criminal Conviction")
-      %p.priors
-        %span.count= incident.number_of_other_open_cases
-        = pluralize_without_count(incident.number_of_other_open_cases, "Other Open Case")
-      %p= format_badges(incident)
-
     .span3
-      %p
-        = format_outcome(incident.arraignment_outcome)
       %p.ror-recommendation
         - if incident.recommendations.present?
           = incident.recommendations.join(", ")
         - else
           = "No Recommendation"
+    .span3
+      %p= incident.next_courthouse
+
+  .row-fluid
+    .span3
+      %p
+        %span.sex= format_sex(incident.defendant_sex) + ", "
+        %span.age= incident.defendant_age
+    .span3
+      %p.priors
+        %span.count= incident.number_of_other_open_cases
+        = pluralize_without_count(incident.number_of_other_open_cases, "Other Open Case")
+    .span3
 
     .span3
-      %h3.court-date= incident.next_court_date.strftime("%B %-d")
-      %p= incident.next_courthouse
       %p.court-part= incident.next_court_part
+
+  .row-fluid
+    .span3.offset3
+      %p= format_badges(incident)
