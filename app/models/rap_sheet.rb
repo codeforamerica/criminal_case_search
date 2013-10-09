@@ -109,7 +109,6 @@ class RapSheet
           rs.on_probation = true
         end
 
-
         rapsheets << rs
       else
         # Ignoring rap sheets without summaries.
