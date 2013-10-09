@@ -150,6 +150,8 @@ class Data < Thor
         prior_conviction_types = number_of_prior_convictions.times.map { prior_conviction_type_options.sample }
         prior_conviction_severities = number_of_prior_convictions.times.map { prior_conviction_severity_options.sample }.uniq
       end
+      on_probation = number_of_prior_convictions > 0 ? [true, false].sample : false
+      on_parole = !on_probation && number_of_prior_convictions > 0 ? [true, false].sample : false
       rap_sheet_attributes = {
         incident: incident,
         arrest_id: arrest_id,
@@ -162,8 +164,8 @@ class Data < Thor
         prior_conviction_severities: prior_conviction_severities,
         has_outstanding_bench_warrant: number_of_prior_convictions > 0 ? [true, false].sample : false,
         persistent_misdemeanant: number_of_prior_convictions > 5 ? [true, false].sample : false,
-        on_probation: number_of_prior_convictions > 0 ? [true, false].sample : false,
-        on_parole: number_of_prior_convictions > 0 ? [true, false].sample : false
+        on_probation: on_probation,
+        on_parole: on_parole
       }
       rap_sheet = RapSheet.create!(rap_sheet_attributes)
 
