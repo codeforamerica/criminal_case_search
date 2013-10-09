@@ -150,6 +150,9 @@ class Data < Thor
         prior_conviction_types = number_of_prior_convictions.times.map { prior_conviction_type_options.sample }
         prior_conviction_severities = number_of_prior_convictions.times.map { prior_conviction_severity_options.sample }.uniq
       end
+      on_probation = number_of_prior_convictions > 0 ? [true, false].sample : false
+      on_parole = !on_probation && number_of_prior_convictions > 0 ? [true, false].sample : false
+      has_outstanding_bench_warrant = number_of_prior_convictions > 0 ? [true, false].sample : false
       rap_sheet_attributes = {
         incident: incident,
         arrest_id: arrest_id,
@@ -160,10 +163,10 @@ class Data < Thor
         has_failed_to_appear: number_of_prior_convictions > 0 ? [true, false].sample : false,
         prior_conviction_types: prior_conviction_types,
         prior_conviction_severities: prior_conviction_severities,
-        has_outstanding_bench_warrant: number_of_prior_convictions > 0 ? [true, false].sample : false,
+        has_outstanding_bench_warrant: has_outstanding_bench_warrant,
         persistent_misdemeanant: number_of_prior_convictions > 5 ? [true, false].sample : false,
-        on_probation: number_of_prior_convictions > 0 ? [true, false].sample : false,
-        on_parole: number_of_prior_convictions > 0 ? [true, false].sample : false
+        on_probation: on_probation,
+        on_parole: on_parole
       }
       rap_sheet = RapSheet.create!(rap_sheet_attributes)
 
@@ -185,10 +188,15 @@ class Data < Thor
         "Interview incomplete",
         "Defendant declined interview"
       ]
+      if has_outstanding_bench_warrant
+        recommendations = ["High risk for FTA"]
+      else
+        recommendations = [ror_recommendations.sample]
+      end
       ror_report_attributes = {
         incident: incident,
         arrest_id: arrest_id,
-        recommendations: [ror_recommendations.sample]
+        recommendations: recommendations
       }
       ror_report = RorReport.create!(ror_report_attributes)
 
@@ -234,7 +242,7 @@ class Data < Thor
 
       arraigned = Random.rand(0..10) <= 2 ? true : false
       if arraigned
-        arraignment_outcome = ["ROR", "Bail Set", "Pleaded Guilty"].sample # "Dismissed" is an expected option, but shouldn't show in the list.
+        arraignment_outcome = ["ROR", "Bail Set"].sample # "Pleaded Guilty", "Dismissed" are expected options, but shouldn't show in the list.
       else
         arraignment_outcome = nil
       end
