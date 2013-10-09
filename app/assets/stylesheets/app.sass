@@ -170,14 +170,11 @@ body
   &.selected
     color: #fff
     background-color: #999
-  h3
-    font-size: 22px
-    margin: 0
-    padding: 0
-    &.name
-      color: $blue
   p
     margin-bottom: 5px
+  .name, .charge-code, .case-status, .court-date
+    font-size: 18px
+    font-weight: bold
 
 .priors .count, .open-cases .count
   font-weight: bold
@@ -185,34 +182,15 @@ body
 .last-updated
   color: #999
 
-$light-grey: lighten(#999, 15)
 .disc
-  font-size: 14px
-  height: 25px
-  width: 25px
-  margin-top: 16px
   display: inline-block
-  text-align: center
-  padding: 2px
-  border-width: 1px
-  border-style: solid
-  border-color: $light-grey
-  border-radius: 50%
-  color: $light-grey
-  text-align: center
-  .disc-internal
-    margin-top: 3px
+  color: #fff
+  font-weight: bold
+  width: 30px
   &.highlight
-    $dark-grey: darken($light-grey, 25)
-    background: $dark-grey
-    border-color: $dark-grey
-    color: #fff
+    color: #000
 
-.case-status
-  height: 40px
-  line-height: 40px
-  font-size: 22px
-  font-weight: bold    
+.case-status 
   &.pre-arraignment
     color: #70417E
   &.bail-set

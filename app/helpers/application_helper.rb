@@ -19,11 +19,7 @@ module ApplicationHelper
 
   def build_disc(label, klass, title = label, highlight = false)
 <<html
-<div class="disc #{klass} #{highlight ? 'highlight' : ''}" title="#{title}">
-  <div class="disc-internal">
-    #{label}
-  </div>
-</div>
+<span class="disc #{klass} #{highlight ? 'highlight' : ''}" title="#{title}">#{label}</span>
 html
   end
 
