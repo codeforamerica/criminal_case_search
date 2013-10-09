@@ -45,6 +45,7 @@ class Incident
   field :prior_conviction_types, type: Array, default: []
   field :prior_conviction_severities, type: Array, default: []
   field :has_failed_to_appear, type: Boolean
+  field :on_parole_or_probation, type: Boolean
   delegate :has_outstanding_bench_warrant?, to: :rap_sheet, allow_nil: true
   delegate :persistent_misdemeanant?, to: :rap_sheet, allow_nil: true
   delegate :on_probation?, to: :rap_sheet, allow_nil: true
@@ -67,6 +68,8 @@ class Incident
   scope :has_no_other_open_cases, any_in(number_of_other_open_cases: [0, nil])
   scope :has_failed_to_appear, where(has_failed_to_appear: true)
   scope :has_not_failed_to_appear, any_in(has_failed_to_appear: [false, nil])
+  scope :is_on_parole_or_probation, where(on_parole_or_probation: true)
+  scope :is_not_on_parole_or_probation, any_in(on_parole_or_probation: [false, nil])
   scope :prior_conviction_types_in, ->(conviction_types) { any_in(:prior_conviction_types => conviction_types.to_a.uniq) }
   scope :prior_conviction_severities_include, ->(severities) { any_in(:prior_conviction_severities => severities.to_a.uniq) }
   scope :prior_conviction_severities_exclude, ->(severities) { nin(:prior_conviction_severities => severities.to_a.uniq) }
