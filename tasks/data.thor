@@ -397,7 +397,7 @@ class Data < Thor
       }
       docketing_notice = DocketingNotice.create!(docketing_notice_attributes)
 
-      arraigned = Random.rand(0..10) <= 2 ? true : false
+      arraigned = Random.rand(0..10) <= 7 ? true : false
       if arraigned
         arraignment_outcome = ["ROR", "Bail Set"].sample # "Pleaded Guilty", "Dismissed" are expected options, but shouldn't show in the list.
       else
