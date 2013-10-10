@@ -36,5 +36,5 @@
 #incidents-footer.row-fluid
   .span12
     - if @incidents.present?
-      .info= page_entries_info @incidents
+      .info= page_entries_info @incidents, :model => "incident"
       = will_paginate @incidents, renderer: BootstrapPagination::Sinatra 
