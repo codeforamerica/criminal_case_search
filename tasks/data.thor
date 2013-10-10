@@ -258,6 +258,161 @@ class Data < Thor
     end
   end
 
+
+  desc "generate_demo_samples [N]", "Generate N sample Incidents for the summit demo. Defaults to 50 samples."
+  def generate_demo_samples(n = 50)
+    sample_charges = JSON.parse(File.read("fixtures/misdemeanors.json"))
+
+    n.to_i.times do
+      borough_code = "M"
+      borough = DatashareFilter::BOROUGH_CODES_TO_NAMES[borough_code]
+
+      arrest_id = borough_code + Random.rand(10000000...30000000).to_s
+      while Incident.where(arrest_id: arrest_id).count > 0
+        arrest_id = borough_code + Random.rand(10000000...30000000).to_s
+      end
+
+      incident = Incident.create!(arrest_id: arrest_id)
+
+      borough_to_precinct = {
+        "Manhattan" => %w(1 5 6 7 9 10 13 14 17 18 19 20 22 23 24 25 26 28 30 32 33 34),
+        "Staten Island" => %w(120 121 122 123),
+        "Brooklyn" => %w(60 61 62 63 66 67 68 69 70 71 72 73 75 76 77 78 79 81 83 84 88 90 94),
+        "Bronx" => %w(40 41 42 43 44 45 46 47 48 49 50 52),
+        "Queens" => %w(100 101 102 103 104 105 106 107 108 109 110 111 112 113 114 115)
+      }
+      dat = [true, false].sample
+      arrest_report_attributes = {
+        incident: incident,
+        arrest_id: arrest_id,
+        borough: borough,
+        defendant_first_name: Faker::Name.first_name,
+        defendant_last_name: Faker::Name.last_name,
+        defendant_sex: ["M"].sample,
+        defendant_age: Random.rand(18..65),
+        precinct: borough_to_precinct[borough].sample,
+        desk_appearance_ticket: dat,
+        desk_appearance_ticket_court_date: dat ? Random.rand(0..10).days.from_now : nil
+      }
+      arrest_report = ArrestReport.create!(arrest_report_attributes)
+
+      number_of_prior_convictions = Random.rand(3..6)
+      prior_conviction_type_options = ["Drug", "Misdemeanor Assault", "Criminal Contempt", "Sex Offense", "Untracked"]
+      prior_conviction_severity_options = ["Felony", "Misdemeanor", "Other"]
+      if number_of_prior_convictions == 0
+        prior_conviction_types = []
+        prior_conviction_severities = []
+      else
+        prior_conviction_types = number_of_prior_convictions.times.map { prior_conviction_type_options.sample }
+        prior_conviction_severities = number_of_prior_convictions.times.map { prior_conviction_severity_options.sample }.uniq
+      end
+      on_probation = number_of_prior_convictions > 0 ? [true, false].sample : false
+      on_parole = !on_probation && number_of_prior_convictions > 0 ? [true, false].sample : false
+      has_outstanding_bench_warrant = number_of_prior_convictions > 0 ? [true, false].sample : false
+      has_failed_to_appear = number_of_prior_convictions > 0 ? [true, false].sample : false
+      rap_sheet_attributes = {
+        incident: incident,
+        arrest_id: arrest_id,
+        defendant_sex: incident.defendant_sex,
+        defendant_age: incident.defendant_age,
+        number_of_prior_criminal_convictions: number_of_prior_convictions,
+        number_of_other_open_cases: number_of_prior_convictions > 0 ? Random.rand(0..4) : 0,
+        has_failed_to_appear: has_failed_to_appear,
+        prior_conviction_types: prior_conviction_types,
+        prior_conviction_severities: prior_conviction_severities,
+        has_outstanding_bench_warrant: has_outstanding_bench_warrant,
+        persistent_misdemeanant: number_of_prior_convictions > 5 ? [true, false].sample : false,
+        on_probation: on_probation,
+        on_parole: on_parole
+      }
+      rap_sheet = RapSheet.create!(rap_sheet_attributes)
+
+      complaint_attributes = {
+        incident: incident,
+        arrest_id: arrest_id,
+        charges: sample_charges.sample
+      }
+      complaint = Complaint.new(complaint_attributes)
+      complaint.set_attributes_based_on_charges
+      complaint.save!
+
+      ror_recommendations = [
+        "Not recommended for ROR",
+        "High risk for FTA",
+        "Recommended for ROR",
+        "Moderate risk for ROR",
+        "No recommendation",
+        "Interview incomplete",
+        "Defendant declined interview"
+      ]
+      if has_outstanding_bench_warrant || has_failed_to_appear
+        recommendations = ["High risk for FTA"]
+      else
+        recommendations = [ror_recommendations.sample]
+      end
+      ror_report_attributes = {
+        incident: incident,
+        arrest_id: arrest_id,
+        recommendations: recommendations
+      }
+      ror_report = RorReport.create!(ror_report_attributes)
+
+      borough_to_docket_code = {
+        "Manhattan" => "NY",
+        "Staten Island" => "RI",
+        "Brooklyn" => "KN",
+        "Bronx" => "BX",
+        "Queens" => "QN"
+      }
+      #TODO: separate out Redhook and MCC cases out, and DATs
+      borough_to_courthouses = {
+        "Manhattan" => ["New York County"],
+        "Staten Island" => ["Richmond County"],
+        "Brooklyn" => ["Kings County", "Redhook Community Court"],
+        "Bronx" => ["Bronx County"],
+        "Queens" => ["Queens County"]
+      }
+      courthouses_to_parts = {
+        "New York County" => ["APAR3", "APAR1"],
+        "Midtown Community Court" => ["APAR6"],
+        "Richmond County" => ["APAR1", "APAR4"],
+        "Kings County" => ["APAR2", "APAR2/3A", "APAR1/3"],
+        "Redhook Community Court" => ["APAR6"],
+        "Bronx County" => ["APAR2", "APAR1/3"],
+        "Queens County" => ["AR2A", "APAR1/3", "APAR4/3"]
+      }
+      courthouse = borough_to_courthouses[borough].sample
+      part = courthouses_to_parts[courthouse].sample
+      docket_number = "#{Date.today.year}#{borough_to_docket_code[borough]}#{sprintf("%06d",Random.rand(050000..200000))}"
+      while Incident.where(docket_number: docket_number).count > 0
+        docket_number = "#{Date.today.year}#{borough_to_docket_code[borough]}#{sprintf("%06d",Random.rand(050000..200000))}"
+      end
+      docketing_notice_attributes = {
+        incident: incident,
+        arrest_id: arrest_id,
+        docket_number: docket_number,
+        next_court_date: Date.today,
+        next_courthouse: courthouse,
+        next_court_part: part
+      }
+      docketing_notice = DocketingNotice.create!(docketing_notice_attributes)
+
+      arraigned = Random.rand(0..10) <= 2 ? true : false
+      if arraigned
+        arraignment_outcome = ["ROR", "Bail Set"].sample # "Pleaded Guilty", "Dismissed" are expected options, but shouldn't show in the list.
+      else
+        arraignment_outcome = nil
+      end
+      arrestee_tracking_attributes = {
+        incident: incident,
+        arrest_id: arrest_id,
+        arraigned: arraigned,
+        arraignment_outcome: arraignment_outcome
+      }
+      arrestee_tracking = ArresteeTracking.create!(arrestee_tracking_attributes)
+      print "+"
+    end
+  end
   private
 
   def load_data(model, dir, incidents = nil)
