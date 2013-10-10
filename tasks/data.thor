@@ -391,7 +391,7 @@ class Data < Thor
         incident: incident,
         arrest_id: arrest_id,
         docket_number: docket_number,
-        next_court_date: Random.rand(0..8).days.from_now,
+        next_court_date: Date.today
         next_courthouse: courthouse,
         next_court_part: part
       }
