@@ -188,14 +188,16 @@ body
 .last-updated
   color: #999
 
+$disc_color: #000
 .disc
   font-family: "HelveticaNeue-CondensedBold", "Helvetica Neue"
   display: inline-block
-  color: #fff
+  color: lighten($disc_color, 90)
+  margin-right: 10px
   font-weight: bold
-  width: 30px
+  text-align: center
   &.highlight
-    color: #000
+    color: $disc_color
 
 .case-status 
   &.pre-arraignment
