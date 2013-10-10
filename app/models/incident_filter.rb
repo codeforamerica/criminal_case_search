@@ -100,7 +100,6 @@ class IncidentFilter
       exclude_severities << "Violent Felony" unless params["prior_convicion_severity"].include? "VF"
       exclude_severities << "Felony" unless params["prior_convicion_severity"].include? "F"
       exclude_severities << "Misdemeanor" unless params["prior_convicion_severity"].include? "M"
-      exclude_severities << "Other" unless params["prior_convicion_severity"].include? "VI"
 
       scope = scope.prior_conviction_severities_exclude(exclude_severities) if exclude_severities.present?
     end

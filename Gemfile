@@ -20,8 +20,9 @@ gem "haml"
 gem "sass"
 gem "sinatra-twitter-bootstrap", require: "sinatra/twitter-bootstrap"
 
+gem "pry"
+
 group :development do
-  gem "pry"
   gem "awesome_print"
   gem "rb-fsevent"
   gem "guard"
