@@ -11,22 +11,35 @@ body
     background-image: none
     position: relative
     border: none
+  .brand
+    width: 300px
   .nav
     position: absolute
     bottom: 0
-    left: 450px
-  .nav>li
-    a
-      font-weight: bold
-      font-size: 18px
-      color: #fff
-  .nav
-    .active>a
-      color: $headerBlue
-      background-color: #fff
-    .active>a:hover
-      color: $headerBlue
-      background-color: #fff
+    margin-bottom: 10px
+    margin-left: 350px
+    &>li
+      padding: 0
+      &.active a
+        color: #fff
+        background-color: $headerBlue
+        &:hover
+          background-color: $headerBlue
+      a
+        font-weight: bold
+        font-size: 14px
+        color: $headerBlue
+        border: 2px solid #fff
+        background-color: #fff
+        margin-right: 5px
+        padding: 5px
+        text-shadow: 0 0 0 #000
+        &:hover
+          background-color: $headerBlue
+        &:active
+          background-color: $headerBlue
+        &.active
+          background-color: $headerBlue
 
 .btn.btn-primary
   background-color: $blue
