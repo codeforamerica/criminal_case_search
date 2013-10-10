@@ -1,5 +1,5 @@
 #incidents-header.row-fluid
-  .span5
+  .span4
     .control-text
       Sort by:
     .btn-group
@@ -18,8 +18,8 @@
         %li
           %a{href: current_uri_with_query_params(filter: {sort: "Prior Criminal Convictions"})} Prior Criminal Convictions
 
-  .span3.offset1
-    .control-text= "Found #{@incidents.total_entries} #{pluralize_without_count(@incidents.total_entries, "incident")}."
+  .span4
+    .control-text= "Found #{@incidents.total_entries} #{pluralize_without_count(@incidents.total_entries, "matching incident")}"
 
   .span2
     .control-text
