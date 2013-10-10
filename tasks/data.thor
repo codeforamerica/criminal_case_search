@@ -261,7 +261,7 @@ class Data < Thor
 
   desc "generate_demo_samples [N]", "Generate N sample Incidents for the summit demo. Defaults to 50 samples."
   def generate_demo_samples(n = 50)
-    sample_charges = JSON.parse(File.read("fixtures/charges.json"))
+    sample_charges = JSON.parse(File.read("fixtures/misdemeanors.json"))
 
     n.to_i.times do
       borough_code = "M"
