@@ -13,5 +13,7 @@ Dir["./app/*/*.rb"].each { |file| require file }
 # require "will_paginate/mongoid"
 require "will_paginate"
 
+require "sinatra/asset_pipeline"
+
 Mongoid.load!("config/mongoid.yml")
 require "./datashare_filter"

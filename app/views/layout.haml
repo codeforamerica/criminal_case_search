@@ -3,15 +3,11 @@
 %html
   %head
     %title Criminal Case Search
-
-    %script{ src: "/jquery-1.10.2.min.js" }
-
-    %script{ src: "/bootstrap/js/bootstrap.min.js" }
-    %link{ type: "text/css", rel: "stylesheet", href: "/bootstrap/css/bootstrap.min.css" }
-
-    %script{ src: "/app.js" }
-    %link{ type: "text/css", rel: "stylesheet", href: "/css/app.css" }
-
+    
+    != stylesheet_tag "bootstrap/bootstrap.css"
+    != stylesheet_tag "application.css"
+    != javascript_tag "application.js"
+    
     :plain
       <meta http-equiv="X-UA-Compatible" content="IE=edge" >
 
@@ -19,7 +15,7 @@
     .navbar.navbar-inverse.navbar-static-top.navbar-ccs
       .navbar-inner
         %a.brand{ href: "#"}
-          %img{ src: "/images/logo.png", alt: "Criminal Case Search" }
+          %img{ src: image_path("logo.png"), alt: "Criminal Case Search" }
         %ul.nav
           %li.active
             %a{ href: "/"} Search

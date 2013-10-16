@@ -1,3 +1,6 @@
+//= require jquery-1.10.2.min.js
+//= require bootstrap.min.js
+
 $(function(){
   $('.more-or-less').each(function(i, el) {
     // console.log(el);

@@ -1,23 +1,11 @@
 require_relative "config/environment"
 require_relative "authentication"
 
-class SassHandler < Sinatra::Base   
-  set :views, File.dirname(__FILE__) + '/app/assets/stylesheets'
-    
-  get '/css/*.css' do
-    filename = params[:splat].first
-    sass filename.to_sym
-  end    
-end
-
 class DatashareFilter < Sinatra::Base
   BOROUGH_CODES_TO_NAMES = {"M" => "Manhattan", "S" => "Staten Island", "K" => "Brooklyn", "B" => "Bronx", "Q" => "Queens"}
   BOROUGH_CODES = %w(M S K B Q)
 
-  register Sinatra::Twitter::Bootstrap::Assets
   register WillPaginate::Sinatra
-  use SassHandler
-
   WillPaginate.per_page = 15
 
   if ENV["RACK_ENV"] != "development"
@@ -26,10 +14,20 @@ class DatashareFilter < Sinatra::Base
     end
   end
 
+  set :assets_path, settings.root + '/app/assets'
+  register Sinatra::AssetPipeline
+  sprockets.append_path(assets_path + "/javascripts")
+  sprockets.append_path(assets_path + "/stylesheets")
+  sprockets.append_path(assets_path + "/images")
+
+  # binding.pry
+
   configure do
     set :views, settings.root + '/app/views'
     set :haml, :format => :html5
   end
+
+  # binding.pry
 
   get '/' do
     puts params.inspect

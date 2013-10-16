@@ -114,4 +114,10 @@ html
     outcome ||= "Pre-Arraignment"
     "<span class=\"case-status #{outcome.downcase.gsub(" ", "-")}\">#{outcome}</span>"
   end
+
+  # Ported from https://github.com/mfojtik/sinatra-twitter-bootstrap/blob/master/lib/sinatra/helpers/haml_helpers.rb
+  def container(layout=:fixed, &block)
+    @layout = layout
+    haml_tag :div, :class => layout == :fixed ? :container : 'container-fluid', &block
+  end
 end
