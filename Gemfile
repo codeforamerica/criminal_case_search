@@ -14,6 +14,9 @@ gem "erubis"
 gem "nokogiri"
 gem "thor"
 gem "faker"
+if RUBY_PLATFORM =~ /linux/
+  gem "rubywmq"
+end
 
 # Views
 gem "haml"
