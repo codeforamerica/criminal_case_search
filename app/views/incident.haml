@@ -10,7 +10,7 @@
     .span3
       %p.outcome= format_outcome(incident.arraignment_outcome)
     .span3
-      %p.court-date= incident.next_court_date.strftime("%B %-d")
+      %p.court-date= incident.next_court_date.try(:strftime, "%B %-d")
 
   .row-fluid
     .span3

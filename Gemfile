@@ -14,8 +14,10 @@ gem "erubis"
 gem "nokogiri"
 gem "thor"
 gem "faker"
+
 if RUBY_PLATFORM =~ /linux/
   gem "rubywmq"
+  gem "rb-readline", require: "readline"
 end
 
 # Views

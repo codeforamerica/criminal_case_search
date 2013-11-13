@@ -21,11 +21,16 @@ class Complaint
   before_save :update_incident_attributes
 
   def self.from_xml(xml_string)
-    importer = XMLDocImporter.new(xml_string, "/soapenv:Envelope/soapenv:Body/nycx:ComplaintXml")
+    begin
+    importer = XMLDocImporter.new(xml_string, "/soapenv:Envelope/soapenv:Body")
 
     complaints = []
-
-    defendants = importer.nodes_from_xpath("/next:Defendant")
+    
+    if importer.namespaces.keys.include?("nycx")
+      defendants = importer.nodes_from_xpath("/nycx:ComplaintXml/Defendant")
+    else
+      defendants = importer.nodes_from_xpath("").xpath("//zz:ComplaintXml/xx:Defendant", importer.namespaces.merge({"zz"=>"http://datashare.nyc.gov/schemas/exchange/complaint", "xx" => "http://xml.nyc.org/niem/2.0/extension"}))
+    end
     defendants.each do |defendant_node|
       arrest_id = defendant_node.xpath("next:DefendantArrest/nc:ActivityIdentification/nc:IdentificationID", importer.namespaces).first.content
       c = Complaint.find_or_initialize_by(arrest_id: arrest_id)
@@ -64,6 +69,9 @@ class Complaint
     end
 
     complaints
+    rescue Exception => e
+      binding.pry
+    end
   end
 
   def set_attributes_based_on_charges

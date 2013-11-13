@@ -1,5 +1,6 @@
 class XMLDocImporter
   attr_reader :namespaces
+  attr_accessor :xml_doc
 
   def initialize(xml_string, xpath_prefix = '')
     @xml_doc = Nokogiri::XML(xml_string)

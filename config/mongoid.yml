@@ -81,4 +81,4 @@ test:
 production:
   sessions:
     default:
-      uri: <%= ENV['MONGOHQ_URL'] %>
+      uri: <%= ENV['MONGO_URL'] || ENV['MONGOHQ_URL'] %>

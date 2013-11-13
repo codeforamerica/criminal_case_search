@@ -78,7 +78,9 @@ html
 
   # Takes in an incident and tries to build a view around the top charge.
   def format_top_charge(incident)
-    %Q(<span title="#{incident.top_charge["description"]}"><b>#{incident.top_charge["agency_code"]}</b></span>)
+    if incident.top_charge.present?
+      %Q(<span title="#{incident.top_charge["description"]}"><b>#{incident.top_charge["agency_code"]}</b></span>)
+    end
   end
 
   def show_ror_recommendations(incident)
