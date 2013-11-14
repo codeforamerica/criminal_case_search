@@ -1,3 +1,3 @@
 #\ -s thin
 require './config/environment'
-run DatashareFilter
+run CriminalCaseSearch
