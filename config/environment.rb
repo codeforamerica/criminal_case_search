@@ -14,4 +14,4 @@ Dir["./app/*/*.rb"].each { |file| require file }
 require "will_paginate"
 
 Mongoid.load!("config/mongoid.yml")
-require "./datashare_filter"
+require "./criminal_case_search"

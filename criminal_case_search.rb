@@ -10,7 +10,7 @@ class SassHandler < Sinatra::Base
   end    
 end
 
-class DatashareFilter < Sinatra::Base
+class CriminalCaseSearch < Sinatra::Base
   BOROUGH_CODES_TO_NAMES = {"M" => "Manhattan", "S" => "Staten Island", "K" => "Brooklyn", "B" => "Bronx", "Q" => "Queens"}
   BOROUGH_CODES = %w(M S K B Q)
 
