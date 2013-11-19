@@ -4,7 +4,7 @@ class IncidentFilter
     scope = Incident.scoped
 
     if params[:borough]
-      borough_names = params[:borough].map {|code| DatashareFilter::BOROUGH_CODES_TO_NAMES[code]}
+      borough_names = params[:borough].map {|code| CriminalCaseSearch::BOROUGH_CODES_TO_NAMES[code]}
       scope = scope.borough(borough_names)
     end
 

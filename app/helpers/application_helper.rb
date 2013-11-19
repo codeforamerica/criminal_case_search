@@ -120,4 +120,5 @@ html
     @layout = layout
     haml_tag :div, :class => layout == :fixed ? :container : 'container-fluid', &block
   end
+
 end

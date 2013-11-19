@@ -1,0 +1,225 @@
+$blue: #0077EE
+$headerBlue: #26358A
+$highlight: #649EE5
+
+body
+  padding-bottom: 40px
+
+.navbar-ccs
+  .navbar-inner
+    background-color: $headerBlue
+    background-image: none
+    position: relative
+    border: none
+  .brand
+    width: 300px
+  .nav
+    position: absolute
+    bottom: 0
+    margin-bottom: 10px
+    margin-left: 350px
+    &>li
+      padding: 0
+      &.active a
+        color: #fff
+        background-color: $headerBlue
+        &:hover
+          background-color: $headerBlue
+      a
+        font-weight: bold
+        font-size: 14px
+        color: $headerBlue
+        border: 2px solid #fff
+        background-color: #fff
+        margin-right: 5px
+        padding: 5px
+        text-shadow: 0 0 0 #000
+        &:hover
+          background-color: $headerBlue
+        &:active
+          background-color: $headerBlue
+        &.active
+          background-color: $headerBlue
+
+.btn.btn-primary
+  background-color: $blue
+  &:hover, &:active
+    background-position: 0px
+
+.btn.active
+  color: #fff
+  background-color: $blue
+  text-shadow: rgba(0, 0, 0, 0.247059) 0px -1px 0px
+  &:hover, &:active
+    background-position: 0px
+      
+.datashare-filter
+  margin-top: 65px
+  form
+    margin-bottom: 0
+  fieldset
+    display: block
+    &.secondary
+      border: 1px solid #c9daf0
+      border-top: none
+      margin-bottom: 10px
+    &.closed
+      border: none
+  legend
+    display: block
+    margin-bottom: 3px
+    height: auto
+    padding-left: 10px
+  div.legend.top
+    font-weight: 400
+    line-height: 40px
+    font-size: 18px
+    margin-bottom: none
+    padding-left: 10px
+    background-color: $highlight
+    border-bottom: none
+    -webkit-box-sizing: border-box
+    -moz-box-sizing: border-box
+    box-sizing: border-box
+    &.text
+    .collapse-indicator
+      width: 0
+      height: 0px
+      &.open
+        margin: 16px 10px 0 0
+        border-left: 10px solid transparent
+        border-right: 10px solid transparent
+        border-top: 10px solid #000000
+      &.closed
+        margin: 11px 15px 0 0
+        border-right: 10px solid #000000
+        border-bottom: 10px solid transparent
+        border-top: 10px solid transparent
+  fieldset
+    &.secondary legend.top
+      font-weight: 400
+      font-size: 18px
+    &.tertiary legend
+      font-size: 14px
+      font-weight: 600
+      border: 0
+  .field
+    display: block
+    padding-top: 2px
+    padding-left: 10px
+    input
+      padding: 0
+      display: inline
+      margin-bottom: 7px
+    label
+      padding: 0
+      display: inline-block
+      margin-left: 2px
+  .formify
+    padding-left: 10px
+    margin-bottom: 10px
+    margin-top: 10px
+  .double-up
+    padding-top: 10px
+    display: block
+    clear: both
+    .title
+      display: inline-block
+      margin-top: 4px
+    .btn-group
+      float: right
+  .age-selector
+    /* text-align: center
+    input
+      width: 70px
+    .horiz-box
+      display: block
+      /* width: 120px
+      float: left
+      margin-top: 5px
+      margin-right: 10px
+  .restore-link
+    text-align: right
+    padding-top: 5px
+    padding-right: 10px
+
+.inline
+  display: inline
+
+.horiz-control
+  display: block
+  padding: 10px
+
+.ui-buttonset .field
+  display: inline
+  padding: auto
+  margin: auto
+  font-size: auto
+
+#date-select button
+  width: 125px
+
+#next-appearance-date button
+  min-width: 125px
+  
+#incidents-header
+  margin-top: 5px
+  margin-bottom: 5px
+  padding-top: 15px
+  padding-bottom: 15px
+  border-bottom: 1px solid #000
+  .control-text
+    display: inline-block
+    margin-top: 3px
+    font-size: 18px
+
+#incidents-footer
+  .span12
+    text-align: center
+  .pagination
+    margin: 0
+  .pagination, .info
+    margin-bottom: 5px
+
+.incident
+  border-bottom: 1px solid #000
+  margin-bottom: 15px
+  /* padding-left: 10px
+  /* padding-bottom: 5px
+  &.selected
+    color: #fff
+    background-color: #999
+  p
+    margin-bottom: 5px
+  .name, .charge-code, .case-status, .court-date
+    font-size: 18px
+    font-weight: bold
+
+.priors .count, .open-cases .count
+  font-weight: bold
+
+.last-updated
+  color: #999
+
+$disc_color: #000
+.disc
+  font-family: "HelveticaNeue-CondensedBold", "Helvetica Neue"
+  display: inline-block
+  color: lighten($disc_color, 90)
+  margin-right: 10px
+  font-weight: bold
+  text-align: center
+  &.highlight
+    color: $disc_color
+
+.case-status 
+  &.pre-arraignment
+    color: #70417E
+  &.bail-set
+    color: #D2602E
+  &.pleaded-guilty
+    color: #30788E
+  &.ror
+    color: #565F5F
+  &.remand
+    color: #83A762

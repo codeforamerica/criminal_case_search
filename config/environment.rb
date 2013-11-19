@@ -16,4 +16,5 @@ require "will_paginate"
 require "sinatra/asset_pipeline"
 
 Mongoid.load!("config/mongoid.yml")
-require "./datashare_filter"
+
+require "./criminal_case_search"

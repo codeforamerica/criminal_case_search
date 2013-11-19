@@ -105,11 +105,11 @@ class Data < Thor
 
   desc "generate_samples [N]", "Generate N sample Incidents. Defaults to 100 samples."
   def generate_samples(n = 100)
-    sample_charges = JSON.parse(File.read("fixtures/charges.json"))
+    sample_charges = JSON.parse(File.read("fixtures/samplecharges.json"))
 
     n.to_i.times do
-      borough_code = DatashareFilter::BOROUGH_CODES.sample
-      borough = DatashareFilter::BOROUGH_CODES_TO_NAMES[borough_code]
+      borough_code = CriminalCaseSearch::BOROUGH_CODES.sample
+      borough = CriminalCaseSearch::BOROUGH_CODES_TO_NAMES[borough_code]
 
       arrest_id = borough_code + Random.rand(10000000...30000000).to_s
       while Incident.where(arrest_id: arrest_id).count > 0
@@ -174,7 +174,11 @@ class Data < Thor
       complaint_attributes = {
         incident: incident,
         arrest_id: arrest_id,
+<<<<<<< HEAD
         charges: sample_charges.sample
+=======
+        charges: 0.upto(Random.rand(0..2)).collect { sample_charges.sample }
+>>>>>>> f635db8acb2f35bda169fec79812fbaffb24e9f4
       }
       complaint = Complaint.new(complaint_attributes)
       complaint.set_attributes_based_on_charges
@@ -258,6 +262,7 @@ class Data < Thor
     end
   end
 
+<<<<<<< HEAD
 
   desc "generate_demo_samples [N]", "Generate N sample Incidents for the summit demo. Defaults to 50 samples."
   def generate_demo_samples(n = 50)
@@ -413,6 +418,8 @@ class Data < Thor
       print "+"
     end
   end
+=======
+>>>>>>> f635db8acb2f35bda169fec79812fbaffb24e9f4
   private
 
   def load_data(model, dir, incidents = nil)
