@@ -2,6 +2,10 @@ require_relative "config/environment"
 require_relative "authentication"
 
 class DatashareFilter < Sinatra::Base
+  # Root needs to be set before anything else. Things like :public_folder are dependent on it.
+  set :root, File.dirname(__FILE__)
+  set :public_folder, Proc.new { File.join(root, "public") }
+
   BOROUGH_CODES_TO_NAMES = {"M" => "Manhattan", "S" => "Staten Island", "K" => "Brooklyn", "B" => "Bronx", "Q" => "Queens"}
   BOROUGH_CODES = %w(M S K B Q)
 
@@ -14,20 +18,14 @@ class DatashareFilter < Sinatra::Base
     end
   end
 
-  set :assets_path, settings.root + '/app/assets'
+  set :assets_precompile, %w( application.js application.css *.png *.jpg *.svg *.eot *.ttf *.woff )
+  set :assets_prefix, %w( app/assets )
   register Sinatra::AssetPipeline
-  sprockets.append_path(assets_path + "/javascripts")
-  sprockets.append_path(assets_path + "/stylesheets")
-  sprockets.append_path(assets_path + "/images")
-
-  # binding.pry
 
   configure do
     set :views, settings.root + '/app/views'
     set :haml, :format => :html5
   end
-
-  # binding.pry
 
   get '/' do
     puts params.inspect

@@ -42,3 +42,6 @@ doc/
 
 # Foreman/Heroku
 .env
+
+# Ignore precompiled assets.
+public/app
