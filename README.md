@@ -1,19 +1,26 @@
-## Datashare Filter
+# Criminal Case Search
 
-Prototype app for filtering NYC Arrest/Arraignment data based on
-flexible criteria.
+This is a prototype app for filtering NYC Arrest/Arraignment data based on
+a flexible set of criteria.
 
 ## Setup
 
-### Building pre-requisites
+This application relies on Ruby version 2.0.0-p0, Bundler and MongoDB. Systems vary widely and we'll defer
+to setup instructions for your platform.
+
+### Install Gems
 ```bash
-brew install mongodb
-bundle #install required gems
+bundle
+```
+
+### Seed Demo Data
+```bash
+foreman run bundle exec thor data
 ```
 
 ### Deploying the web server
 ```bash
-bundle exec rackup
+foreman run bundle exec guard
 ```
 
 Alternatively, use Guard for auto-restart during development:
