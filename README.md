@@ -3,7 +3,7 @@
 This is a prototype app for filtering NYC Arrest/Arraignment data based on
 a flexible set of criteria.
 
-## App Setup
+## Setup
 
 This application relies on Ruby version 2.0.0-p0, Bundler and MongoDB. Systems vary widely and we'll defer
 to setup instructions for your platform.
@@ -37,7 +37,7 @@ see how the application works.
 foreman run bundle exec thor data:generate_samples 500
 ```
 
-## Run the Web Server
+### Run the Web Server
 
 The simplest way is to use Rack's built in server.
 ```bash
